@@ -47,6 +47,40 @@ for f in \
 done
 ```
 
+---
+
+## 2026-06-10: Grayscale conversion + global sig_8 cleanup
+
+All 267 PNGs converted to grayscale and cleaned in one pass:
+
+- **255 files** (>5% gray content): `convert -colorspace Gray -sigmoidal-contrast 8,50%`
+- **12 files** (<5% gray, already clean): `convert -colorspace Gray` only
+
+The 32 files previously treated with sig_5 still showed 13–19% gray — sig_5 was not enough. sig_8 addressed the remaining gray on those and on the many other files that had never been processed.
+
+### Chinese Breakdown
+
+Had heavy scattered dot noise (manually partially cleaned). Applied `sigmoidal-contrast 15,50%` specifically for this file.
+
+---
+
+## 2026-06-10: PDF generation pipeline
+
+Scripts added to `tune_images/`:
+- `make_pdf.sh` — shell wrapper
+- `make_pdf.py` — full logic (requires `.venv/` with img2pdf, Pillow, scipy)
+
+**Layout:**
+- All images scaled to the same width (widest image = 1605px)
+- Images packed vertically onto pages (greedy, alphabetical order)
+- Per-page margin/gap: preferred margin=80px / gap=40px if it fits, else margin=40px / gap=20px
+- Images centered horizontally
+- Output: `../WOFTA_tunes.pdf` (267 images → 158 pages)
+
+**File mtimes** set in alphabetical order (2020-01-01 UTC + 1s per file) so file managers sort correctly.
+
+---
+
 ## How files were identified
 
 Pixel analysis using ImageMagick's `-fx` operator to count pixels in the mid-gray
