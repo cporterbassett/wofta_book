@@ -1,0 +1,13 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Fiddle" snm="Fiddle"
+V:1
+ D"D"FE"A"D"G" B,2 B,2 | A,2 A,2 D2 D2 | !^!E2 E2 F2 F2 | E!breath!FED B,2 A,2 |$ %4
+[K:G] DFED B,2 B,2 | A,2 A,2 D2 D2 | dcdA B2 AG |1 FDEF D2 D2 :|2 !wedge!FDEF D2 de ||$ %9
+ a2 a(f g2) ge | f2 fd !^!e2 A2 | d2 d2 !^!e2 e2 | f2 f2 !^!e2 de |$ a2 a(f g2) ge | %14
+ f2 fd !^!e2 A2 |"D" dcdA"G" B2 AG |1 FDEF D2 de :|2 (FD)EF D4 |] %18
+

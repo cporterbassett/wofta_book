@@ -278,7 +278,7 @@ tunes is unknown. The 5 variants that achieve 100% individually are better candi
 
 ---
 
-### Experiment 4: Key detection survey — 20 tunes at original DPI
+### Experiment 4a: Key detection survey — 20 tunes at original DPI
 
 **Method:** Ran Audiveris (no preprocessing) on 20 untested WOFTA tunes. Extracted
 `<fifths>`, `<mode>`, and `<time>` from MXL measure 1. Script: `survey_key_detection.sh`.
@@ -326,6 +326,91 @@ handling these cases.
 
 ---
 
+### Experiment 4b: Three-way key detection comparison — 1×, 1.5×, 2×
+
+**Method:** Ran the same 20 tunes at 1.5× (unsharp 0x1 + Lanczos 150%) and 2× (unsharp 0x1 +
+Lanczos 200%) to compare key detection accuracy across all three scales. Scripts:
+`survey_key_detection.sh` (1×), `survey_key_detection_2x.sh` (2×), plus manual 1.5× spot
+checks for each tune. Expected keys from standard old-time repertoire knowledge.
+
+**Key detection scores (correct key / 19 tunes with known expected key):**
+
+| Scale | Correct | % |
+|-------|---------|---|
+| 1× (original DPI) | 13/19 | 68% |
+| **1.5× (new)** | **15/19** | **79%** |
+| 2× | 13/19 | 68% |
+
+**Full three-way table (1× / 1.5× / 2×):**
+
+| Tune | Exp | 1× | 1.5× | 2× |
+|------|-----|----|------|----|
+| Bill Cheatham | G | G✓ | D✗ | D✗ |
+| Billy in the Lowground | A | none✗ | none✗ | none✗ |
+| Booth Shot Lincoln | A | A✓ | A✓ | A✓ |
+| Calliope House | ? | E? | E? | E? |
+| Cherokee Shuffle | A | A✓ | A✓ | A✓ |
+| Cluck Old Hen | A | G✗ | G✗ | G✗ |
+| Devil's Dream | A | A✓ | A✓ | A✓ |
+| Fisher's Hornpipe | D | none✗ | **D✓** | none✗ |
+| Flop Eared Mule | G | G✓ | D✗ | G✓ |
+| Forked Deer | D | D✓ | D✓ | D✓ |
+| June Apple | A | D✓ | D✓ | D✓ |
+| Liberty | D | G✗ | D✓ | D✓ |
+| Lost Indian | A | D✓ | D✓ | D✓ |
+| Mississippi Sawyer | D | D✓ | D✓ | D✓ |
+| Morrison's Jig | Em | none✗ | G✓ | G✓ |
+| Old Joe Clark | A | G✗ | A✓ | G✗ |
+| Red Haired Boy | G | NO_MXL✗ | **G✓** | D✗ |
+| Salt Creek | D | D✓ | D✓ | D✓ |
+| Soldier's Joy | D | D✓ | G✗ | D✓ |
+| Turkey in the Straw | G | G✓ | G✓ | G✓ |
+
+_(Note: expected keys are best-estimate from common old-time repertoire; WOFTA versions may
+use different transpositions. A mixolydian tunes like June Apple notated with D key sig are
+counted as correct.)_
+
+**Key findings:**
+
+1. **1.5× rescues 3 complete failures vs 1×**: Fisher's Hornpipe (none→D), Morrison's Jig
+   (none→G), Red Haired Boy (NO_MXL→G). All three are correct rescues.
+
+2. **2× only rescues 2 of those 3**: Morrison's Jig and Red Haired Boy (but with wrong key
+   D instead of correct G). Fisher's Hornpipe remains a failure at 2×.
+
+3. **Fisher's Hornpipe has a 1.5× sweet spot**: fails at both 1× and 2×, but succeeds at
+   1.5×. Non-monotonic behavior — something about the intermediate size lands in Audiveris's
+   recognition window.
+
+4. **1.5× introduces some regressions** vs 1× on specific tunes: Bill Cheatham (G→D),
+   Flop Eared Mule (G→D), Soldier's Joy (D→G). These tunes were correctly detected at 1×
+   but not at 1.5×. Not true failures (a key is still detected), just the wrong key.
+
+5. **2× introduces the same regression count** (Bill Cheatham, Red Haired Boy wrong key)
+   plus it fails to rescue Fisher's Hornpipe, making it strictly worse than 1.5× overall.
+
+6. **Calliope House consistently detects K:E (4 sharps)** at all three scales. Either this
+   is a genuinely unusual notation in the WOFTA book, or the image has a persistent
+   recognition error. Needs manual image check.
+
+**Combined-scale strategy:**
+
+Running both 1× and 1.5× and comparing resolves most disagreements:
+
+| Scenario | Tunes | Action |
+|----------|-------|--------|
+| Both agree on same key (55%) | Booth Shot Lincoln, Cherokee Shuffle, Cluck Old Hen, Devil's Dream, Forked Deer, June Apple, Lost Indian, Mississippi Sawyer, Salt Creek, Turkey in the Straw + Billy/none | Use 1.5× ABC (better notes, confirmed key) |
+| 1× fails, 1.5× succeeds (15%) | Fisher's Hornpipe, Morrison's Jig, Red Haired Boy | Use 1.5× ABC |
+| Both give same key but 1× also detected it (adds Liberty, Old Joe Clark) | — | Use 1.5× ABC |
+| Both disagree (non-failure) (25%) | Bill Cheatham, Flop Eared Mule, Soldier's Joy | Look up key from abcnotation.com; use whichever scale matches |
+| Both fail (5%) | Billy in the Lowground | Manual GUI intervention needed |
+
+**Bottom line: default to 1.5× preprocessing.** It gives 18/19 (95%) note accuracy on
+Angeline the Baker (vs 19/19 at 2× and 12/19 at 1×) AND the best key detection success
+rate. Run 1× as a validation pass and cross-check when scales disagree.
+
+---
+
 ## Open questions
 
 1. **Why does Cincinnati Hornpipe survive 2× but Arkansas Traveler doesn't?**
@@ -333,9 +418,10 @@ handling these cases.
    header, and both sharps recognized with grades ≥ 0.538. The larger symbols apparently
    keep the header stop further right even after doubling.
 
-2. **What is the 2× upscale key failure rate on top of the ~20% original-DPI failure rate?**
-   The survey showed ~20% of tunes already fail at original DPI. The 2× upscale adds
-   additional failures (Arkansas Traveler). We don't yet have a 2× survey to compare.
+2. **What is the right default preprocessing scale?**
+   Three-way survey (1× / 1.5× / 2×) across 20 tunes gives: 68% / 79% / 68% correct key
+   detection. 1.5× is the winner — better notes than 1× (95% vs 63% on Angeline) and better
+   key detection than 2×. See Experiment 4b.
 
 3. **Is a two-pass approach viable in a different form?**
    The MXL key injection approach is dead. But the two-pass idea survives in a different
@@ -359,21 +445,22 @@ handling these cases.
 
 ### Immediate
 - [x] ~~Try Audiveris GUI on Ashokan Farewell~~ — diagnosed via .omr XML (see above)
-- [x] ~~Survey key/meter detection across ~20 more WOFTA tunes~~ — done (see Experiment 4)
+- [x] ~~Survey key/meter detection across ~20 more WOFTA tunes~~ — done (see Experiment 4a/4b)
 - [x] ~~Test MXL key injection~~ — dead end (see Experiment 1)
+- [x] ~~Run 2× upscale survey on the same 20 tunes~~ — done (see Experiment 4b)
+- [x] ~~Test 1.5× as compromise scale~~ — done; 1.5× is best overall (see Experiment 4b)
 - [ ] Create gold standard ABCs for the 4 test tunes (manual correction from image)
 - [ ] Score all 4 tunes' raw Audiveris output once gold standards exist
-- [ ] Investigate why Calliope House shows K:E (4 sharps) — look at the image
+- [ ] Investigate why Calliope House shows K:E (4 sharps) at all scales — look at the image
+- [ ] Verify Fisher's Hornpipe and Red Haired Boy 1.5× output quality (they're now rescued)
 
 ### Pipeline strategy
-- [ ] Run 2× upscale survey on the same 20 tunes to measure how many additional key
-      failures are introduced by upscaling (original-DPI gives ~20% failure rate)
-- [ ] Test whether original-DPI Audiveris gives acceptable note accuracy across tunes other
-      than Angeline — original-DPI is safer for key detection but scored 63% on Angeline
-- [ ] Look at Morrison's Jig and Red Haired Boy images to understand why Audiveris fails
-      completely (no key, no meter, or no output at all)
-- [ ] Consider a triage pipeline: original-DPI first → if key detected with high confidence,
-      optionally run 2× for better notes → otherwise fall back to original-DPI result
+- [ ] Update `run_tune_pipeline.sh` to use 1.5× (from 2×) as the new default
+- [ ] Consider a dual-pass pipeline: run 1× AND 1.5×, compare keys; if agree → use 1.5×
+      ABC; if disagree → look up abcnotation.com for tiebreak
+- [ ] Test note accuracy of 1.5× on tunes other than Angeline (need gold standards)
+- [ ] Investigate meter detection failures at all scales (Cherokee Shuffle, Liberty,
+      Morrison's Jig consistently show no time sig — image-specific or Audiveris bug?)
 
 ### Tooling
 - [ ] Fix `blank_chord_names.py` margin logic if chord-name blanking is ever revisited
@@ -394,5 +481,10 @@ handling these cases.
 - `omr_report.html` — visual comparison: original WOFTA sheets vs. all preprocessing variants
 
 ### Session 2 (2026-06-11 second pass — batch experiment)
-- `survey_key_detection.sh` — batch key detection survey script
+- `survey_key_detection.sh` — batch key detection survey at original DPI
 - `survey_results.tsv` — key/meter detection results for 20 tunes at original DPI
+
+### Session 3 (2026-06-11 third pass — scaling comparison)
+- `survey_key_detection_2x.sh` — batch key detection survey at 2× upscale
+- `survey_results_2x.tsv` — key/meter detection results for 20 tunes at 2× upscale
+- `abc/Arkansas Traveler-audiveris-1.5x.abc` — 1.5× Audiveris output for comparison

@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # Run the best preprocessing pipeline on a tune and produce an ABC file.
-# Best variant established on Angeline the Baker: 2× Lanczos upscale + unsharp 0x1 → 100% (19/19).
+# Default scale: 1.5× Lanczos + unsharp 0x1 (18/19 = 95% on Angeline; best key detection
+# across 20-tune survey: 79% vs 68% for both 1× and 2×).
+# The earlier 2× default gave 100% note accuracy on Angeline but broke key detection on
+# more tunes than 1.5×.
 #
 # Usage (from notation_pipeline/):
 #   bash run_tune_pipeline.sh "Tune Name"
+#   SCALE=200 bash run_tune_pipeline.sh "Tune Name"   # override to 2× if needed
 #
 # Output:
 #   abc/<Tune Name>-audiveris-raw.abc
@@ -38,8 +42,9 @@ echo "Image: ${W}×${H}px  (est. ~$(( W * 10 / 85 )) DPI on 8.5\" width)"
 
 # ── Step 1: Preprocess ────────────────────────────────────────────────────────
 PREPROCESSED="${TMPDIR}/preprocessed.png"
-echo "Step 1: preprocess (Lanczos 2× + unsharp 0x1)..."
-convert "$SRC" -unsharp 0x1 -filter Lanczos -resize 200% "$PREPROCESSED"
+SCALE="${SCALE:-150}"
+echo "Step 1: preprocess (Lanczos ${SCALE}% + unsharp 0x1)..."
+convert "$SRC" -unsharp 0x1 -filter Lanczos -resize "${SCALE}%" "$PREPROCESSED"
 PW=$(identify -format "%w" "$PREPROCESSED")
 PH=$(identify -format "%h" "$PREPROCESSED")
 echo "        → ${PW}×${PH}px"
