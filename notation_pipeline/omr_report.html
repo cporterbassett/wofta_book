@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WOFTA OMR Pipeline Report</title>
+<style>
+  :root {
+    --pass:   #1a7f37;
+    --fail:   #cf222e;
+    --warn:   #9a6700;
+    --pass-bg: #dafbe1;
+    --fail-bg: #ffebe9;
+    --warn-bg: #fff8c5;
+    --border:  #d0d7de;
+    --bg:      #f6f8fa;
+    --card:    #ffffff;
+    --text:    #1f2328;
+    --muted:   #656d76;
+    --accent:  #0969da;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+         background: var(--bg); color: var(--text); line-height: 1.5; }
+
+  header { background: #24292f; color: #fff; padding: 2rem 2.5rem; }
+  header h1 { font-size: 1.6rem; font-weight: 700; }
+  header p  { color: #8b949e; margin-top: .4rem; font-size: .95rem; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* ── Summary table ──────────────────────────────── */
+  .summary-box { background: var(--card); border: 1px solid var(--border);
+                 border-radius: 8px; padding: 1.5rem; margin-bottom: 2.5rem; }
+  .summary-box h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th { background: var(--bg); text-align: left; padding: .5rem .75rem;
+       border-bottom: 2px solid var(--border); font-weight: 600; }
+  td { padding: .45rem .75rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── Badges ─────────────────────────────────────── */
+  .badge { display: inline-block; padding: .15rem .5rem; border-radius: 12px;
+           font-size: .8rem; font-weight: 600; white-space: nowrap; }
+  .pass  { background: var(--pass-bg); color: var(--pass); }
+  .fail  { background: var(--fail-bg); color: var(--fail); }
+  .warn  { background: var(--warn-bg); color: var(--warn); }
+
+  /* ── Tune sections ──────────────────────────────── */
+  .tune { background: var(--card); border: 1px solid var(--border);
+          border-radius: 8px; margin-bottom: 2.5rem; overflow: hidden; }
+  .tune-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+                 display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .tune-header h2 { font-size: 1.2rem; }
+  .tune-meta { color: var(--muted); font-size: .88rem; }
+  .tune-body  { padding: 1.5rem; }
+
+  /* ── Original-image row ─────────────────────────── */
+  .orig-row { margin-bottom: 1.75rem; }
+  .orig-row h3 { font-size: .85rem; text-transform: uppercase; letter-spacing: .05em;
+                 color: var(--muted); margin-bottom: .6rem; }
+  .orig-row img { max-width: 100%; border: 1px solid var(--border); border-radius: 4px; }
+
+  /* ── Variant grid ───────────────────────────────── */
+  .variants { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+              gap: 1.25rem; margin-bottom: 1.5rem; }
+  .variant { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .variant-head { padding: .6rem .9rem; background: var(--bg);
+                  border-bottom: 1px solid var(--border);
+                  display: flex; justify-content: space-between; align-items: center; }
+  .variant-head .vname { font-weight: 600; font-size: .9rem; }
+  .variant-head .badges { display: flex; gap: .35rem; }
+  .variant-preproc { padding: .5rem .9rem; border-bottom: 1px solid var(--border); background: #fafafa; }
+  .variant-preproc p { font-size: .78rem; color: var(--muted); margin-bottom: .4rem; }
+  .variant-preproc img { max-width: 100%; border-radius: 3px; }
+  .variant-render { padding: .5rem .9rem; }
+  .variant-render p { font-size: .78rem; color: var(--muted); margin-bottom: .4rem; }
+  .variant-render img { max-width: 100%; border-radius: 3px; border: 1px solid var(--border); }
+  .variant-caption { padding: .5rem .9rem; font-size: .8rem; color: var(--muted);
+                     border-top: 1px solid var(--border); }
+
+  /* ── Diagnosis box ──────────────────────────────── */
+  .diag { background: #f0f6ff; border-left: 4px solid var(--accent);
+          border-radius: 0 6px 6px 0; padding: 1rem 1.25rem; }
+  .diag h3 { font-size: .85rem; text-transform: uppercase; letter-spacing: .05em;
+             color: var(--accent); margin-bottom: .5rem; }
+  .diag p, .diag li { font-size: .9rem; color: #1f2328; }
+  .diag ul { padding-left: 1.2rem; margin-top: .4rem; }
+  .diag li { margin-bottom: .3rem; }
+
+  /* ── Key-sig crop detail ────────────────────────── */
+  .keysig-detail { display: flex; gap: 1rem; align-items: flex-start;
+                   margin: 1rem 0; flex-wrap: wrap; }
+  .keysig-detail figure { text-align: center; }
+  .keysig-detail img { border: 1px solid var(--border); border-radius: 4px;
+                       display: block; max-width: 260px; }
+  .keysig-detail figcaption { font-size: .78rem; color: var(--muted); margin-top: .3rem; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: .85rem;
+           border-top: 1px solid var(--border); margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>WOFTA OMR Pipeline — Test Results</h1>
+  <p>4-tune survey · Audiveris 5.10.2 · 3 preprocessing variants · June 2026</p>
+</header>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- SUMMARY -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="summary-box">
+  <h2>Summary — Key &amp; Meter Detection</h2>
+  <table>
+    <tr>
+      <th>Tune</th>
+      <th>Expected</th>
+      <th>2× + Unsharp<br><em>(current pipeline)</em></th>
+      <th>Original image<br><em>(no preprocess)</em></th>
+      <th>Blanked<br><em>(chord names removed)</em></th>
+    </tr>
+    <tr>
+      <td><strong>Arkansas Traveler</strong></td>
+      <td>D major · 4/4</td>
+      <td><span class="badge fail">K:none ✗</span> <span class="badge pass">M:4/4 ✓</span></td>
+      <td><span class="badge pass">K:D ✓</span> <span class="badge pass">M:4/4 ✓</span></td>
+      <td><span class="badge fail">K:none ✗</span> <span class="badge fail">M:2/2 ✗</span></td>
+    </tr>
+    <tr>
+      <td><strong>Ashokan Farewell</strong></td>
+      <td>D major · 3/4</td>
+      <td><span class="badge fail">K:none ✗</span> <span class="badge fail">M:none ✗</span></td>
+      <td><span class="badge warn">K:G ✗</span> <span class="badge fail">M:none ✗</span></td>
+      <td><span class="badge fail">K:none ✗</span> <span class="badge fail">M:2/2 ✗</span></td>
+    </tr>
+    <tr>
+      <td><strong>Cincinnati Hornpipe</strong></td>
+      <td>D major · 4/4</td>
+      <td><span class="badge pass">K:D ✓</span> <span class="badge pass">M:4/4 ✓</span></td>
+      <td><em style="color:var(--muted)">not tested</em></td>
+      <td><em style="color:var(--muted)">degraded</em></td>
+    </tr>
+    <tr>
+      <td><strong>Blackberry Blossom</strong></td>
+      <td>G major · cut time</td>
+      <td><span class="badge pass">K:G ✓</span> <span class="badge pass">M:2/2 ✓</span></td>
+      <td><em style="color:var(--muted)">not tested</em></td>
+      <td><em style="color:var(--muted)">degraded</em></td>
+    </tr>
+  </table>
+
+  <div style="margin-top:1.1rem; padding:.9rem 1rem; background:var(--warn-bg);
+              border:1px solid #d4a72c; border-radius:6px; font-size:.88rem;">
+    <strong>Root cause:</strong> The 2× Lanczos upscale doubles the pixel size of key-signature sharp symbols.
+    Audiveris's key-sig classifier appears calibrated for a specific size range — at 2× the sharps fall outside it.
+    Tunes with a smaller original staff (Arkansas Traveler ~154 DPI, Ashokan Farewell ~152 DPI) fail;
+    tunes with a larger staff (Cincinnati Hornpipe ~168 DPI, Blackberry Blossom ~164 DPI) still pass.
+    <strong>Blanking chord names made things worse</strong>, not better — chord names were not the cause.
+    When key detection fails, <em>all note pitches dependent on that key become wrong</em> (e.g. F is written as natural instead of F♯ in D major).
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- ARKANSAS TRAVELER -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="tune">
+  <div class="tune-header">
+    <h2>Arkansas Traveler</h2>
+    <span class="tune-meta">Expected: D major · 4/4 · 16 measures + 1st/2nd endings · ~154 DPI</span>
+    <span class="badge fail">Pipeline fails on key</span>
+    <span class="badge pass">Original image works</span>
+  </div>
+  <div class="tune-body">
+
+    <div class="orig-row">
+      <h3>Original WOFTA sheet</h3>
+      <img src="web_images/Arkansas_Traveler_original.jpg" alt="Arkansas Traveler original">
+    </div>
+
+    <div class="variants">
+
+      <!-- Variant 1: 2× + unsharp (current pipeline) -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">2× Lanczos + Unsharp (current pipeline)</span>
+          <div class="badges">
+            <span class="badge fail">K:none ✗</span>
+            <span class="badge pass">M:4/4 ✓</span>
+          </div>
+        </div>
+        <div class="variant-preproc">
+          <p>Preprocessed image (shown at original scale)</p>
+          <img src="web_images/Arkansas_Traveler_preprocessed.jpg" alt="2× preprocessed">
+        </div>
+        <div class="variant-render">
+          <p>Audiveris → ABC render</p>
+          <img src="renders/Arkansas Traveler-audiveris-raw.render.png" alt="Raw Audiveris render">
+        </div>
+        <div class="variant-caption">
+          Key signature completely missed. No &lt;key&gt; element in MXL measure 1.
+          Inline [K:G] and [K:C] artifacts appear mid-tune from misread chord symbols.
+          F notes written as F♮ (natural) instead of F♯ — pitches are wrong throughout.
+        </div>
+      </div>
+
+      <!-- Variant 2: Blanked -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">Blanked (chord names removed)</span>
+          <div class="badges">
+            <span class="badge fail">K:none ✗</span>
+            <span class="badge fail">M:2/2 ✗</span>
+          </div>
+        </div>
+        <div class="variant-preproc">
+          <p>Blanked image — inter-staff bands whitened</p>
+          <img src="web_images/Arkansas_Traveler_blanked.jpg" alt="Blanked image">
+        </div>
+        <div class="variant-render">
+          <p>Audiveris → ABC render</p>
+          <img src="renders/Arkansas Traveler-audiveris-blanked.render.png" alt="Blanked render">
+        </div>
+        <div class="variant-caption">
+          Removing chord names made things <em>worse</em> — meter detection also broke.
+          Chord names were not the cause of key-sig failure; blanking disrupted Audiveris's page calibration.
+        </div>
+      </div>
+
+      <!-- Variant 3: Original (no preprocess) -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">Original image (no preprocessing) ★</span>
+          <div class="badges">
+            <span class="badge pass">K:D ✓</span>
+            <span class="badge pass">M:4/4 ✓</span>
+          </div>
+        </div>
+        <div class="variant-preproc">
+          <p>No preprocessing applied</p>
+          <img src="web_images/Arkansas_Traveler_original.jpg" alt="Original">
+        </div>
+        <div class="variant-render">
+          <p>Audiveris → ABC render</p>
+          <img src="renders/Arkansas Traveler-audiveris-original.render.png" alt="Original render">
+        </div>
+        <div class="variant-caption">
+          Key and meter correct. Notes rendered with D major key signature.
+          Some inline key-change artifacts remain (from chord symbol reading), and the
+          D chord symbol appears mid-staff — but note pitches are correct (F♯, C♯).
+        </div>
+      </div>
+
+      <!-- Variant 4: thesession.org reference -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">thesession.org reference</span>
+          <div class="badges">
+            <span class="badge pass">K:D ✓</span>
+            <span class="badge pass">M:4/4 ✓</span>
+          </div>
+        </div>
+        <div class="variant-preproc" style="background:var(--pass-bg);">
+          <p style="color:var(--pass);">Canonical ABC from thesession.org #5583</p>
+          <code style="font-size:.78rem; display:block; white-space:pre; color:#1f2328;">
+B,C|:DFED B,2B,2|A,2A,2 D4|
+E2E2 F2F2|DFED B,2A,2|
+...
+|:agfa gfeg|fedf edce|...</code>
+        </div>
+        <div class="variant-render">
+          <p>Rendered</p>
+          <img src="renders/Arkansas Traveler-thesession.render.png" alt="thesession render">
+        </div>
+        <div class="variant-caption">
+          <strong>Different arrangement</strong> from the WOFTA version — pickup is B,C (low B then middle C)
+          vs. WOFTA's pickup starting on D. Ending phrases also differ slightly.
+          Useful as a pitch-accuracy reference but not a drop-in gold standard.
+        </div>
+      </div>
+
+    </div><!-- /variants -->
+
+    <div class="diag">
+      <h3>Diagnosis</h3>
+      <p>The key signature (2 sharps for D major) is clearly visible in the image — Audiveris is failing to <em>recognize</em> it, not failing to find it. The MXL measure-1 &lt;attributes&gt; block contains &lt;time&gt; (4/4) but no &lt;key&gt; element at all; the key only appears at line 300 of the XML as a mid-tune change, which xml2abc ignores for the global K: header.</p>
+      <ul>
+        <li><strong>Why the 2× upscale breaks it:</strong> at the original resolution, the sharp symbols are ~13 px apart (staff interline spacing). At 2×, they're ~26 px. Audiveris's key-sig classifier appears to have a narrower expected size range — the symbols at 2× no longer match.</li>
+        <li><strong>Why blanking didn't help:</strong> chord names aren't touching the key-sig region. The 2× resize was the culprit all along.</li>
+        <li><strong>Fix:</strong> Use the original image (or unsharp-only preprocessing) for Audiveris. The original gives correct K:D and correct note pitches.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- ASHOKAN FAREWELL -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="tune">
+  <div class="tune-header">
+    <h2>Ashokan Farewell</h2>
+    <span class="tune-meta">Expected: D major · 3/4 · ~24 measures · ~152 DPI · Jay Unger (copyrighted)</span>
+    <span class="badge fail">Pipeline fails on both K and M</span>
+    <span class="badge warn">Original image partially better</span>
+  </div>
+  <div class="tune-body">
+
+    <div class="orig-row">
+      <h3>Original WOFTA sheet</h3>
+      <img src="web_images/Ashokan_Farewell_original.jpg" alt="Ashokan Farewell original">
+    </div>
+
+    <div class="variants">
+
+      <!-- Variant 1: 2× + unsharp -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">2× Lanczos + Unsharp (current pipeline)</span>
+          <div class="badges">
+            <span class="badge fail">K:none ✗</span>
+            <span class="badge fail">M:none ✗</span>
+          </div>
+        </div>
+        <div class="variant-preproc">
+          <p>Preprocessed image</p>
+          <img src="web_images/Ashokan_Farewell_preprocessed.jpg" alt="2× preprocessed">
+        </div>
+        <div class="variant-render">
+          <p>Audiveris → ABC render</p>
+          <img src="renders/Ashokan Farewell-audiveris-raw.render.png" alt="Raw render">
+        </div>
+        <div class="variant-caption">
+          Both key and meter missed. MXL measure 1 has only &lt;clef&gt; — no &lt;key&gt;, no &lt;time&gt;.
+          The waltz feel is partially visible (dotted notes, half notes) but measures are wrong length.
+        </div>
+      </div>
+
+      <!-- Variant 2: Blanked -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">Blanked (chord names removed)</span>
+          <div class="badges">
+            <span class="badge fail">K:none ✗</span>
+            <span class="badge fail">M:2/2 ✗</span>
+          </div>
+        </div>
+        <div class="variant-preproc">
+          <p>Blanked image</p>
+          <img src="web_images/Ashokan_Farewell_blanked.jpg" alt="Blanked">
+        </div>
+        <div class="variant-render">
+          <p>Audiveris → ABC render</p>
+          <img src="renders/Ashokan Farewell-audiveris-blanked.render.png" alt="Blanked render">
+        </div>
+        <div class="variant-caption">
+          Meter got worse (2/2 detected instead of nothing — wrong). Key still missed.
+          Not an improvement.
+        </div>
+      </div>
+
+      <!-- Variant 3: Original -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">Original image (no preprocessing)</span>
+          <div class="badges">
+            <span class="badge warn">K:G ✗ (1♯ of 2)</span>
+            <span class="badge fail">M:none ✗</span>
+          </div>
+        </div>
+        <div class="variant-preproc">
+          <p>No preprocessing</p>
+          <img src="web_images/Ashokan_Farewell_original.jpg" alt="Original">
+        </div>
+        <div class="variant-render">
+          <p>Audiveris → ABC render</p>
+          <img src="renders/Ashokan Farewell-audiveris-original.render.png" alt="Original render">
+        </div>
+        <div class="variant-caption">
+          Slightly better — Audiveris finds one sharp (G major) instead of none.
+          But D major has 2 sharps, so still wrong. Meter (3/4) still undetected.
+          The pickup measure before the first full bar seems to throw off the time-sig recognizer.
+        </div>
+      </div>
+
+    </div><!-- /variants -->
+
+    <div class="diag">
+      <h3>Diagnosis — Hardest case</h3>
+      <p>Ashokan Farewell fails even on the original image. Two compounding factors:</p>
+      <ul>
+        <li><strong>Lowest DPI in the set (~152).</strong> At original resolution, the sharp symbols and time-sig numerals are smaller than in the other tunes. Audiveris finds one sharp (G major) but misses the second (D major).</li>
+        <li><strong>Pickup measure.</strong> The tune starts with a partial measure (anacrusis) before the first full bar. This unusual first-measure structure may cause Audiveris to fail its time-signature search, which typically looks for a complete beat pattern in measure 1.</li>
+        <li><strong>Copyrighted tune.</strong> No thesession.org reference is available — the gold standard must be transcribed entirely from the WOFTA image.</li>
+        <li><strong>Recommended path:</strong> Try the Audiveris GUI (<code>flatpak run org.audiveris.audiveris</code>) on the original image — the interactive overlay lets you see what was recognised and manually correct the key/time sig before exporting.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- CINCINNATI HORNPIPE -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="tune">
+  <div class="tune-header">
+    <h2>Cincinnati Hornpipe</h2>
+    <span class="tune-meta">Expected: D major · 4/4 · 16 measures · ~168 DPI · Arr. Vivian Williams</span>
+    <span class="badge pass">Pipeline works — K and M correct</span>
+  </div>
+  <div class="tune-body">
+
+    <div class="orig-row">
+      <h3>Original WOFTA sheet</h3>
+      <img src="web_images/Cincinnati_Hornpipe_original.jpg" alt="Cincinnati Hornpipe original">
+    </div>
+
+    <div class="variants">
+
+      <!-- Variant 1: 2× + unsharp (worked) -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">2× Lanczos + Unsharp (current pipeline)</span>
+          <div class="badges">
+            <span class="badge pass">K:D ✓</span>
+            <span class="badge pass">M:4/4 ✓</span>
+          </div>
+        </div>
+        <div class="variant-preproc">
+          <p>Preprocessed image</p>
+          <img src="web_images/Cincinnati_Hornpipe_preprocessed.jpg" alt="2× preprocessed">
+        </div>
+        <div class="variant-render">
+          <p>Audiveris → ABC render</p>
+          <img src="renders/Cincinnati Hornpipe-audiveris-raw.render.png" alt="Raw render">
+        </div>
+        <div class="variant-caption">
+          Key and meter correct. Dense 16th-note passages look plausible.
+          Remaining issues: phantom V:2 voice (spacer notes), spurious accent (^) markings.
+          These are cosmetic and stripped by compare_abc.py. Overall: usable output.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="diag">
+      <h3>Why this one works</h3>
+      <p>Cincinnati Hornpipe has a larger original staff than the failing tunes: ~168 DPI gives a staff interline spacing of ~30 px at 2× (vs. ~26 px for Arkansas Traveler). The 2× upscale still lands the key-sig sharp symbols in a pixel-size range that Audiveris's classifier handles correctly.</p>
+      <ul>
+        <li>MXL measure 1 has &lt;key&gt;&lt;fifths&gt;2&lt;/fifths&gt;&lt;/key&gt; and &lt;time&gt;4/4&lt;/time&gt; — both present at line 67.</li>
+        <li>Remaining clean-up needed: remove phantom V:2, strip accents. Note content needs gold-standard verification.</li>
+        <li><strong>No thesession.org match:</strong> "Cincinnati Hornpipe" by Vivian Williams is not indexed by that name on thesession.org. Gold standard must come from manual review of the WOFTA sheet.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- BLACKBERRY BLOSSOM -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="tune">
+  <div class="tune-header">
+    <h2>Blackberry Blossom</h2>
+    <span class="tune-meta">Expected: G major · cut time (2/2) · 16 measures · ~164 DPI · scanned copy</span>
+    <span class="badge pass">Pipeline works — K and M correct</span>
+  </div>
+  <div class="tune-body">
+
+    <div class="orig-row">
+      <h3>Original WOFTA sheet</h3>
+      <img src="web_images/Blackberry_Blossom_original.jpg" alt="Blackberry Blossom original">
+    </div>
+
+    <div class="variants">
+
+      <!-- Variant 1: 2× + unsharp (worked) -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">2× Lanczos + Unsharp (current pipeline)</span>
+          <div class="badges">
+            <span class="badge pass">K:G ✓</span>
+            <span class="badge pass">M:2/2 ✓</span>
+          </div>
+        </div>
+        <div class="variant-preproc">
+          <p>Preprocessed image</p>
+          <img src="web_images/Blackberry_Blossom_preprocessed.jpg" alt="2× preprocessed">
+        </div>
+        <div class="variant-render">
+          <p>Audiveris → ABC render</p>
+          <img src="renders/Blackberry Blossom-audiveris-raw.render.png" alt="Raw render">
+        </div>
+        <div class="variant-caption">
+          Key (G) and meter (cut time) both correct, despite being a scanned/photocopied image.
+          Two sections visible. Suspicious triplet near end of B section needs verification.
+          Inline [K:C]/[K:G] artifacts from section labels — stripped by compare_abc.py.
+        </div>
+      </div>
+
+      <!-- Variant 2: thesession.org reference -->
+      <div class="variant">
+        <div class="variant-head">
+          <span class="vname">thesession.org reference</span>
+          <div class="badges">
+            <span class="badge pass">K:G ✓</span>
+            <span class="badge warn">M:4/4 ✗</span>
+          </div>
+        </div>
+        <div class="variant-preproc" style="background:var(--warn-bg);">
+          <p style="color:var(--warn);">thesession.org #1365 — note the <strong>different meter</strong></p>
+          <code style="font-size:.78rem; display:block; white-space:pre; color:#1f2328;">
+M:4/4 L:1/8 K:Gmaj
+ge|dBAc BGGA|B2BA (3Bcd ge|
+dBAc BG~G2|eaag ageg|...</code>
+        </div>
+        <div class="variant-render">
+          <p>Rendered</p>
+          <img src="renders/Blackberry Blossom-thesession.render.png" alt="thesession render">
+        </div>
+        <div class="variant-caption">
+          thesession.org uses M:4/4 while the WOFTA version is in cut time (M:2/2).
+          The <em>melody</em> is the same (same number of notes per measure) — cut time is just
+          a different notation convention for the same rhythm. Also: the B section in the
+          WOFTA version goes to Em/B7, while this thesession version stays in G throughout —
+          these are genuinely different arrangements.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="diag">
+      <h3>Why this one works (and thesession can't be used directly)</h3>
+      <p>At ~164 DPI, Blackberry Blossom's staff is large enough that the single sharp (G major) lands in Audiveris's recognisable size range even after 2×. Cut time (2/2 alla breve) is also apparently more reliably detected than 3/4.</p>
+      <ul>
+        <li><strong>The B section differs:</strong> WOFTA has Em and B7 chord sections; thesession.org stays in G throughout. The gold standard must come from the WOFTA image, not thesession.</li>
+        <li><strong>Scan quality:</strong> Despite being a lower-quality photocopy, the preprocessing handled it well — the sharpening step compensates for the slight blurriness.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- KEY INSIGHT -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="summary-box">
+  <h2>Key Insight: Staff Size Predicts Key-Detection Success</h2>
+  <table>
+    <tr>
+      <th>Tune</th>
+      <th>Orig. DPI (est.)</th>
+      <th>Staff interline at 2×</th>
+      <th>K detected at 2×?</th>
+    </tr>
+    <tr>
+      <td>Ashokan Farewell</td>
+      <td>~152 DPI</td>
+      <td>~26 px</td>
+      <td><span class="badge fail">No</span></td>
+    </tr>
+    <tr>
+      <td>Arkansas Traveler</td>
+      <td>~154 DPI</td>
+      <td>~26 px</td>
+      <td><span class="badge fail">No</span></td>
+    </tr>
+    <tr>
+      <td>Blackberry Blossom</td>
+      <td>~164 DPI</td>
+      <td>~28 px</td>
+      <td><span class="badge pass">Yes</span></td>
+    </tr>
+    <tr>
+      <td>Cincinnati Hornpipe</td>
+      <td>~168 DPI</td>
+      <td>~30 px</td>
+      <td><span class="badge pass">Yes</span></td>
+    </tr>
+  </table>
+  <p style="margin-top:.9rem; font-size:.9rem;">
+    The threshold appears to be around <strong>28–30 px staff interline spacing</strong> at 2× scale (~14–15 px at original).
+    The WOFTA scans vary in resolution — some will hit this threshold, others won't.
+    <br><br>
+    <strong>Next step to test:</strong> Run Angeline the Baker (which achieved 100% with 2×+unsharp) through
+    the <em>unsharp-only</em> pipeline to see whether note accuracy suffers. If unsharp-only is close to 100%,
+    it's the safer default for all 277 tunes — it preserves key detection across the full DPI range.
+  </p>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  WOFTA OMR pipeline investigation · notation_pipeline/ · June 2026
+</footer>
+
+</body>
+</html>

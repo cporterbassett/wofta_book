@@ -1,0 +1,13 @@
+X:1
+C:Jay Unger
+L:1/4
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Fiddle" snm="Fiddle"
+V:1
+ A c | d3/2 c B (A | F2) E F | G3/2 F E D | B, D3/2 B, | A, D F |"^bm" A d f |$ z f3/2 g/ f | %8
+ !^!e2 A c :|1!p! !^!A c e | d2 F [Ag] || A3/2 F D |"D7/F" d2 A | B3/2 c/ d |$[K:D]"D" A F3/2 E | %15
+ F3/2 E/ D |"^bm" B,2 G, | !^!A,3 |!p! !^!A2 F E |"D" D F A | =c3 |$[K:C] B3/2 c/ d | A F D | %23
+ A, D F | A d F |!p! !^!E3/2 D C | D3 |] %27
+

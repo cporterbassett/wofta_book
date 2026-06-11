@@ -1,0 +1,14 @@
+X:1
+T:Blackberry Blossom
+C:Trad. arr.Vogt
+L:1/8
+M:2/2
+I:linebreak $
+K:G
+V:1 treble nm="Violin" snm="Violin"
+V:1
+ ef | g2 bg"D" (fg)af |"C" efge"G" dBAG |"C" E2 GE"G" (DE)GA |"D" BdBG Adef |$ g2 bg (fg)af | %6
+ efge (dB)AG | (EF)GE (DE)GA | B!p!GA(F G2) Ac ::$[K:C] [EB]2 eB d2 ed | Bde(B dB)AG | %11
+ [EB]2 eB d2 eg |"B7" fgaf g(fed) |$[K:G] [EB]2 eB d2 ed | Bde(B dB)AG | (3:2:2[EB]2 eB d2 eg | %16
+ fga(f g2) Bd |] %17
+
