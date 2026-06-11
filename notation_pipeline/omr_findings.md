@@ -1,5 +1,5 @@
 # OMR Pipeline Findings
-_Session: 2026-06-11_
+_Sessions: 2026-06-11_
 
 ## What we set out to answer
 Is the `2× Lanczos + unsharp` preprocessing pipeline (established on Angeline the Baker)
@@ -193,6 +193,139 @@ a structural one.
 
 ---
 
+---
+
+## Batch preprocessing experiment results
+_Session: 2026-06-11 (second pass)_
+
+Four candidate strategies were tested to address the key-detection / note-accuracy tension.
+
+---
+
+### Experiment 1: MXL key injection (DEAD END)
+
+**Hypothesis:** Run Audiveris at 2× → inject correct `<key><fifths>N</fifths></key>`
+into MXL measure 1 before xml2abc conversion → does this fix pitch content?
+
+**Test:** Arkansas Traveler at 2× (correct key: 2 sharps = D major). The 2× MXL had
+`<fifths>1</fifths>` in the first key element (G major, wrong), then `<fifths>0</fifths>`
+later. Patched both to `<fifths>2</fifths>` using Python's xml.etree.
+
+**Findings:**
+- The 2× MXL had **21 F notes** in the piece: **16 with `<alter>none`** (F natural, wrong),
+  **5 with `<alter>1`** (F♯, correct).
+- Patching the `<fifths>` element changed the key in the ABC header and inline key changes,
+  but did **not change any `<alter>` values on individual notes** — xml2abc writes those
+  from the MXL `<pitch>` elements verbatim.
+- Patched output: `K:D` in some inline markers, but the 16 wrongly-detected F-natural notes
+  appeared as explicit `=F` (natural sign in a D-major context) — still wrong pitches.
+- Even the ABC-level equivalent (transposing K:none → K:D post-hoc) scored only **2/18**
+  measures correct against the original-DPI output, because the 2× run had structural
+  differences throughout the piece (different barlines, different note groupings) caused by
+  the cascading effect of the key detection failure.
+
+**Conclusion:** `<alter>` values are baked into the MXL at recognition time. If Audiveris
+doesn't recognize the key signature during processing, individual notes with accidentals that
+"should" be in-key are written as naturals. Patching the key element downstream — at either
+the MXL or ABC level — cannot recover this information.
+
+---
+
+### Experiment 2: abcnotation.com lookup (DIFFERENT ARRANGEMENT)
+
+**Hypothesis:** Search abcnotation.com for Arkansas Traveler in K:D, download the ABC, use
+as gold standard or as transcription.
+
+**Test:** Queried `q=arkansas+traveler+K%3AD&f=c`. Retrieved a version from banjolin.co.uk.
+
+**Findings:**
+- Key and meter correct: K:D, M:4/4.
+- But the arrangement is **completely different** from the WOFTA book:
+  - abcnotation.com starts with `A2 |: dfed B2B2` (2-beat pickup A, then runs in D5 register)
+  - WOFTA/Audiveris starts with `DFED B,2 B,2` (pickup D4, runs in D4 register)
+  - All 18 content measures differ — 0/18 match between abcnotation.com and WOFTA.
+- The WOFTA collection has its own arrangements; internet sources use different fingerings,
+  octave registers, and occasionally different structures (B sections, number of repeats).
+
+**Conclusion:** abcnotation.com (and thesession.org) lookups cannot be used as gold standards
+for scoring WOFTA transcriptions. The key field is reliable (K:D is correct), so lookups are
+useful for **validating detected key** — but not for comparing note content.
+
+---
+
+### Experiment 3: Ensemble voting across preprocessing variants
+
+**Test:** `ensemble_abc.py` with 37 Angeline the Baker variants (from preprocessing_tests/).
+Gold standard: `abc/Angeline the Baker-l8.abc` (19 measures).
+
+**Individual scores across 37 variants:**
+| Score | Variants | Names |
+|-------|---------|-------|
+| 100% | 5 | 14-unsharp1x1-up2x, 20-adaptive-sharpen-up2x, 22-up2x-unsharp0x1, 25-bilateral-d5s25-up2x, 25-bilateral-d7s40-up2x |
+| 95%  | 7 | 09, 11, 15, 16, 19, 23, 25-d9s75, 28 |
+| 89%  | 2 | 02, 21 |
+| ≤84% | 23 | (includes complete failures: staff-reinforce, adaptive-b, clahe-adaptive) |
+
+**Ensemble (all 37 variants): 19/19 (100%)**
+
+**Conclusion:** Ensemble trivially achieves 100% when multiple individuals already hit 100%.
+The relevant test is whether ensemble helps when the **best individual is sub-100%** — which
+requires gold standards for more tunes. Without those, ensemble utility is unproven.
+
+The 37 variants were all tuned on Angeline the Baker's specific image; generalization to other
+tunes is unknown. The 5 variants that achieve 100% individually are better candidates for a
+"safe default" than ensemble — they're faster to run and cheaper to diagnose when they fail.
+
+---
+
+### Experiment 4: Key detection survey — 20 tunes at original DPI
+
+**Method:** Ran Audiveris (no preprocessing) on 20 untested WOFTA tunes. Extracted
+`<fifths>`, `<mode>`, and `<time>` from MXL measure 1. Script: `survey_key_detection.sh`.
+Results: `survey_results.tsv`.
+
+| Tune | Detected key | Meter | Notes |
+|------|-------------|-------|-------|
+| Bill Cheatham | G (1♯) | 2/4 | ✓ |
+| Billy in the Lowground | **none** | 4/4 | ✗ key missing |
+| Booth Shot Lincoln | A (3♯) | 4/4 | ✓ (A major) |
+| Calliope House | E (4♯) | 6/8 | ✗ likely wrong (expect A minor or D) |
+| Cherokee Shuffle | A (3♯) | **?** | ✓ key / ✗ meter missing |
+| Cluck Old Hen | G (1♯) | 4/4 | ✓? |
+| Devil's Dream | A (3♯) | 2/2 | ✓ |
+| Fisher's Hornpipe | **none** | 4/4 | ✗ key missing |
+| Flop Eared Mule | G (1♯) | 4/4 | ✓ |
+| Forked Deer | D (2♯) | 2/2 | ✓ |
+| June Apple | D (2♯) | 4/4 | ✓ (A mixolydian = D key sig) |
+| Liberty | G (1♯) | **?** | ✗ meter missing; key may be wrong (D?) |
+| Lost Indian | D (2♯) | 4/4 | ✓? |
+| Mississippi Sawyer | D (2♯) | 4/4 | ✓ |
+| Morrison's Jig | **none** | **?** | ✗ both key and meter missing |
+| Old Joe Clark | G (1♯) | 4/4 | ✓ (G ≈ A mixolydian key sig) |
+| Red Haired Boy | **NO_MXL** | — | ✗ Audiveris produced no output |
+| Salt Creek | D (2♯) | 4/4 | ✓ |
+| Soldier's Joy | D (2♯) | 4/4 | ✓ |
+| Turkey in the Straw | G (1♯) | 4/4 | ✓ |
+
+**Failure summary (original DPI, no preprocessing):**
+
+| Failure type | Count | Tunes |
+|-------------|-------|-------|
+| No key detected | 3 | Billy in the Lowground, Fisher's Hornpipe, Morrison's Jig |
+| No MXL output | 1 | Red Haired Boy |
+| Likely wrong key | 1–2 | Calliope House (K:E unusual), Liberty (K:G vs expected D?) |
+| Missing meter only | 3 | Cherokee Shuffle, Liberty, Morrison's Jig |
+
+**Bottom line: 4–6 out of 20 tunes have key/MXL failures at original DPI (20–30%).** This is
+without any preprocessing, so these failures aren't caused by upscaling. The 2× upscale adds
+further key failures on top of these (Arkansas Traveler example: original K:D → 2× K:none).
+
+The survey confirms that ~20% of the corpus will have key detection failures in the basic
+pipeline before any preprocessing decisions are made. A batch pipeline needs a strategy for
+handling these cases.
+
+---
+
 ## Open questions
 
 1. **Why does Cincinnati Hornpipe survive 2× but Arkansas Traveler doesn't?**
@@ -200,32 +333,25 @@ a structural one.
    header, and both sharps recognized with grades ≥ 0.538. The larger symbols apparently
    keep the header stop further right even after doubling.
 
-2. **How many of the 277 WOFTA tunes will have key detection failures?**
-   If ~50% fail (as suggested by this 4-tune sample), the pipeline needs rethinking.
-   Need to run a larger survey before committing to a strategy.
+2. **What is the 2× upscale key failure rate on top of the ~20% original-DPI failure rate?**
+   The survey showed ~20% of tunes already fail at original DPI. The 2× upscale adds
+   additional failures (Arkansas Traveler). We don't yet have a 2× survey to compare.
 
-3. **Is a two-pass Audiveris approach viable?**
-   Run Audiveris on original image → extract key/meter.
-   Run Audiveris on 2×+unsharp → extract note content.
-   Combine: patch key/meter from pass 1 into pass 2's ABC.
-   BUT: without a correct key in the MXL, pass 2's pitch content is already wrong
-   (F natural instead of F♯). Patching the ABC header doesn't fix the pitches in
-   the note content. Would need to patch the MXL `<key>` element BEFORE xml2abc
-   conversion — possible in theory (inject `<key><fifths>N</fifths></key>` into
-   measure 1), but unverified.
+3. **Is a two-pass approach viable in a different form?**
+   The MXL key injection approach is dead. But the two-pass idea survives in a different
+   form: run original-DPI Audiveris → get correct key and correct (if lower-accuracy) notes
+   → use that as the base transcription. Only apply 2× preprocessing to tunes where original-
+   DPI key detection succeeds AND note accuracy needs improving. This narrows the 2× set to
+   the ~80% of tunes that survive original-DPI key detection.
 
-4. **Can the MXL be patched before xml2abc conversion?**
-   If we inject `<key><fifths>2</fifths></key>` into measure 1 of the pass-2 MXL,
-   would xml2abc then produce correct pitches? The note `<pitch>` elements in MXL
-   already have absolute `<alter>` values set at recognition time — patching the key
-   element won't retroactively fix those. So probably not.
+4. **Is the thesession.org / abcnotation.com ABC a viable shortcut for gold standards?**
+   No for note content — arrangements differ too much. The key field can validate detected
+   key. Manual correction from the WOFTA image is still required for each tune's gold standard.
 
-5. **Is the thesession.org ABC a viable shortcut for gold standards?**
-   For traditional tunes: yes as a starting point, but arrangements differ.
-   - Arkansas Traveler: thesession uses B,C pickup; WOFTA uses D pickup. Different.
-   - Blackberry Blossom: thesession M:4/4, WOFTA M:2/2; B section goes to Em in
-     WOFTA but stays in G on thesession. Different arrangement.
-   Manual correction still required for each tune.
+5. **Calliope House: why does Audiveris detect K:E (4 sharps) in 6/8?**
+   Calliope House is typically A minor or D, not E major. The 4-sharp detection on a 6/8
+   jig is suspicious — the key sig region may be confusing a sharp cluster with extra sharps,
+   or the tune genuinely has an unusual notation. Worth checking the image.
 
 ---
 
@@ -233,16 +359,21 @@ a structural one.
 
 ### Immediate
 - [x] ~~Try Audiveris GUI on Ashokan Farewell~~ — diagnosed via .omr XML (see above)
+- [x] ~~Survey key/meter detection across ~20 more WOFTA tunes~~ — done (see Experiment 4)
+- [x] ~~Test MXL key injection~~ — dead end (see Experiment 1)
 - [ ] Create gold standard ABCs for the 4 test tunes (manual correction from image)
 - [ ] Score all 4 tunes' raw Audiveris output once gold standards exist
+- [ ] Investigate why Calliope House shows K:E (4 sharps) — look at the image
 
 ### Pipeline strategy
-- [ ] Survey key/meter detection across ~20 more WOFTA tunes (original DPI, no preprocessing)
-      to understand the failure rate before deciding on preprocessing strategy
-- [ ] Investigate whether a two-pass approach (key from original, notes from 2×) is
-      salvageable — specifically whether injecting correct accidentals post-hoc is feasible
-- [ ] Consider whether running Audiveris at original DPI (no preprocessing) gives
-      acceptable note accuracy across the board, even if slightly below 2×+unsharp
+- [ ] Run 2× upscale survey on the same 20 tunes to measure how many additional key
+      failures are introduced by upscaling (original-DPI gives ~20% failure rate)
+- [ ] Test whether original-DPI Audiveris gives acceptable note accuracy across tunes other
+      than Angeline — original-DPI is safer for key detection but scored 63% on Angeline
+- [ ] Look at Morrison's Jig and Red Haired Boy images to understand why Audiveris fails
+      completely (no key, no meter, or no output at all)
+- [ ] Consider a triage pipeline: original-DPI first → if key detected with high confidence,
+      optionally run 2× for better notes → otherwise fall back to original-DPI result
 
 ### Tooling
 - [ ] Fix `blank_chord_names.py` margin logic if chord-name blanking is ever revisited
@@ -252,17 +383,16 @@ a structural one.
 
 ---
 
-## Files produced this session
+## Files produced
 
-### Scripts
+### Session 1 (2026-06-11 first pass)
 - `run_tune_pipeline.sh` — generalized pipeline: preprocess → Audiveris → ABC
 - `blank_chord_names.py` — chord-name blanking (dead end for key detection, but kept)
-
-### ABCs
-- `abc/{Tune}-audiveris-raw.abc` — 2×+unsharp Audiveris output (all 4 tunes)
-- `abc/{Tune}-audiveris-original.abc` — original-DPI Audiveris output (Ark. Traveler, Ashokan, Cincinnati)
+- `abc/{Tune}-audiveris-raw.abc` — 2×+unsharp Audiveris output (4 test tunes)
+- `abc/{Tune}-audiveris-original.abc` — original-DPI Audiveris output (3 of the 4 test tunes)
 - `abc/{Tune}-thesession.abc` — reference from thesession.org (Ark. Traveler, Blackberry)
+- `omr_report.html` — visual comparison: original WOFTA sheets vs. all preprocessing variants
 
-### Report
-- `omr_report.html` — visual comparison: original WOFTA sheets vs. all preprocessing
-  variants, with explanations. Open in Firefox to review.
+### Session 2 (2026-06-11 second pass — batch experiment)
+- `survey_key_detection.sh` — batch key detection survey script
+- `survey_results.tsv` — key/meter detection results for 20 tunes at original DPI
