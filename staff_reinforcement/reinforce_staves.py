@@ -62,28 +62,60 @@ def fit_five_lines(staff_peaks, row_sums):
     return np.round(center + offsets * spacing).astype(int)
 
 
-def track_line_slope(gray, y_center, half_band=6, step=4):
-    """Sample actual line y-position column-by-column, return (slope, intercept)."""
+def sample_line(gray, y_center, half_band=6, step=4):
+    """Sample actual line y-position column-by-column via center-of-mass.
+    Skips left/right margins where clefs, barlines, and repeat signs distort signal.
+    Returns (xs, ys) arrays of reliable sample points."""
     h, w = gray.shape
+    margin = int(w * 0.08)  # skip ~8% on each side
     xs, ys = [], []
 
-    for x in range(0, w, step):
+    for x in range(margin, w - margin, step):
         y0 = max(0, y_center - half_band)
         y1 = min(h, y_center + half_band + 1)
         col_band = gray[y0:y1, x].astype(float)
         darkness = 255 - col_band
         total = darkness.sum()
-        if total > 20:  # enough dark pixels to trust
-            center_of_mass = y0 + (darkness * np.arange(len(darkness))).sum() / total
+        if total > 20:
+            com = y0 + (darkness * np.arange(len(darkness))).sum() / total
             xs.append(x)
-            ys.append(center_of_mass)
+            ys.append(com)
 
-    if len(xs) < 10:
-        return 0.0, float(y_center)
+    return np.array(xs), np.array(ys)
 
-    xs, ys = np.array(xs), np.array(ys)
-    slope, intercept = np.polyfit(xs, ys, 1)
-    return slope, intercept
+
+def fit_staff_lines(gray, center_positions):
+    """Fit slope+intercept for each of the 5 lines in a staff.
+    Uses a shared slope (fit across all 5 lines) and per-line intercepts."""
+    all_xs, all_ys_detrended, intercepts_approx = [], [], []
+
+    per_line_samples = []
+    for y_center in center_positions:
+        xs, ys = sample_line(gray, int(y_center))
+        per_line_samples.append((xs, ys))
+        if len(xs) >= 10:
+            all_xs.append(xs)
+            # Detrend by subtracting the nominal center so all lines contribute equally to slope
+            all_ys_detrended.append(ys - y_center)
+
+    if all_xs:
+        combined_xs = np.concatenate(all_xs)
+        combined_ys = np.concatenate(all_ys_detrended)
+        slope, _ = np.polyfit(combined_xs, combined_ys, 1)
+    else:
+        slope = 0.0
+
+    # Per-line intercept: fit each line's own intercept using the shared slope
+    results = []
+    for y_center, (xs, ys) in zip(center_positions, per_line_samples):
+        if len(xs) >= 10:
+            # median is more robust than mean against barline/notehead outliers
+            intercept = np.median(ys - slope * xs)
+        else:
+            intercept = float(y_center)
+        results.append((slope, intercept))
+
+    return results
 
 
 def reinforce_staves(input_path, output_path, line_thickness=1):
@@ -102,17 +134,13 @@ def reinforce_staves(input_path, output_path, line_thickness=1):
     w = out.shape[1]
     for i, staff_peaks in enumerate(staves):
         center_positions = fit_five_lines(staff_peaks, row_sums)
+        line_fits = fit_staff_lines(gray, center_positions)
 
-        # Fit slope from the middle line (most reliable signal)
-        mid_y = int(center_positions[2])
-        slope, _ = track_line_slope(gray, mid_y)
-
+        slope = line_fits[0][0]
         print(f"    Staff {i + 1}: centers={center_positions.tolist()}, slope={slope:.4f}")
 
-        for y_center in center_positions:
-            # All 5 lines share the same slope; intercept shifts per line
-            intercept = y_center - slope * (w / 2)
-            y_left = int(round(slope * 0 + intercept))
+        for slope, intercept in line_fits:
+            y_left = int(round(intercept))
             y_right = int(round(slope * (w - 1) + intercept))
             cv2.line(out, (0, y_left), (w - 1, y_right), (0, 0, 0), line_thickness)
 
