@@ -200,41 +200,39 @@ See `6/cleanup-notes.md` for the full list of 32 affected files and the exact re
 
 ---
 
-## ABC → PNG Render Pipeline (for ABC-sourced tunes)
+## ABC → PDF Pipeline (for ABC-sourced tunes)
 
-**Session:** Jun 10, 2026
+**Session:** Jun 10–11, 2026
 
 **What was done:**
-Explored generating sheet music images directly from ABC files rather than scanned images. Settled on LilyPond as the preferred renderer (higher quality than abcm2ps — bolder lines, better engraving). Developed the full pipeline including chord symbols, measure numbers, and tight cropping.
+Replaced the scanned `Honest John.png` with `honest-john.abc` as the authoritative source. ABC files are now rendered to **vector PDF** via LilyPond and composited directly into the combined book PDF using pikepdf — no rasterization. This gives searchable text and perfect print quality for ABC-sourced tunes.
 
-**Pipeline:**
-```bash
-# 1. Convert ABC to LilyPond format (preserves chord symbols)
-abc2ly tune.abc -o tune.ly
-
-# 2. Render to PNG (cropped tight to content)
-lilypond --png -dresolution=150 -dcrop tune.ly
-# Output: tune.cropped.png
-
-# 3. Add white border
-convert tune.cropped.png -bordercolor white -border 20x20 tune.cropped.png
+**Pipeline (integrated into make_pdf.py):**
 ```
+tune.abc → abc2ly → tune.ly (patched) → lilypond --pdf -dcrop → tune.cropped.pdf → pikepdf XObject
+```
+
+`make_pdf.py` handles both `.png` (scanned tunes) and `.abc` files automatically, sorted together alphabetically by title.
+
+**Key implementation notes:**
+- `abc2ly` output must be patched to add `\paper { indent = 0 }` at the top level (not inside `\score`) — otherwise the first staff is indented relative to subsequent staves
+- LilyPond `-dcrop` trims the PDF to content size; pikepdf places it as a Form XObject scaled to page width
+- PNG scanned tunes are converted to PDF via `img2pdf` at assumed 150 DPI (no metadata), then placed the same way
 
 **ABC notation notes:**
 - Chord symbols: `"G"b3` — double-quoted string before the note, rendered above staff
-- Only put chord on first note of a measure when the chord changes from the previous measure
+- Only show a chord when it changes from the previous measure
 - Source line breaks in ABC control staff line breaks in the rendered output
-- Pickup notes: `|:d|` — the note between repeat sign and first barline; remove with `|:` to start on the downbeat
-- Pickup rests: `|:z|` — same pattern; remove the same way
+- Force line breaks with `\break` in the `.ly` file after the desired bar
+- Pickup notes: `|:d|` — remove by changing to `|:` to start on the downbeat
+- Pickup rests: `|:z|` — same pattern
 
-**Tools used:** `abc2ly`, `lilypond`, `convert` (ImageMagick)
+**Scripts:**
+- `make_pdf.sh` / `make_pdf.py` — full book pipeline, outputs `WOFTA_tunes.pdf` here
+- `abc2png.sh` — standalone ABC→PNG utility for proofing: `./abc2png.sh tune.abc`
+- `compose_page.py` — compose a list of PNGs/PDFs onto a single letter page
 
-**Script:** `abc2png.sh` in this directory wraps the full pipeline:
-```bash
-./abc2png.sh tune.abc [output.png]
-```
-
-**Example:** `honest-john.abc` → `honest-john.png` in this directory.
+**Example:** `honest-john.abc` — jig in G/D, chord symbols, cleaned pickup notes.
 
 ---
 
