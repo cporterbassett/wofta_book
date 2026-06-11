@@ -81,6 +81,24 @@ Scripts added to `tune_images/`:
 
 ---
 
+## 2026-06-10: Gray-interior fix (sig_15,85%)
+
+Some scans have thick ink strokes with dark outer edges but gray interiors (80–90% brightness) — a low-resolution scan artifact where ink coverage was uneven. Standard sig_8,50% doesn't help because it's centered at 50% and these pixels are above 85%.
+
+Fix: shift the sigmoid center to 85%, which aggressively pushes sub-85% pixels toward black while keeping the near-white background clean.
+
+```bash
+convert INPUT.png -colorspace Gray -sigmoidal-contrast 15,85% OUTPUT.png
+```
+
+**Applied to:** Gypsy Waltz.png only.
+
+**Investigated but not applied:** Chicken Under the Washtub (all variants looked worse), Peekaboo Waltz (no visible improvement).
+
+**Note:** A 50–90% mid-gray pixel metric was used to identify candidates but proved unreliable — most flagged images didn't have the thick-stroke interior problem. Visual inspection is necessary.
+
+---
+
 ## How files were identified
 
 Pixel analysis using ImageMagick's `-fx` operator to count pixels in the mid-gray
