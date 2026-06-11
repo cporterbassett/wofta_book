@@ -56,17 +56,21 @@ recognize the key signature.
 |---------|------------------------|
 | Original (no preprocessing) | 13/19 (68%) |
 | 2× Lanczos only | 14/19 (74%) |
-| Unsharp + 2× | 15/19 (79%) ← best |
-| **Unsharp only (no resize)** | **13/19 (68%) ← same as original** |
+| Unsharp + 2× (single-pass) | 15/19 (79%) |
+| Unsharp only (no resize) | 13/19 (68%) — same as original |
+| **2× Lanczos → unsharp (two passes)** | **19/19 (100%) ← best** |
+| **Bilateral filter → 2× Lanczos** | **19/19 (100%) ← best** |
 
-Unsharp alone adds nothing. The note detection improvement came entirely from the 2×
-resize. Unsharp-only is not the answer.
+The 100% score was established in an earlier session (see memory) using two-pass
+approaches. The single-pass `convert -unsharp 0x1 -filter Lanczos -resize 200%` only
+achieves 79% — order and pass-separation matter. Unsharp alone adds nothing; the gain
+comes from the 2× resize, with mild sharpening as a further boost when applied correctly.
 
-### 6. The 2× improvement on Angeline may not generalise
+### 6. The 100% on Angeline may not generalise
 
-We have one tune with a gold standard. The 15/19 score for 2×+unsharp vs. 13/19 for
-original is a 2-measure improvement. We don't know if this holds across all tunes, or
-if it's outweighed by key detection failures on many tunes.
+The variants that achieve 100% note accuracy on Angeline also break key detection on
+some tunes (Arkansas Traveler gets K:none at 2×). We don't know if the key detection
+failure rate is 25%, 50%, or higher across the full 277-tune set.
 
 ---
 
@@ -85,12 +89,15 @@ if it's outweighed by key detection failures on many tunes.
    If ~50% fail (as suggested by this 4-tune sample), the pipeline needs rethinking.
    Need to run a larger survey before committing to a strategy.
 
-4. **Is a two-pass approach viable?**
+4. **Is a two-pass Audiveris approach viable?**
    Run Audiveris on original image → extract key/meter.
    Run Audiveris on 2×+unsharp → extract note content.
    Combine: patch key/meter from pass 1 into pass 2's ABC.
    BUT: without a correct key in the MXL, pass 2's pitch content is already wrong
-   (F natural instead of F♯). Patching the header doesn't fix the pitches.
+   (F natural instead of F♯). Patching the ABC header doesn't fix the pitches in
+   the note content. Would need to patch the MXL `<key>` element BEFORE xml2abc
+   conversion — possible in theory (inject `<key><fifths>N</fifths></key>` into
+   measure 1), but unverified.
 
 5. **Can the MXL be patched before xml2abc conversion?**
    If we inject `<key><fifths>2</fifths></key>` into measure 1 of the pass-2 MXL,
