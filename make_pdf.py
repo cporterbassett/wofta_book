@@ -1,40 +1,96 @@
 #!/usr/bin/env python3
 """
-Pack all PNGs in the current directory into a PDF.
-- All images are scaled to the same width (widest image), maintaining aspect ratio.
-- Images are stacked vertically per page; as many as fit without shrinking are packed together.
-- Per page: use MARGIN=80/GAP=40 if it fits, otherwise MARGIN=40/GAP=20.
+Pack all PNGs and ABC files in the current directory into a PDF.
+- PNG files: embedded as raster (scanned tunes)
+- ABC files: converted to vector PDF via LilyPond
+- All tunes scaled to usable page width, packed vertically, greedy first-fit
 """
 import glob
 import io
+import os
+import re
+import shutil
+import subprocess
 import sys
-from PIL import Image
+import tempfile
+
 import img2pdf
+import pikepdf
+from pikepdf import Array, Dictionary, Name, Pdf
+from PIL import Image
 
-MARGIN_PREFERRED = 80
-MARGIN_FALLBACK  = 40
-GAP_PREFERRED    = 40
-GAP_FALLBACK     = 20
-
-
-def load_and_scale(files, target_width):
-    """Return list of (fname, scaled_height, original_width)."""
-    result = []
-    for f in files:
-        with Image.open(f) as img:
-            w, h = img.size
-            new_h = round(h * target_width / w)
-            result.append((f, new_h, w))
-    return result
+PAGE_W = 612
+PAGE_H = 792
+MARGIN_X = 36
+MARGIN_TOP = 36
+MARGIN_BOTTOM = 36
+GAP_PREFERRED = 28
+GAP_FALLBACK = 14
+PNG_DPI = 150
 
 
-def pack_pages(images, gap, height_limit):
-    """Greedy first-fit packing, preserving input order."""
+def sort_key(path):
+    stem = os.path.splitext(os.path.basename(path))[0]
+    return stem.lower().replace("-", " ")
+
+
+def png_to_pdf_bytes(png_path):
+    with Image.open(png_path) as img:
+        dpi_info = img.info.get("dpi")
+        dpi = dpi_info[0] if dpi_info else PNG_DPI
+        layout = img2pdf.get_layout_fun((
+            img2pdf.in_to_pt(img.size[0] / dpi),
+            img2pdf.in_to_pt(img.size[1] / dpi),
+        ))
+    with open(png_path, "rb") as f:
+        return img2pdf.convert(f.read(), layout_fun=layout)
+
+
+def abc_to_pdf_bytes(abc_path):
+    """Convert ABC file to a cropped vector PDF via LilyPond."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        abc_name = os.path.basename(abc_path)
+        tmp_abc = os.path.join(tmpdir, abc_name)
+        shutil.copy(abc_path, tmp_abc)
+
+        base = os.path.splitext(abc_name)[0]
+        ly_path = os.path.join(tmpdir, base + ".ly")
+
+        subprocess.run(["abc2ly", tmp_abc, "-o", ly_path],
+                       check=True, capture_output=True)
+
+        # Patch: abc2ly omits \paper { indent = 0 }, causing first staff misalignment
+        content = open(ly_path).read()
+        content = re.sub(
+            r"(\\version[^\n]*\n)",
+            r"\1\\paper {\n\tindent = 0\n}\n",
+            content, count=1,
+        )
+        open(ly_path, "w").write(content)
+
+        subprocess.run(
+            ["lilypond", "--pdf", "-dcrop", ly_path],
+            check=True, capture_output=True, cwd=tmpdir,
+        )
+
+        cropped = os.path.join(tmpdir, base + ".cropped.pdf")
+        with open(cropped, "rb") as f:
+            return f.read()
+
+
+def get_pdf_size(pdf_bytes):
+    with Pdf.open(io.BytesIO(pdf_bytes)) as pdf:
+        mb = pdf.pages[0].mediabox
+        return float(mb[2]) - float(mb[0]), float(mb[3]) - float(mb[1])
+
+
+def pack_pages(items, gap, usable_h):
+    """Greedy first-fit packing. items: list of (fname, scaled_h, pdf_bytes)"""
     pages, current, current_h = [], [], 0
-    for item in images:
+    for item in items:
         h = item[1]
         g = gap if current else 0
-        if current and current_h + g + h > height_limit:
+        if current and current_h + g + h > usable_h:
             pages.append(current)
             current, current_h = [item], h
         else:
@@ -45,71 +101,80 @@ def pack_pages(images, gap, height_limit):
     return pages
 
 
-def render_page(page_items, target_width, page_w, page_h, margin, gap):
-    """Composite images onto a white canvas and return PNG bytes."""
-    canvas = Image.new("RGB", (page_w, page_h), "white")
-    y = margin
-    for i, (fname, scaled_h, orig_w) in enumerate(page_items):
-        with Image.open(fname) as img:
-            if orig_w != target_width:
-                img = img.resize((target_width, scaled_h), Image.LANCZOS)
-            x = (page_w - target_width) // 2
-            canvas.paste(img, (x, y))
-        y += scaled_h + (gap if i < len(page_items) - 1 else 0)
+def render_page(page_items, output_pdf, usable_w, gap):
+    """Composite items onto a new letter-size page using pikepdf form XObjects."""
+    page_obj = output_pdf.make_indirect(Dictionary(
+        Type=Name.Page,
+        MediaBox=Array([0, 0, PAGE_W, PAGE_H]),
+        Resources=Dictionary(XObject=Dictionary()),
+        Contents=output_pdf.make_stream(b""),
+    ))
+    output_pdf.pages.append(pikepdf.Page(page_obj))
+    page = output_pdf.pages[-1]
 
-    buf = io.BytesIO()
-    canvas.save(buf, format="PNG", optimize=False)
-    return buf.getvalue()
+    content = b""
+    y = PAGE_H - MARGIN_TOP
+
+    for i, (_, scaled_h, pdf_bytes) in enumerate(page_items):
+        with Pdf.open(io.BytesIO(pdf_bytes)) as src:
+            src_w = float(src.pages[0].mediabox[2])
+            xobj = src.pages[0].as_form_xobject()
+            xobj_copy = output_pdf.copy_foreign(xobj)
+
+        xobj_name = f"/Fm{i}"
+        page.obj.Resources.XObject[xobj_name] = xobj_copy
+
+        scale = usable_w / src_w
+        tx = MARGIN_X
+        ty = y - scaled_h
+        content += (
+            f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm {xobj_name} Do Q\n"
+        ).encode()
+        y = ty - gap
+
+    page.obj.Contents = output_pdf.make_stream(content)
 
 
 def main():
-    output = sys.argv[1] if len(sys.argv) > 1 else "../WOFTA_tunes.pdf"
+    output = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
 
-    files = sorted(glob.glob("*.png"))
-    if not files:
-        print("No PNG files found.", file=sys.stderr)
+    png_files = glob.glob("*.png")
+    abc_files = glob.glob("*.abc")
+    all_files = sorted(png_files + abc_files, key=sort_key)
+
+    if not all_files:
+        print("No PNG or ABC files found.", file=sys.stderr)
         sys.exit(1)
 
-    print(f"Loading {len(files)} images...")
-    # Target width = widest image (only upscale narrow ones, never shrink)
-    raw_sizes = {}
-    for f in files:
-        with Image.open(f) as img:
-            raw_sizes[f] = img.size
-    target_width = max(w for w, h in raw_sizes.values())
+    print(f"Processing {len(all_files)} files ({len(png_files)} PNG, {len(abc_files)} ABC)...")
 
-    images = load_and_scale(files, target_width)
-    max_scaled_h = max(h for _, h, _ in images)
+    usable_w = PAGE_W - 2 * MARGIN_X
+    usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
 
-    # Pack using the smaller gap for maximum density
-    pages = pack_pages(images, GAP_FALLBACK, max_scaled_h)
+    items = []
+    for i, f in enumerate(all_files, 1):
+        label = "ABC" if f.endswith(".abc") else "PNG"
+        print(f"  [{i}/{len(all_files)}] {label}: {f}")
+        if f.endswith(".abc"):
+            pdf_bytes = abc_to_pdf_bytes(f)
+        else:
+            pdf_bytes = png_to_pdf_bytes(f)
+        w, h = get_pdf_size(pdf_bytes)
+        scale = usable_w / w
+        items.append((f, h * scale, pdf_bytes))
 
-    # Fixed page canvas (based on preferred/largest values)
-    page_w = target_width + 2 * MARGIN_PREFERRED
-    page_h = max_scaled_h + 2 * MARGIN_PREFERRED
+    pages = pack_pages(items, GAP_FALLBACK, usable_h)
 
-    preferred_count = fallback_count = 0
-    page_bytes = []
+    print(f"\nPacking {len(items)} tunes onto {len(pages)} pages...")
+    output_pdf = Pdf.new()
     for i, page_items in enumerate(pages, 1):
         content_h = sum(h for _, h, _ in page_items)
-        gaps_preferred = (len(page_items) - 1) * GAP_PREFERRED
-        if content_h + gaps_preferred <= max_scaled_h:
-            margin, gap = MARGIN_PREFERRED, GAP_PREFERRED
-            preferred_count += 1
-        else:
-            margin, gap = MARGIN_FALLBACK, GAP_FALLBACK
-            fallback_count += 1
-        print(f"  Page {i}/{len(pages)}: {len(page_items)} image(s), "
-              f"margin={margin} gap={gap}", end="\r")
-        page_bytes.append(render_page(page_items, target_width, page_w, page_h, margin, gap))
+        gap = GAP_PREFERRED if content_h + (len(page_items) - 1) * GAP_PREFERRED <= usable_h else GAP_FALLBACK
+        render_page(page_items, output_pdf, usable_w, gap)
+        print(f"  Page {i}/{len(pages)}: {len(page_items)} tune(s) — {', '.join(os.path.basename(f) for f, _, _ in page_items)}")
 
-    print()
-    print(f"Pages: {len(pages)} total  "
-          f"({preferred_count} with margin={MARGIN_PREFERRED}/gap={GAP_PREFERRED}, "
-          f"{fallback_count} with margin={MARGIN_FALLBACK}/gap={GAP_FALLBACK})")
-    print(f"Writing {output}...")
-    with open(output, "wb") as f:
-        f.write(img2pdf.convert(page_bytes))
+    print(f"\nWriting {output}...")
+    output_pdf.save(output)
     print("Done.")
 
 

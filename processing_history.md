@@ -200,6 +200,44 @@ See `6/cleanup-notes.md` for the full list of 32 affected files and the exact re
 
 ---
 
+## ABC → PNG Render Pipeline (for ABC-sourced tunes)
+
+**Session:** Jun 10, 2026
+
+**What was done:**
+Explored generating sheet music images directly from ABC files rather than scanned images. Settled on LilyPond as the preferred renderer (higher quality than abcm2ps — bolder lines, better engraving). Developed the full pipeline including chord symbols, measure numbers, and tight cropping.
+
+**Pipeline:**
+```bash
+# 1. Convert ABC to LilyPond format (preserves chord symbols)
+abc2ly tune.abc -o tune.ly
+
+# 2. Render to PNG (cropped tight to content)
+lilypond --png -dresolution=150 -dcrop tune.ly
+# Output: tune.cropped.png
+
+# 3. Add white border
+convert tune.cropped.png -bordercolor white -border 20x20 tune.cropped.png
+```
+
+**ABC notation notes:**
+- Chord symbols: `"G"b3` — double-quoted string before the note, rendered above staff
+- Only put chord on first note of a measure when the chord changes from the previous measure
+- Source line breaks in ABC control staff line breaks in the rendered output
+- Pickup notes: `|:d|` — the note between repeat sign and first barline; remove with `|:` to start on the downbeat
+- Pickup rests: `|:z|` — same pattern; remove the same way
+
+**Tools used:** `abc2ly`, `lilypond`, `convert` (ImageMagick)
+
+**Script:** `abc2png.sh` in this directory wraps the full pipeline:
+```bash
+./abc2png.sh tune.abc [output.png]
+```
+
+**Example:** `honest-john.abc` → `honest-john.png` in this directory.
+
+---
+
 ## Summary Table
 
 | Dir | Operation | Session Date | Images In | Images Out | Key Tool |

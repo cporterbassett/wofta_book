@@ -1,1 +1,11 @@
 .venv/
+
+# LilyPond intermediate files
+*.ly
+*.midi
+*.eps
+*.pdf
+*.svg
+
+# Intermediate PNGs generated from ABC files
+*.cropped.png
