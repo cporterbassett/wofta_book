@@ -62,8 +62,16 @@ if [[ -z "$MXL" ]]; then
 fi
 echo "        → $MXL"
 
-# ── Step 3: MXL → ABC ─────────────────────────────────────────────────────────
-echo "Step 3: MXL → ABC..."
+# ── Step 3: Clean .omr and MXL (strip slurs, decorations, repeated key sigs) ─
+echo "Step 3: clean .omr and MXL..."
+OMR=$(find "$TMPDIR/mxl" -name "*.omr" | head -1)
+if [[ -n "$OMR" ]]; then
+    "$VENV" "${WORKDIR}/clean_omr.py" "$OMR"
+fi
+"$VENV" "${WORKDIR}/clean_mxl.py" "$MXL"
+
+# ── Step 4: MXL → ABC ─────────────────────────────────────────────────────────
+echo "Step 4: MXL → ABC..."
 "$VENV" -c "
 from abc_xml_converter import convert_xml2abc
 result = convert_xml2abc(file_to_convert='$MXL', output_directory='')

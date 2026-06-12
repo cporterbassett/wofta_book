@@ -115,6 +115,12 @@ def split_measures(body):
     return [p.strip() for p in parts if p.strip()]
 
 
+def normalize_for_compare(measure):
+    """Remove notation artifacts that don't affect note content."""
+    s = re.sub(r'\s+', '', measure)               # spaces are insignificant in ABC
+    return s
+
+
 # ── Comparison ────────────────────────────────────────────────────────────────
 
 def compare(gold_path, test_path, quiet=False):
@@ -124,7 +130,10 @@ def compare(gold_path, test_path, quiet=False):
     gold_measures = split_measures(extract_body(gold_text))
     test_measures = split_measures(extract_body(test_text))
 
-    sm = difflib.SequenceMatcher(None, gold_measures, test_measures, autojunk=False)
+    gold_norm = [normalize_for_compare(m) for m in gold_measures]
+    test_norm = [normalize_for_compare(m) for m in test_measures]
+
+    sm = difflib.SequenceMatcher(None, gold_norm, test_norm, autojunk=False)
     opcodes = sm.get_opcodes()
     matched = sum(g2 - g1 for op, g1, g2, t1, t2 in opcodes if op == 'equal')
     total = len(gold_measures)
@@ -149,6 +158,7 @@ def compare(gold_path, test_path, quiet=False):
             elif op == 'insert':
                 for m in test_measures[t1:t2]:
                     print(f"  ++ {m}")
+
 
     return matched, total
 
