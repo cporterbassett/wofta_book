@@ -150,5 +150,74 @@ DILATION_VARIANTS = [
 ]
 
 
+def run_audiveris(png_path: str, output_dir: str, timeout: int = 120) -> str | None:
+    """Run Audiveris batch. Returns path to the .omr file or None on failure."""
+    cmd = AUDIVERIS.split() + ["-batch", "-export", "-output", output_dir, png_path]
+    try:
+        subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return None
+    for fname in os.listdir(output_dir):
+        if fname.endswith(".omr"):
+            return os.path.join(output_dir, fname)
+    return None
+
+
+def run_one(tune: str, label: str, kernel_size: int | None,
+            timeout: int) -> dict:
+    """Run the full pipeline for one (tune, variant) pair.
+
+    Returns a result dict with keys:
+      health_score, key_ok, time_ok, ashokan_tell, avg_grade (from score_omr)
+      abc_matched, abc_total  (only if tune has a gold ABC and MXL succeeded)
+      error  (string, only on failure)
+    """
+    src_png = os.path.join(IMAGES_DIR, f"{tune}.png")
+    if not os.path.isfile(src_png):
+        return {"error": f"source PNG not found: {src_png}"}
+
+    gold_abc_path, _ = GOLD_ABCS.get(tune, (None, None))
+
+    tmpdir = tempfile.mkdtemp(prefix="glyph_sweep_")
+    try:
+        # Step 1: normalize interline (with 1.5× fallback)
+        norm_png = os.path.join(tmpdir, "normalized.png")
+        normalize_tune(src_png, norm_png)
+
+        # Step 2: apply dilation (no-op for baseline)
+        if kernel_size is not None:
+            img = cv2.imread(norm_png)
+            cv2.imwrite(norm_png, apply_dilation(img, kernel_size))
+
+        # Step 3: Audiveris
+        omr_path = run_audiveris(norm_png, tmpdir, timeout=timeout)
+        if omr_path is None:
+            return {"error": "audiveris_no_omr"}
+
+        # Step 4: health score
+        result = score_omr(omr_path)
+        if result is None:
+            return {"error": "score_omr_failed"}
+
+        # Step 5: note accuracy (gold tunes only)
+        if gold_abc_path:
+            mxl_candidates = [
+                f for f in os.listdir(tmpdir)
+                if f.endswith(".mxl")
+            ]
+            if mxl_candidates:
+                mxl_path = os.path.join(tmpdir, mxl_candidates[0])
+                abc_path = os.path.join(tmpdir, "test.abc")
+                if mxl_to_abc(mxl_path, abc_path):
+                    matched, total = score_abc_accuracy(gold_abc_path, abc_path)
+                    result["abc_matched"] = matched
+                    result["abc_total"] = total
+
+        return result
+
+    finally:
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+
 if __name__ == "__main__":
     print("skeleton ok")
