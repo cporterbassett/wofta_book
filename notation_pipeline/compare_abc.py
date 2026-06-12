@@ -63,10 +63,12 @@ _NOTE_RE = re.compile(
 
 
 def normalize_durations(body, unit):
-    """Rewrite every note/rest duration in body to TARGET_UNIT (L:1/8) basis."""
-    if unit == TARGET_UNIT:
-        return body
-    ratio = unit / TARGET_UNIT  # e.g. (1/4)/(1/8) = 2
+    """Rewrite every note/rest duration in body to TARGET_UNIT (L:1/8) basis.
+
+    Always runs the substitution (even when unit == TARGET_UNIT) so that
+    reducible fractions like 6/2 are canonicalized to 3 before comparison.
+    """
+    ratio = unit / TARGET_UNIT  # e.g. (1/4)/(1/8) = 2; (1/8)/(1/8) = 1
 
     def replace(m):
         pitch = m.group(1)

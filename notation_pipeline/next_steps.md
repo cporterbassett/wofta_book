@@ -2,6 +2,8 @@
 
 _Written 2026-06-11 (Opus session) as a cold-start brief for a follow-up session._
 _Updated 2026-06-11 (Sonnet session) after scoring work and pipeline architecture decisions._
+_Updated 2026-06-12 (Opus session) after normalize_interline, health_score, verify_mxl, compare_abc fix._
+_Updated 2026-06-12 (Sonnet session) after mvt1 MXL fallback fix in batch_tune.sh._
 _Read `omr_findings.md` first for the full experiment history. This file is the
 forward-looking plan: what to build next, in priority order, and why._
 
@@ -49,7 +51,7 @@ Two phases, always run in order:
 **Phase 1 — batch (unattended, run overnight)**
 ```
 for each tune PNG:
-  preprocess (1.5× Lanczos + unsharp) → Audiveris batch → clean_omr.py → clean_mxl.py → abc_xml_converter → draft ABC
+  normalize_interline.py (target 18px) → Audiveris batch → clean_omr.py → clean_mxl.py → abc_xml_converter → draft ABC
 ```
 Scripts needed: `batch_tune.sh` (single tune, refactor of current `run_tune_pipeline.sh`),
 `batch_all.sh` (all 269 tunes).
@@ -76,43 +78,43 @@ then finds the exported MXL and converts to ABC.
 
 ## Reframe #1 — score on correction effort, not key-binary (partially done)
 
-**Status:** Gold standards created; Arkansas Traveler scored. Soldier's Joy and Mississippi
-Sawyer MXLs exist in tmp_pipeline/ but have not been converted to ABC yet.
+**Status:** Gold standards created; all three tunes scored at 1.5× and with interline normalization.
 
 **Gold standard ABCs** (in `abc/`, transcribed directly from WOFTA images):
 - `Arkansas Traveler-gold.abc` — 18 measures, K:D
 - `Soldier's Joy-gold.abc` — 16 measures + pickup, K:D
 - `Mississippi Sawyer-gold.abc` — 16 measures + pickup, K:D
 
-**Arkansas Traveler scores** (after MXL cleaning + compare_abc space normalization):
+**Arkansas Traveler scores** (after MXL cleaning + compare_abc normalization):
 | Scale | Score | Main failures |
 |-------|-------|---------------|
 | 1× | 8/18 (44%) | Spurious inline key changes corrupted pitch content — F# written as F natural, C# as C natural throughout |
-| 1.5× | 16/18 (89%) | Two identical failures: `d=cdA` instead of `dcdA` at measures 7 and 15 (C natural instead of C#) |
+| 1.5× fixed | 16/18 (89%) | Two identical failures: `d=cdA` instead of `dcdA` at measures 7 and 15 (C natural instead of C#) |
 | 2× | 11/18 (61%) | Structural failures: truncated measures, spurious rests |
+| **interline-norm** (141%) | **17/18 (94%)** | Same single C# miss — improvement over fixed 1.5× |
 
 **Key finding:** The "key is a 1-click fix" argument does NOT fully hold for 1× or 2×.
 Both scales produce structural errors (wrong barlines, rests, truncated measures) on top of
-accidental errors. 1.5× is the best single default — its two remaining failures are
-systematic (same C# miss, both occurrences) and would be caught by the user in one pass.
+accidental errors. Interline normalization beats fixed 1.5×.
 
 **Soldier's Joy scores** (after MXL cleaning):
 | Scale | Score | Key | Main failures |
 |-------|-------|-----|---------------|
 | 1× | 7/18 (39%) | K:D ✓ | Structural failure: B section completely garbled — barline confusion shifts entire note block |
-| 1.5× | 12/18 (67%) | K:G ❌ | Wrong key (G instead of D) — C# written explicitly as `^c` throughout. 2 failures are `g6/2e` vs `g3 e` (musically identical; compare_abc doesn't reduce `6/2` → `3`). True musical accuracy ≈ 14–16/18 if key were correct. |
+| 1.5× fixed | 12/18 (67%) | K:G ❌ | Wrong key — C# written as `^c` throughout. Key detection is blocking issue. |
 | 2× | 7/18 (39%) | K:D ✓ | Same structural failure as 1×; f notes appear as `=f` naturals throughout B section |
+| **interline-norm** (133%) | **12/17 (71%)** | K:G ❌ still — slight % gain, key failure unchanged |
 
 **Mississippi Sawyer scores** (after MXL cleaning):
 | Scale | Score | Key | Main failures |
 |-------|-------|-----|---------------|
-| 1× | 12/18 (67%) | K:D ✓ | 5 consecutive B-section failures: `=f`, `=c` naturals (alter values wrong — same "baked at recognition time" pattern as Arkansas Traveler 1×) |
-| 1.5× | 15/18 (83%) | K:D ✓ | 2 failures: one note error (g→e substitution in measure 5), one barline confusion at A-section repeat boundary |
+| 1× | 12/18 (67%) | K:D ✓ | 5 consecutive B-section failures: `=f`, `=c` naturals |
+| 1.5× fixed | 15/18 (83%) | K:D ✓ | 2 failures: note error + barline confusion at repeat boundary |
 | 2× | 7/18 (39%) | K:D ✓ | `=f`, `=c` naturals throughout; more structural failures |
+| **interline-norm** (150%) | **14/17 (82%)** | K:D ✓ — measured 12px → exactly 1.5×, effectively flat |
 
-**Key finding:** 1.5× is confirmed best across all three scored tunes. Mississippi Sawyer 1.5× = 15/18 (83%), Arkansas Traveler 1.5× = 16/18 (89%). Soldier's Joy 1.5× has a key detection failure (K:G instead of K:D) — C# not recognized. This tune was previously noted as changing key between scales; try 1× or 2× as fallback if a tune scores poorly at 1.5×.
-
-**Notation comparison caveat:** `g6/2e` and `g3 e` are musically identical (6/2 = 3 in L:1/8) but compare as different strings because compare_abc's `normalize_durations` skips conversion when unit == L:1/8. Minor false negative affecting ≤2 measures per tune.
+**Key finding:** Interline normalization equals or beats fixed 1.5× on all scored tunes with no regressions.
+Soldier's Joy key detection (K:G instead of K:D) is a GUI-fix issue, not a preprocessing issue.
 
 ---
 
@@ -121,73 +123,85 @@ systematic (same C# miss, both occurrences) and would be caught by the user in o
 Strips before comparing: chord symbols `"..."`, decorations `!...!`, grace notes `{...}`,
 inline key changes `[K:x]`, lyric lines, comments, L: and other header lines.
 Also normalizes intra-measure whitespace (spaces between notes are insignificant in ABC).
+Reduces duration fractions via `Fraction` (e.g. `6/2` → `3`) regardless of L: setting —
+**bug fixed 2026-06-12** (previously skipped reduction for L:1/8 files).
 
 Does NOT strip: slurs `(...)`, staccato dots `.`, ties `-`. These are musically meaningful
 and count as real errors if Audiveris adds them spuriously.
 
 ---
 
-## Experiment A — per-image interline-normalized scaling (highest leverage)
+## Experiment A — per-image interline-normalized scaling ✓ DONE
 
-**The idea:** instead of a fixed global scale, measure each image's staff-line spacing
-(interline) and scale **that image** by exactly the factor needed to land it at Audiveris's
-preferred interline (~16–20 px). A 10px-interline source → ~1.8×; a 14px source → ~1.3×.
-Every image arrives at Audiveris at the same effective resolution regardless of source.
-This is the natural answer to fact #2 (heterogeneous sources) and needs zero knowledge of
-which source a tune came from.
+**Built 2026-06-12.** `normalize_interline.py` is live and integrated into `batch_tune.sh`.
 
-**Why interline:** Audiveris's recognition is driven by interline, and it reports it in the
-log (e.g. `Scale{ interline(10,11,12) ...}`). Audiveris is built for interline ≥ ~16px; the
-WOFTA scans are 10–12px, which is why glyph classification (esp. thin sharps) is unreliable.
+**How it works:** Otsu-binarize → horizontal row projection → cluster adjacent dark rows
+into staff-line groups → median of intra-staff spacings = interline. Scale factor =
+18px / measured_interline. Applies unsharp mask then Lanczos resize. Falls back to fixed
+1.5× if detection fails (2 out of 269 tunes: Hey Polka — dense notation fills inter-line
+space; Forester's Hornpipe — faint lines).
 
-**Build `normalize_interline.py`:**
-- Input: a tune PNG. Output: a scaled PNG normalized to target interline (make target a
-  CLI arg, default ~18).
-- Measure interline directly with OpenCV — don't require an Audiveris pre-pass. Approach:
-  binarize → take a horizontal projection profile of dark pixels over the staff region →
-  the staff lines are the 5 strongest peaks per staff; median spacing between adjacent
-  staff lines = interline. (Alternative: autocorrelation / FFT of the vertical projection;
-  the dominant period in the staff band is the interline.) Cross-check the measured value
-  against Audiveris's own reported interline on a few tunes to validate the measurement.
-- Scale factor = target_interline / measured_interline. Resample with Lanczos.
-- Drop it in front of `batch_tune.sh` (replace the fixed `-resize ${SCALE}%` step).
+**Coverage:** 291/293 PNGs succeed (99.3%). Scale factors range 109%–300% (tiny 531px images
+get ~300%; most cluster around 129–164%).
 
-**Validate** on a source-diverse sample (NOT just Angeline + 3) using the Reframe #1 metric.
+**Validation results:** Arkansas Traveler 141% → 17/18 (94%) vs 16/18 (89%) at fixed 1.5×.
+Soldier's Joy 133% → 12/17 (71%) vs 12/18 (67%). Mississippi Sawyer 150% (same as 1.5×) →
+14/17 (82%) vs 15/18 (83%). No regressions.
 
-**Pair with targeted glyph cleanup** (different mechanism than scaling, addresses the
-documented thin-sharp failure): after normalizing, try a mild morphological **thicken/dilate**
-so 1px sharp/stem strokes survive classification (`convert ... -morphology Thicken ...` or
-`-morphology Dilate Diamond:1`), and a **despeckle / `-morphology Open Disk:1`** to kill the
-xerox salt-and-pepper noise that produced phantom glyphs (the spurious low notes and the
-QUARTER_REST-in-header from the Ashokan root-cause). Keep these as toggleable flags and
-measure each independently.
+**Audiveris confirmation:** Arkansas Traveler hit interline 17–20px after normalization
+(target 18px) — landing exactly in Audiveris's sweet spot.
+
+**Still to do (glyph cleanup):** try morphological thicken/dilate for thin sharps and
+despeckle for xerox noise — these are independent of scaling, measure separately.
 
 ---
 
-## Experiment B — `.omr` health-score triage (needed for cleanup loop queue)
+## Experiment B — `.omr` health-score triage ✓ DONE
 
-**Build `health_score.py`:** the `.omr` is a ZIP containing `sheet#1/sheet#1.xml` with glyph
-bounding boxes, grades, and header boundaries. Per tune emit a health score from:
-- key signature present in measure 1? (missing = red flag)
-- time signature present? (missing = red flag)
-- measure count vs. expected (anomalies = structural failure)
-- average / median glyph grade (low = degraded recognition)
-- **the Ashokan tell:** any `QUARTER_REST` sitting inside the header x-band (= a sharp
-  misclassified as a rest → key will be wrong)
+**Built 2026-06-12.** `health_score.py` is live.
 
-Output a sorted TSV (worst-first). This drives the phase 2 cleanup loop order.
+**Usage:** `python3 health_score.py` (scans all `batch_output/*/clean.omr`) or pass explicit
+paths. Outputs TSV sorted worst-first.
+
+**XML structure (actual, differs from spec):** Inters use element names directly (`<key>`,
+`<time-pair>`, `<rest>`, `<head>`) inside `<sig><inters>`. Header detection via
+`<header start="N" stop="M">` with child refs `<key>ID</key>`, `<time>ID</time>` (only
+present if recognized). Grades: elements have `grade` and `ctx-grade` attributes.
+Measure count from `<page measure-count="N">`.
+
+**Score components:** key_ok (−40 if missing), time_ok (−20), ashokan_tell (−30 if present),
+avg ctx-grade contribution, base 100. Lower = needs more GUI work.
+
+**Sample results from first 44 tunes (worst first):**
+- Big Scioty: 48 — missing both key AND time sig
+- Coleraine, Billy in the Lowground, Big Con: ~68 — missing key only
+- Ashokan Farewell, Colored Aristocracy: ~77 — Ashokan tell (sharp → quarter rest)
+- Boys of Blue Hill + 4 others: ~88 — missing time sig only
+- Most tunes: 107–109 — all clear, avg grade ~0.90+
+- Arkansas Traveler: 108.32 — key ✓, time ✓, no tell, grade 0.92
+
+Run against full corpus once current batch_all.sh completes.
 
 ---
 
-## Experiment C — MXL-render overlay-diff (the per-tune visual check)
+## Experiment C — MXL-render overlay-diff ✗ DEAD END
 
-Porter can read notation, so a visual diff is the fastest "did this match the scan" check.
-`overlay_diff.py` already does red/blue mismatch overlay for ABC renders. Extend it (or add
-`verify_mxl.py`) to: render the Audiveris MXL to PNG via **MuseScore headless**
-(`mscore -o out.png in.mxl` or the flatpak equivalent), then overlay-diff against the
-original scan. Mismatched ink shows exactly where OMR disagrees — Porter reads those spots
-against the scan instead of every notehead. Add MIDI/audio export
-(`mscore -o out.mid in.mxl` → fluidsynth) as a secondary aid for unfamiliar tunes.
+**`verify_mxl.py` was built but is redundant.** Audiveris's own GUI already overlays
+recognized glyphs directly on the original scan, colored by confidence grade — no
+alignment issues, no extra tooling. The MXL→MuseScore→PNG→diff round-trip is strictly
+worse: it introduces vertical misalignment (scan has title/chord text; MuseScore has clean
+margins) and loses information the `.omr` already contains.
+
+**The overlay diff does make sense for the ABC path:** comparing a final LilyPond/abcm2ps
+render of a corrected ABC against the original scan as a post-GUI sanity check. That is
+what `overlay_diff.py` was originally built for and where it should stay.
+
+**For pre-GUI triage:** use `health_score.py` to sort tunes, then open the `.omr` directly
+in Audiveris. No intermediate render needed.
+
+**MuseScore** (`~/Downloads/MuseScore-Studio-4.4.4.243461245-x86_64.AppImage`) is still
+useful for MIDI/audio export of a corrected MXL — a secondary listening check for tunes
+Porter doesn't know by ear. That's a one-liner when needed; no script required.
 
 ---
 
@@ -235,17 +249,27 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 
 1. ~~**Build the two-phase pipeline**~~ — **DONE** (`batch_tune.sh`, `batch_all.sh`, `cleanup_loop.sh`)
 2. ~~**Score Soldier's Joy and Mississippi Sawyer**~~ — **DONE** (see Reframe #1 above)
-3. **Run `batch_all.sh`** — process all 269 tunes overnight; results in `batch_output/`
-4. **Experiment A** — `normalize_interline.py` + glyph-cleanup flags. (the big build)
-5. **Experiment B** — `health_score.py` triage for cleanup loop queue ordering.
-6. **Experiment C** — MXL-render overlay-diff verification.
-7. **Experiment D** — Audiveris `-constant` sweeps, validated source-diversely.
+3. ~~**Run `batch_all.sh`**~~ — **DONE** (2026-06-11, ~1 hr). 258/269 succeeded. 11 failed:
+   - **No MXL output** (Audiveris crash/total failure): Kerry Mills' Barn Dance, Nixon's Farewell,
+     seneca-square-dance 2, star-above-the-garter2
+   - **Multi-MXL / ABC conversion error** (Audiveris exported multiple sheets, script picked wrong
+     one): Boggy Road to Texas, Cherokee Shuffle, Eighth of January, Gypsy Waltz, Pat(T)'s Country,
+     Road House Ramble, Westphalia Waltz (new)
+   - All 11 need GUI intervention or script fix; set aside for later.
+4. ~~**Experiment A**~~ — **DONE** (`normalize_interline.py` built, integrated into `batch_tune.sh`, batch re-run in progress)
+5. ~~**Experiment B**~~ — **DONE** (`health_score.py` built, tested on 44 tunes)
+6. ~~**Experiment C**~~ — **DEAD END** (see above — Audiveris GUI already does this better)
+7. **Run `health_score.py` on full corpus** — after current batch_all.sh completes; produces the phase 2 cleanup queue sorted worst-first
+8. ~~**Fix mvt1 multi-MXL batch failures**~~ — **DONE** (2026-06-12). `batch_tune.sh` now falls back to `preprocessed.mvt1.mxl` when `preprocessed.mxl` is absent. Recovered: Bull Moose (G/4/4), Centralia Waltz, Fisher's Hornpipe (D/4/4), Me and My Fiddle (G/4/4), Morrison's Jig.
+   - **Persistent multi-MXL failures still open:** Cherokee Shuffle, Pat(T)'s Country, Road House Ramble — Audiveris produces mvt2+ files alongside mvt1; cause differs and needs investigation.
+9. **Experiment D** — Audiveris `-constant` sweeps, validated source-diversely.
 
 ## Pointers to existing tooling
 
 - `batch_tune.sh` — phase 1 single tune: preprocess → Audiveris batch → `clean_omr.py` →
   `clean_mxl.py` → `abc_xml_converter`. Output in `batch_output/<Tune>/`. Resumable via
-  `clean.omr` checkpoint.
+  `clean.omr` checkpoint. Falls back to `preprocessed.mvt1.mxl` when Audiveris splits the
+  score into movements instead of exporting a single `preprocessed.mxl`.
 - `batch_all.sh` — runs `batch_tune.sh` over all 269 PNGs; skips tunes with `clean.omr`;
   supports `--dry-run`. Log in `batch_output/batch_all.log`.
 - `cleanup_loop.sh` — phase 2 interactive: opens `clean.omr` in Audiveris GUI, waits for
@@ -256,7 +280,10 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 - `clean_mxl.py` — strips same categories from MXL + repeated `<key>` elements (batch path)
 - `compare_abc.py` — normalize ABC, split into measures, diff measure-by-measure; normalizes
   intra-measure whitespace; does NOT strip slurs (they're real errors if Audiveris adds them)
-- `overlay_diff.py` — red/blue mismatch overlay; extend for MXL renders (Experiment C).
+- `normalize_interline.py` — measure staff interline via row projection; scale to target 18px; falls back to 1.5× on detection failure. `--measure-only` flag for survey mode.
+- `health_score.py` — parse `clean.omr` ZIP XMLs; score key/time/Ashokan-tell/avg-grade; output worst-first TSV. Run after batch completes to get phase 2 queue.
+- `verify_mxl.py` — **dead end**, see Experiment C. Audiveris GUI already does this better.
+- `overlay_diff.py` — red/blue mismatch overlay for ABC renders.
 - `.omr` = ZIP with `sheet#N/sheet#N.xml` (glyph boxes, grades, header stops, SIG relations)
 - venv: `../.venv/bin/python3` (has opencv-python-headless, music21, abc_xml_converter).
 - Audiveris: `flatpak run org.audiveris.audiveris` (supports `-batch -export -constant

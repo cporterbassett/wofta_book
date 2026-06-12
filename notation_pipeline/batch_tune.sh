@@ -54,8 +54,15 @@ echo "Image: ${W}×${H}px  (est. ~$(( W * 10 / 85 )) DPI on 8.5\" width)"
 
 # ── Step 1: Preprocess ────────────────────────────────────────────────────────
 PREPROCESSED="${OUTDIR}/preprocessed.png"
-echo "Step 1: preprocess (Lanczos ${SCALE}% + unsharp 0x1)..."
-convert "$SRC" -unsharp 0x1 -filter Lanczos -resize "${SCALE}%" "$PREPROCESSED"
+echo "Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)..."
+NORMALIZE_LOG=$("${VENV}" "${PIPELINE_DIR}/normalize_interline.py" \
+    "$SRC" --output "$PREPROCESSED" --target 18 2>&1) && NORMALIZE_OK=true || NORMALIZE_OK=false
+if [[ "$NORMALIZE_OK" == true ]]; then
+    echo "        ${NORMALIZE_LOG}"
+else
+    echo "        interline detection failed — falling back to fixed ${SCALE}% Lanczos"
+    convert "$SRC" -unsharp 0x1 -filter Lanczos -resize "${SCALE}%" "$PREPROCESSED"
+fi
 PW=$(identify -format "%w" "$PREPROCESSED")
 PH=$(identify -format "%h" "$PREPROCESSED")
 echo "        → ${PW}×${PH}px"
@@ -65,7 +72,7 @@ echo "Step 2: Audiveris OMR (this takes 1–3 min)..."
 flatpak run org.audiveris.audiveris -batch -export -output "${OUTDIR}" "$PREPROCESSED" \
     > "${OUTDIR}/audiveris.log" 2>&1 || true
 
-RAW_MXL=$(find "${OUTDIR}" -maxdepth 1 -name "preprocessed.mxl" | head -1)
+RAW_MXL=$(find "${OUTDIR}" -maxdepth 1 \( -name "preprocessed.mxl" -o -name "preprocessed.mvt1.mxl" \) | head -1)
 RAW_OMR=$(find "${OUTDIR}" -maxdepth 1 -name "preprocessed.omr" | head -1)
 
 if [[ -z "$RAW_MXL" ]]; then
