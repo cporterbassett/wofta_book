@@ -1,0 +1,11 @@
+X:1
+T:Foresteris Hornpipe
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ fg |"D" a^gaf dfbg | a^gaf d2 cd | eAfA eAfA | edcB A2 fg |$ a^gaf dfbg | a^gaf d2 cd | %7
+ B2 G2 GB Adce | | c2 d2 ::$ cd | edcB AGEG | FAdf a2 fa | g2 eg f2 df | edcB ABcd |$ edcB AGEG | %16
+ FAdf a2 fa | gfed cABc | d2 f2 d2 :| %19

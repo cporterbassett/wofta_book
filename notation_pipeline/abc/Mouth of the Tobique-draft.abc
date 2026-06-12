@@ -1,0 +1,12 @@
+X:1
+T:Mouth the Tobique
+L:1/8
+M:none
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ (3DEF |"G" GFGA Bded | BdBG D2 B2 G2 |"D" ABAF DFAF | GABc d2 (3DEF |$"G" GFGA Bcec | BcBG D2 BG | %7
+"D" ABAF DFAF | GBAF G2 ::$ ef | gega gdBg |"D" fdAd e2 g2 f2 | ecAG FDEF | GABc d2 ef |$ %14
+"Em" gfga gdBg |"D" fdAd f2 g2 e2 |"C" ecAG FDEF | GBAF G2 ::$ (3DEF |"G" G2 BG GcGG | BGGc GGBG | %21
+"D" FGAB cAFA | GABc d2 DEF |$"G" G2 BG GcGG | BGGc GGBG |"D" FGAB cAFA | GBAF G2 :| %27

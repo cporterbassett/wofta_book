@@ -1,0 +1,17 @@
+X:1
+T:Title
+%%score ( 1 2 )
+L:1/8
+M:4/4
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+L:1/4
+V:1
+ !arpeggio!deee e2 d2 |$"Am" deee e2 d2 |$[M:2/2]"Am" ABAG EGAB |$[M:3/4]"Am" GA A2 x2 |$ %4
+w: |||Amin * *|
+ GA A2 x2 | %5
+w: |
+V:2
+ x e/e/ e !arpeggio!c |$ x e/e/ e !arpeggio!c |$[M:2/2] x4 |$[M:3/4] x A A/B/ |$ x A A/B/ | %5

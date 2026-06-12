@@ -1,0 +1,11 @@
+X:1
+T:A7
+C:Anton Wallerstein
+L:1/8
+M:2/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ D/E/ | FA GB |"D" Af [Ff]2 |"A7" Ae e/d/e |"D" Ad d/c/d |$ FA GB | Af f/e/f | Ae e/d/e | df d ::$ %9
+ z | dB B/c/d/B/ | AF F3 | GE E2 | FD D2 |$ dB B/c/d/B/ |"D" AF F2 | GE C/A,/B,/C/ | DF D2 :| %18

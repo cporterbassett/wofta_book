@@ -1,0 +1,12 @@
+X:1
+T:Luke Thomasson
+L:1/8
+M:3/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ A,DE ||"D" F4 F2 | F4 FE | F2 A2 B |"D" AF D2 DE3/2 |$"D" F2 d2"G" B2 | A2 D ED | FB AF ED |1 %8
+ D3 A, DE :|2$ D3 A Bc || d4- dd | dc BA Bc | d3 B AF |"D" D4 d2 |$"Em" e4 ef | e2 d2 e2 | %16
+"Bm" f3 a fe | dc BA Bc |$ d4 de | d2 c2 B2 | A3 B AG | FE DA, DE |$"D" F2 d2"G" B2 |"D" A3 D ED | %24
+ FB AF ED | D2 A Bc || d3- d2 | %27

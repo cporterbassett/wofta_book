@@ -1,0 +1,13 @@
+X:1
+T:Sierra Swing
+C:by Marvin Standifer
+C:as played by MC. Plgg
+L:1/4
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ f g a || b f a/ g d/ | B2 c ^c |"D7" d/e/ d c/ A F | F3 d |$ e f g/ f e | d/d/B/B/ c/c/ A |1 %7
+"G" G3/2 F/ G/A/B/e/ |"D7" d :|2"G" G2 G F ||$ E C E/ G3/2 | c e d c3/2 |"G" B2 G/ A3/2 | B3 _B |$ %14
+ A2 ^c2 | e a- a3/2 e/ | f/a/ f e/f/ e ||$ b f a/ g d | B2 c ^c | d/e/ d c/ A F/ | F3 d | %21

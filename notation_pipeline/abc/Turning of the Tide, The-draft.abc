@@ -1,0 +1,12 @@
+X:1
+T:The Turning the Tide
+C:Mdire Breamach
+L:1/8
+M:2/2
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ AB |"Am" c2 Bc AGED | CDEF"G" GABd |"Am" c2 Bc AGEG |"Em" A2 EC A,2 AB |$"Am" c2 Bc AGED | %6
+ CDEF"G" GABc | dB B2 cABA |"Em" GEDB,"Am" A,2 ::$ AB | ^c2 Bc ABcd | eA^ce"G" gecg | eaab age^f | %13
+"G" gedB ^cAAB |$ ^c2 Bc ABcd | eA^ce g^fga | bagb agea | gedB A2 :| %18

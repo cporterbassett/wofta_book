@@ -1,0 +1,16 @@
+X:1
+T:szzw 8m
+C:wAfzo ALLEN Comsmou
+%%score 1 2
+L:1/16
+M:3/4
+I:linebreak $
+K:none
+V:1 treble-8 nm="Fm." snm="Fm."
+V:2 treble-8 nm="FIDOLE" snm="FIDOLE"
+V:1
+ z8 | z12 | z8 | z8 |$"C" cega g2ec z2 | gcec BcdB | cega gedc | BGAB c2 |$ [eg]8 GE | C2EG cGEG | %10
+ F2AF cFAF | G2dc BGAB | c2Bd cAGE |$ z8 | z8 | z8 | z6 | %17
+V:2
+ [Ag]4 e4 |"C" cega g2ec gcec | cega gedc | BcdB cBAG |$ z10 | z8 | z8 | z6 |$ z10 | z8 | z8 | z8 | %12
+ z8 |$ C2EG cGEG | F2AF cFAF | G2dc BGAB | c2dB c2 :| %17

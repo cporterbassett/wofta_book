@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ GE | D2 DE G2 GA | BABd cBAG |"D" FGFE D2 FG | AFBF E2 GE |$ D2 DE G2 GA |"Em" BABd efge | %7
+ dcBA GFGA | B2 GF G2 ::$ ef | g2 g2 gbag | fefe fagf | edef gfed | B2 e2 e2 ge |$ dBGB d2 d2 | %15
+ edef g2 fe | dcBA GFGA | B2 GF G2 :| %18

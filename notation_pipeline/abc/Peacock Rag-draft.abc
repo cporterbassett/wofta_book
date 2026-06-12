@@ -1,0 +1,12 @@
+X:1
+T:PEACOCK RAG
+C:Arthur Smith
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ F2 G2 ^G2 |"D" A2 f2 fafd |"D7" A2 d2 c2 c2 |"G" B2 g3 f g2 | | c2 c3 c c2 |$ f3 a =fd e2 | %7
+ dBAG FD E2 | D2 :| dBAG FABc | d2 |: f2 g2 a2 |$ | | e4 d2 d2 | c2 a4 g2 | g3 a fd e2 | %17
+"D" dBAG FABc | d2 :| %19

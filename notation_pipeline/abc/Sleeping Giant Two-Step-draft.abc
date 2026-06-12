@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="iddle" snm="iddle"
+V:1
+ Ad | f>g fd A2 F2 | G>G GF E3 F2 | G>G GF EEDE |"D" F>G FE FFAd |$ f>g fd A2 F2 | G>G GF E3 F2 | %7
+ G>G GA cABc |"D" d2 d3 E2"D7" ddc=c |$"G" B2 d2 g3 g2 |"D" f>g fd AFGF | E2 e2 d cABc | %12
+ dAFG"D7" Adc=c |$ B2 d2 g3 g | f>g fd AFGF | E3 F2 GABc | d2 d3 [DF]2 d2 :| %17

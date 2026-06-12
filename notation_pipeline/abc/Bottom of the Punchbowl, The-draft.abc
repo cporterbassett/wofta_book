@@ -1,0 +1,11 @@
+X:1
+T:The Bottom the Punchbowl
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ F2 E2 |"D" D2 A2 d3 c | d2 A2 FGAF |"Em" E2 e2 efgf | edcB AGFE |$ D2 A2 c2 e | eedc d2 A2 | %7
+ BccB ABAG | F2 D2 D2 ::$ [Dd]2 e2 | fedB ABde | fedc d2 A2 |"Em" B2 e2 e2 e2 | f2 e2 e2 e2 |$ %14
+ fedB ABde | faef d2 A2 | B=cdB ABAG | F2 D2 D2 :| %18

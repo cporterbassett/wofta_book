@@ -1,0 +1,11 @@
+X:1
+T:E 7
+L:1/4
+M:4/4
+I:linebreak $
+K:none
+V:1 treble nm="Fiddle" snm="Fiddle"
+V:1
+"D" f f d d | A/B/A/F/ D D | E/D/E/F/ G E |"D" D/E/F/G/ A A |$"D" ^f f d d | A/B/A/^F/ D D | %6
+ E/D/E/^F/ G E | D"D" ^F D2 ::$ e ^c e c | e/^f/e/^c/ A A | B/A/B/^c/ d B | A/B/^c/d/ e e |$ %12
+ e ^c e c | e/^f/e/^c/ A A | B A B ^c | A ^c A2 :| %16

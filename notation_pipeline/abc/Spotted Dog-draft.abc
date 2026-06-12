@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ c2 |: EAA ABc | BAF"A" AFE | FBB Bce |"D" ff"E" ecA | EAA Ac | BA- | Ae | f2 [ca]2 e2 [ca]2 | %9
+ ABc ::$[K:bass] E,G,G, G,E,G, | A,G,E, G,E,C, |"A" G,CA, G,C, | G,,A,,C, D,2 C, | E,G,G, G,E,G, | %15
+ A,G,E, G,2 [E,C]2 | A,2 [E,C]2 G,2 C | C,D,E, D,2 C, :| %18

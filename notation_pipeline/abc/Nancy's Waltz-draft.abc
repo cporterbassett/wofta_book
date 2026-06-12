@@ -1,0 +1,23 @@
+X:1
+T:Nancy's Waltz
+%%score ( 1 2 )
+L:1/8
+M:none
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ [Fe]4 AB | c4 cd | e2 e2 f=g |"D" f4 ed | c A2- AB |$ c4 cd | e c2 A2 | z/ =G2 A x5/2 | A4 AB |$ %9
+w: |||||||||
+ c2 c cd | ea- a4 | f2 (3f/=g/f/ e3/2d | c2 A2 EF |$ =G2 A B2 | d2 (3B/c/B/ A=G | F4 EF | E4 e2 |$ %17
+w: ||||||||
+ z f2 (3f/=g/f/ ed |"A" c A2 EF | =G2 A B2 | A2 z c ea |$ f2 (3f/=g/f/ e3/2d | c a2 ef | %23
+w: ||||||
+ =g3 f/g/f/ ed | e2 z e a/b/a |$ (3:2:2c'2 c' a3/2f | e c2 (3c/d/c/ Bc | d2 e2 fa | e c2 EF |$ %29
+w: * * '3 * * *||") * * *||||
+ =G2 A B2 | d2 (3B/c/B/ A=G | E/F- F2 EF | E/F/ E- E2 |] %33
+w: ||||
+V:2
+ x6 | x6 | x6 | x6 | x5 |$ x6 | x5 | c4 B2 | x6 |$ x5 | x6 | x11/2 | x6 |$ x5 | x5 | x6 | x6 |$ %17
+ x6 | x5 | x5 | x6 |$ x11/2 | x5 | x13/2 | x6 |$ x9/2 | x6 | x6 | x5 |$ x5 | x5 | x11/2 | x4 |] %33

@@ -1,0 +1,11 @@
+X:1
+T:Miss Thompson's
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ A2 | d2 df edcB | A2 AB AGFE | DFAF DGBG | DFAF E2 A2 |$ d2 df edcB | A2 AB AGFE | DFAd fedc | %8
+ d2 dc d2 :|$ cd | e2 ec Aceg | f2 fd Adfa | g2 g2 e2 f2 | edcB A2 GA |$ B2 BG DGBG | A2 AF DFAF | %16
+ Acde fedc | d2 dc d2 :| %18

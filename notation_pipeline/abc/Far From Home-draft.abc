@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+|: GE DE G2 A2 | B2 BA Bc d2 | GE DE G2 B2 | A2 AB A2 [Gg]2 | GE DE G2 A2 | B2 BA Bc d2 |$ %6
+[K:treble+8] ed [Fe]2 f2 g2 | BG AB"G" G2 (3def ::"Em" g3 e"Bm" f3 d |"Em" e2 ef ed B2 | %10
+ g2 e2 dB G2 |$[K:treble] A2- AB AG E2 | GE DE G2 A2 | B2 BA Bc d2 | ed [Fe]2 f2 g2 | BG AB G4 :| %16

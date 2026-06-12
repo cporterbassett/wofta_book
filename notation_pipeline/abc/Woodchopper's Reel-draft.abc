@@ -1,0 +1,12 @@
+X:1
+T:Woodchopper ’s Reel
+C:Landry
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ fg |"D" afdB AdFA | DFAd f2 [Fe]2 |"A" (3gfe cB Aceg | a^gab a2 f=g |$ afdB AdFA | DFAd f2 ef | %7
+ (3gfe cB Acec | dfec d2 ::$ FE | DFAd (3BdB AF | DFAd (3BdB A z | A,CEA ceaf | gfed cBAF |$ %14
+ DFAd (3BdB AF | DFAd (3BdB A z | A,CEA ceaf | (3gfe cA d2 :| %18

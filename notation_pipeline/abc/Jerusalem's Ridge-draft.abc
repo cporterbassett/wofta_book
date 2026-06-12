@@ -1,0 +1,27 @@
+X:1
+T:Jerusalem's Ridge
+C:Bill Monroe
+%%score ( 1 2 )
+L:1/8
+M:4/4
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ A,B,CD E2 EF | EDCE DCEC | A,B,CD EGAG | E"E7"DCE DCA,G, |$ CDEF G2 G2 | GFEG FEGE | CDEF GBcB |1 %7
+w: ||* E7 * * * am * *|* * E7 * * * am *||||
+ (3GBG FE C3 B, |]2 (3GBG FE C3 F |:$ E2 A2 A3 A | EGAB cdcA | E2 A2 A2 AB |"E7" c2 e2 e3 A |$ %13
+w: ||||||
+ E2 A2 A3 A | EGAB cdcA | EGAB cecA |1 GEDC A,3 D :|2 z x7 |:$ z2 (3AGF E4 | z EFE D4 | %20
+w: |||||||
+ z DED"E7" C4 |1 z G, (3B,CB, A,4 :|2 z G, (3B,CB, A,4- ||[M:2/4] A,4 |$ eaee a2 ab | %25
+w: |||||
+ c'abc' ac'gd | e2 e2 edcd |"E7" edcG A4 | A3 c AG E2 |$ DE-EG EDCD |"E7" ECDC A,4 | %31
+w: ||||||
+ z2 D/C/B, A,4 |[M:2/4] A,4 :| %33
+w: ||
+V:2
+ x8 | x8 | x8 | x8 |$ x8 | x8 | x8 |1 x8 |]2 x8 |:$ x8 | x8 | x8 | x8 |$ x8 | x8 | x8 |1 x8 :|2 %17
+ GEDC A,4 |:$ x8 | x8 | x8 |1 x8 :|2 x8 ||[M:2/4] x4 |$ x8 | x4 z x3 | x8 | x8 | x8 |$ x8 | x8 | %31
+ x8 |[M:2/4] x4 :| %33

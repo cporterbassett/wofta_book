@@ -1,0 +1,15 @@
+X:1
+T:Centralia Waltz
+%%score ( 1 2 )
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ e8 e2 [Gf]2 || B2 D3 B |"C" c2 E2 c |"G" B2 d BG | D3 B, D2 [Gg]2 |$ ^F4- FF | E2 C3 E | %7
+ EE D2 G2 | B,4 DG |$ B2 D2 [DB]2 | c2 E2 c | B3 d BG | D2 B, DG |$ F4- FF | EC E2 F2 | A2 G2 G | %16
+ [GA]2 || %17
+V:2
+ [Gce]4 x8 || x6 | x5 | x5 | x8 |$ x6 | x6 | x6 | x6 |$ x6 | x5 | x6 | x5 |$ x6 | x6 | x5 | x2 || %17

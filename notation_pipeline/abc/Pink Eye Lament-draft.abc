@@ -1,0 +1,20 @@
+X:1
+T:Gail Blake & Jennifer Dotson , 2003
+Z:Pink Eye Lament
+%%score ( 1 2 )
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ e4 A2 |[M:3/4] a3 A aA | a3 A aA | a2 g2 f2 | efe d2 A2 | a3 A aA |"E" a3 A aA | a2 g2 f2 | %8
+"Em" e4 ef ||$[K:treble] g3 ^f ga | g2 ^f2 e2 | B6- | B4 e^f | g2 ^f ga |1 g2 ^f2 e2 | e2 ^c2 B2 | %16
+ A2 G2 E2 :|2 g2 x4 | d6 | d2 z2 d2 ||$ ^FD F2 [Ag]2 | ^FD F2 [Ag]2 | GD GB dB | d2 e2 ^f2 | %24
+"Em" g3 ^f ga |"Em" g2 ^f2 e2 | e2 ^c2 B2 | A2 G2 E2 ||$ ^FD FA dA | ^FD F2 [Ag]2 | GD GB dB | %31
+ d2 e2 ^f2 |"Em" g3 ^f ga | g2 ^f2 e2 |"G" B6 | B3 e^f |$ g3 ^f ga | g2 e2 ^c2 | d3 A ^FA | D6 |] %40
+V:2
+ x6 |[M:3/4] x6 | x6 | x6 | x7 | x6 | x6 | x6 | x6 ||$[K:treble] x6 | x6 | x6 | x6 | x5 |1 x6 | %15
+ x6 | x6 :|2 g2 e2 ^c2 | x6 | x6 ||$ x6 | x6 | x6 | x6 | x6 | x6 | x6 | x6 ||$ x6 | x6 | x6 | x6 | %32
+ x6 | x6 | x6 | x5 |$ x6 | x6 | x6 | x6 |] %40

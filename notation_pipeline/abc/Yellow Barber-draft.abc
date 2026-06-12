@@ -1,0 +1,11 @@
+X:1
+T:Yellow Barber
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" A,2 A,B, DEDB, | A,B,DE FEDB, | A,B,DF E2 E2 | GFEG FDED |$ FA- AB A2 A2 | BAGB A2 de | %6
+ fdec dBAG |1 FDEF D4 :|2 FDEF D2 |:$ A2 | d4 d2 dB | ABde fded | ce- ef e4 | cdef e2 eg |$ %14
+ fdec dBAd | BAGB A2 de | fdec dBAG |1 FDEF D2 :|2 FDEF D4 |] %19

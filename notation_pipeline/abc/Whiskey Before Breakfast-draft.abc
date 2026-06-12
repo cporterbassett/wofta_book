@@ -1,0 +1,11 @@
+X:1
+T:em
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="idle" snm="idle"
+V:1
+ D2 F2 A4 | ABAG FDEF |"G" G2 BG"D" F2 AF | EDEF E4 | D2 F2 A4 |$ ABAG FDEF | G2 BG F2 AF | %7
+ EDEF D4 :: DFAB d2 AB | dBAG F2 D3 |"E7" e4 e3 f |$ gfed cABc | d2 fd c2 ec | BABc BAFD | %14
+ G2 BG F2 AF | EDEF D4 :| %16

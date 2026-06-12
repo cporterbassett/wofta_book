@@ -1,0 +1,13 @@
+X:1
+T:Title
+L:1/4
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Fiddle" snm="Fiddle"
+V:1
+ F G | A3/2 B/ A F | A3/2 (3A/4B/4c/4 d e | f e f a | d3 d/c/ |$ B B/c/ d (3B/c/B/ | A F D F | %7
+ E2 E3/2 F | E2 F G | A3/2 B/ A F | A3/2 (3A/4B/4c/4 d e |$ f e f a | d3 d/c/ | B B/c/ d (3B/c/B/ | %14
+ A F E F | D2 D3/2 E |$ D A d e | f e f g | a2 a A | B3/2 A B c | d3 A | B3/2 c/ d B |$ A F D F | %23
+ E2 E3/2 F | E2 F G | A3/2 B/ A F | A2 d e | f3/2 e/ f a |$ d3 d/c/ | B3/2 c/ d B/c/B/ | %30
+ A F E F/E/ | D2 D3/2 E | D2 z2 |] %33

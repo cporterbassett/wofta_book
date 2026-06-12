@@ -1,0 +1,12 @@
+X:1
+Z:East Tennessee Blues
+L:1/8
+M:2/2
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ e2 f2 |"C" gage gage | gage aged | cdcA cdcA | cdcA3/2 dcAc |$ GEGA cAcd | edef g2 e2 |1 %7
+ d^cde [ef]2 e2 | g4 g2 :|2 d^cdg ge d2 | c3 d c4 |:$ e4 e2 [de]2 | [ce]3 [de] [ce]4 | %13
+ A4 A2 [GA]2 | [FA]3 [GA] [FA]4 |$ GEGA cAcd | edef g2 e2 |1 d^cde [ef]e f2 | g3 a g4 :|2 %19
+ d^cdg ge d2 | c4 c2 |] %21

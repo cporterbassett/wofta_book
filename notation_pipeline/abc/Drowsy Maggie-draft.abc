@@ -1,0 +1,11 @@
+X:1
+T:. Drowsy Maggie
+C:Irish
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+|: E2"Em" BE dEBE | E2 BE AFDF |"Em" E2 BE dEBE |1 BABc dAFD :|2 BABc dAFA ||$ d2 fd c2 ec | %6
+ defg afge | d2 fd c2 ec | BABc dAFA |$ d2 fd c2 ec | deg a2 fg | afge fdec | BABc dAFD |] %13

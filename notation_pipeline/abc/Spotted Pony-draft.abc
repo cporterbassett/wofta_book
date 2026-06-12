@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+|: D2 DD E2 EE | FF FF"G" G2 GG | AB de f2 e2 | f2 a2 e4 | D2 DD E2 EE | FF FF G2 GG |$ %6
+ AB de f2 e2 | f2 e2 d3 e |]: f2 a2 f4 | [Fe]2 f2 ed B4 | AB de fe de |$ f2 a2 e4 | f2 a2 f4 | %13
+ ef ed B4 | AB de fe de | f2 e2 d4 :| %16

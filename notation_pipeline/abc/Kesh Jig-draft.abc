@@ -1,0 +1,11 @@
+X:1
+T:Kesh Jig
+L:1/8
+M:6/8
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ D | G2 G GAB | A2 A ABd | edd gdd | edB (3dBA |$ G2 G GAB | A2 A ABd | edd gdB |1 AGF G2 :|2 %9
+ AGF G3 |:$ B2 B2 cBd | ege cBG | B2 B dBG | A2 A- AGA |$ B2 B dBd | ege dBd | g2 g aga |1 %17
+ bgf g3 :|2 bgf g2 |] %19

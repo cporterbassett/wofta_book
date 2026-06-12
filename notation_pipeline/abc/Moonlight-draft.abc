@@ -1,0 +1,13 @@
+X:1
+T:MOONLIGHT
+C:Bruce Green
+L:1/16
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="iddle" snm="iddle"
+V:1
+|:"D" f2>g2 fedA Bd2e d2B2 | A2AB AGFD E2EF E2D2 |$"D" f2>g2 fedA"G" Bd2e d2B2 | %3
+"D" A2AB AGFE EFE2"D" D4 |]:$"D" D2DE FGAc"G" d2cd ecAc |"D" d2dA BAFE DFED B,2A,B, |$ %6
+ D2DE FGAc d2cd e2c2A2c2 | d2dA BAFE EFE2 D4 ::$"D" D4 [FA]4"G" [GB]2>A2 B2B2 | %9
+"D" A2AB AGFD E2EF E2D2 |$ D4 [FA]4 [GB]2>A2 B2B2 | A2AB AGFE EFE2 D4 :| %12

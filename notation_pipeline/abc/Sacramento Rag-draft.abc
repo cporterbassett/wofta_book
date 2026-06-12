@@ -1,0 +1,13 @@
+X:1
+T:Samanmkag
+L:1/8
+M:4/4
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ efa3/2e faef | a2 e2 [Af]2 a2 | ABcA BcAB | cA B c2 [DB]2 A2 |$ e4 B4 | =ge [A=f]2 g2 [Af]2 | %6
+ =c6 e2- |$ efae faef | ae [Af]2 a2 [Af]2 | ABcA Bc A2 | cA B c2 [DB]2 A2 |$ B2 e4 | %12
+ ge [Af]2 g2 [Af]2 | Bc [Fd]2 c2 A B2 | A4- AB A2 ||$ [A,D]4 A4 | cBcd cB A2 | F4 d4 | %18
+ fefg fe d2 |$ B4 e4 | ge f2 g2 [Af]2 | c4- c2 B2 |$ A,4 A3 | cBcd cB A2 | F4 d2 | fefg fe d2 |$ %26
+ B4 [FFe]4 | %27

@@ -1,0 +1,11 @@
+X:1
+T:Kitty McGee
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ A |"D" d2 d AFA | d2 d2 efg | f2 d"Em" e2 d2 | cec A2 A |$ d2 d2 AFA | d2 c efg | f2 d e2 c | %8
+ c2- c2 ::$ A | d2 f afc | e2 f g2 g | f2 c e2 d | cec A3 |$ a2 a g2 f | e2 e g2 g | eed edc | %17
+ d3 d2 :| %18

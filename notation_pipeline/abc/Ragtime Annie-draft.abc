@@ -1,0 +1,16 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ FG !arpeggio![FA]2 F2 [FB]F | [FA]F [FB]2 [FA]3 A | [FA]2 F2 [FB]F [FA]2 | [GA] [Gc]2 c [Gc]2 cB | %4
+ [GA]B [Gc]A [GB]2 [Gc]B |$ [GA]B [Gc]A [GB]2 [Gc]B | AB [Dc]2 d2 [Fe]2 | [FBd]4 [Fd]2 [Fd]2 | %8
+ a2 aa af dB |$ [FA]2 [FA][FA] [FA]2 fg | a2 aa af dA | [GB]2 [GB][GB] [GB]2 [Fe]2 | %12
+ gf [Fe]2 f2 gf | gf ed [Gc]2 [Gc][Gc] | cB Ac BA cB |$ [FA]2 [FA][FA] [FA]2 fg | a2 aa a2 g2 | %17
+ [Af]2 [Af][Af] [Af]2 e2 | [Fd]2 [Fd]2 c2 =c2 | [GB-]2 [GB][GB] [GB]2 ga | b2 bb ba g2 |$ %21
+ a2 aa a2 g2 | AB [Dc]2 d2 [Fe]2 | [Fd]2 [Fd][Fd] [Fd]2 A2 | |: [GB]2 B=c BG AB | %26
+ [E=c]2 [Ec][Ec] [Ec]2 cc | d^c de fd [Fe]2 |$ [Bfa]2 [Bg][Bg] [Bg]2 A2 | BA B=c BG AB | %30
+ [E=c]2 [Ec][Ec] [Ec]2 cc | d^c de fd [Fe]2 | [Bg]2 [Bg][Bg] [Bg]2 :| %33

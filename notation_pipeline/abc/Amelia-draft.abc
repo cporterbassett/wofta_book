@@ -1,0 +1,13 @@
+X:1
+T:AMELIA
+L:1/4
+M:3/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ A, || D E/ D | D F E/ |"D" D F"G" B |"D" A2 A |$ B3/2 G/ B |"D" A F E |"Bm" D B,3/2 B,/ | %8
+"G" B,2"A7" B,3/2 |$ D3/2 E/ D | D F E/ |"D" D F"G" B |"D" A2 A |$ B3/2 c/ d |"Em" d e f | %15
+ e3/2 c/ B |1 A2 A, ||2 A2 a ||$ f a3/2 f | a f d |"A" e3/2 c/ A | A2 f/e/ |$"Bm" d B/ d | f d B | %24
+ c3/2 A/ F | F2 A |$ G B3/2 G/ | F A d | e3/2 c/ A | d2 f |$ g f/ e |"D" a f"Bm" d |"G" d e3/2 c/ | %33
+ d2 a || d2 |] %35

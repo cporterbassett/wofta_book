@@ -1,0 +1,11 @@
+X:1
+T:Red Apple Rag
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ D2 | B, | D2G E2 G2 A | BBG GBG EAB | ec- ccB |$ AdBB2 dcde | | f2 d2 [df]2 f2 | g2e | %9
+ d2 B2 G2 :|$ Bc | g2- gf g2 | b^a3/2g- gage | g2- ge g2 | | e2 B4 c2 |$ GB2 dde | fafd [df]2 f2 | %18
+ dBF G2 :| %19

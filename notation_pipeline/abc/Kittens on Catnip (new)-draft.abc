@@ -1,0 +1,12 @@
+X:1
+T:Kittens on Catnip
+C:by Dave Goldman
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" d2 A2 =cBAG |"D" A2 FG-"C" G2 E2 |"D" F2 D2"F" =FGAB |"G" G2 A2 B2"C" =c2 |$ A2 =czAG | FG G2 | %6
+ F2 D2 A3/2 |=F |1 C2 D2- D3 z :|2 D2- D3 ||$ F | G2 EC- CGC | FDAD B D2 | G2 E3/2 CGEC | %14
+ FDAD F2 A |$ E C- CG |C | FDD B D A2 | A=FF2 G | |D |1 !arpeggio!A3 :|2 E2 (3ABc |] %23

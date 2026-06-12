@@ -1,0 +1,10 @@
+X:1
+T:ddle
+L:1/8
+M:none
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ E2 A2 ABcd | efec d2 cd |1 e2 a2 afed |1 c2 A2 A4 :|2 c2 A2 A2 ef ||$ gfga gfef | gf e2 d2 cd | %7
+ e2 A2 ABcA | B2 G2 G4 | %9

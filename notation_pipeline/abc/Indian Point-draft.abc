@@ -1,0 +1,12 @@
+X:1
+C:Rick Mohr
+Z:Indian Point
+L:1/8
+M:6/8
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ B,EF G2 A | BAG FED | CEF G2 A | BAG BAG | FED A,2 D |$ FEF AGF |1 EFG BAG | F3 FED :|2 GFE FED | %9
+ E3 E2 B ||$"Em" Bef gf=e |"C" cef gfe |"D" dfg agf |"Em" gfe"D" fed |$"Em" Bef gfe |"C" ceg a2 a | %16
+ bag fgf |1 e3 e2 B3/2 |]2 e3 e2 B, |] %19

@@ -1,0 +1,16 @@
+X:1
+T:em
+%%score ( 1 2 )
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ GF | E2 B,E G2 EG | BEGB dBGB | ADFA d2 Ad | BdAG F2 D2 |$ E2 B,E G2 EG | BEGB dBGB | ADFA dAFA |1 %8
+ GEFD E2 B,2 :|2 GEFD E2 (3DEF |:$ G2 DG B2 GB | ddBd gdBd | c2 ec BcdB | z x7 |$ G2 DG B2 GB | %15
+ ddBd gdBd | cdec BcdB |1 cAFD G2 (3DEF :|2 cAFD G2 GF |] %19
+V:2
+ x2 | x8 | x8 | x8 | x8 |$ x8 | x8 | x8 |1 x8 :|2 x8 |:$ x8 | x8 | x8 | cBAG FDEF |$ x8 | x8 | %16
+ x8 |1 x8 :|2 x z x6 |] %19

@@ -1,0 +1,11 @@
+X:1
+T:Sally Ann Johnson
+L:1/8
+M:none
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" FGAB A3 A | BABd e2 d2- d2 | f2 f2 edBd | fded BdAG |$ FGAB A3 A | BABd e2 c2- c2 | eage egee | %7
+ c2 c d4 ::$ deeg a4 | b2 b2 e2 e | gege ecBc | fced Bd A2 |$ ^defg a4 | b2 b2 e2 e | gege edBd | %15
+ fde=c d4 :| %16

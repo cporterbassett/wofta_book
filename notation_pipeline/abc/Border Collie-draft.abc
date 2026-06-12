@@ -1,0 +1,11 @@
+X:1
+T:Border
+C:Randy Miller
+L:1/8
+M:3/8
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"Em" BF F2 | BF F2 | BF F2 | dfb |$"Em" BF F2 | BF F2 |"Bm" BF F2 | dfb(3:2:1f ||$"A" A2 c/B/A | %9
+ A2 B2 |"A" AB cBA |"Bm" fdfb |$ A2 c/B/A | EFAc |"D" d3 | aec |] %16

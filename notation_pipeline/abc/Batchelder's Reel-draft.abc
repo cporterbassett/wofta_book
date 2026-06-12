@@ -1,0 +1,11 @@
+X:1
+T:Batchelder’s Reel
+L:1/8
+M:2/2
+I:linebreak $
+K:F
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"F" f2 af"C" efge | f2 c2 c2 =Bc | dcBA BAGF | EFGA Bcde |$ f2 af efge | f2 c2 (3cdc =Bc | %6
+"Bb" dcBA"Gm" BAGF | EFGE F2 c2 ::$ A2 cA cAcA |"Eb" B2 dB dBdB | A2 cA cAcA | BAGF EFGB |$ %12
+ A2 cA cAcA | B2 dB dBdB | Acfa bgeg | f2 a2 f2 c2 :| %16

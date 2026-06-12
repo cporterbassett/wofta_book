@@ -1,0 +1,16 @@
+X:1
+T:Title
+%%score ( 1 2 3 )
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:3 treble 
+V:1
+ [CE]2 B,2 Dc2 E2 D2 [Ff]2 A[Bd]c[Bd] fcAB | cB c2 d2 e2 F2 g-g2gf f2 | %2
+V:2
+ x21 | x2 d'2 x13 | %2
+V:3
+ x21 | x2 D2 x13 | %2

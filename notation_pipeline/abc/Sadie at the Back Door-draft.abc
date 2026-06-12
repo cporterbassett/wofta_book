@@ -1,0 +1,18 @@
+X:1
+T:Keyzbmix
+C:Jere Canote
+C:Arr: Pele Showman
+%%score ( 1 2 )
+L:1/8
+M:2/2
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ fg |: a2 g2 f2 AB | d4- d2 fg | a2 g2 f2 z AB | c4- c2 fg |$"D" a2 g2 f2 c4 | c4 B4 | %7
+ c2 B2 AF E2 |1 D4- D2 fg :|2 D4- D2 DE |:$"D" FE F2 D2 DE | F2 _F2 D2 AB | c2 B2 AF E2 | %13
+ D4- D2 DE |$ FE F2 D4 | c4 B4 | f4 d4 |1 BAFE D2 DE :|2 BAFE D2 fg |] %19
+V:2
+ x2 |: x8 | x8 | x9 | x8 |$ x6 AB x2 | x8 | x8 |1 x8 :|2 x8 |:$ x8 | x8 | x8 | x8 |$ x8 | x8 | %16
+ x8 |1 x8 :|2 x8 |] %19

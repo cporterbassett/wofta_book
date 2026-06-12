@@ -1,0 +1,13 @@
+X:1
+T:Wild Horses at Stony Point
+C:from Chester Carlton
+Z:Hoedown
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ (3DEF ||"G" G2 ge dded | B2 ge dBAF | G2 ge dedc | BGAF"G" G2 ::$ z A ||"G" BABc d3 A | %7
+ BABc dB G2 | BABc dedc | BGAF G2 ::$ z A ||"Em" Bded e3 g2 |"D" fgaf gfed |"Em" Bded e3 g | %14
+"D" fgaf"G" g2 ::$ z e || gfga bgeg | fefg3/2 g2fdf | gfg3/2g a2 e2 | fgaf g2 :| %20

@@ -1,0 +1,11 @@
+X:1
+C:an: Laluie Andres
+L:1/4
+M:4/4
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"G" G3/2 A B c | d g d3/2 c/ | d g d g | d g"D" d/c/B/A/ |$ G3/2 A B c | d g d B/c/ |"D" d c B A | %7
+"G" G2 G2 ::$ a ^f g/f/ e |"D" ^f/e/ d e2 |"D" ^f d e A |"D" ^f/e/d/f/ e f/g/ |$ a ^f g/f/ e | %13
+"D" ^f/e/ d e2 |"D" ^f d e ^c |1 d2 d ^f/g/ :|2 d =c B A |] %17

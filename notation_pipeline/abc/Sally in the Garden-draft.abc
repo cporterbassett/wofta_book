@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:F
+V:1 treble nm="Voice" snm="Voice"
+V:1
+|: DFED A,2 A,2 | F2 F2"C" E2 E2 | DFED A,2 =B,2 |"C" C2 E2 C2 E2 | DFED A,2 A,2 |$ F2 G2 A4 | %6
+ A3 B AG E2 | F3 G2 FE C2 |1 D4 D3 z :|2 D4 D3 E2 |:$ FE D2 FE D2 | F2 G2 A2 DE | FE D2 FEFG | %13
+ AGFE D3 E2 | FE D2 FE D2 |$ F2 G2 A4 | A3 B AG E2 | F3 G2 FE C2 |1 D4 D3 E :|2 D4 D4 |] %20

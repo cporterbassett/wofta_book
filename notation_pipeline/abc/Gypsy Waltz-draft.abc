@@ -1,0 +1,24 @@
+X:1
+T:Title
+%%score ( 1 2 3 )
+L:1/8
+M:none
+I:linebreak $
+K:F
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:3 treble 
+V:1
+ e4 z3/2 G B2 c[Bc] || d3 g dcB | a2 aba | [Ba]2 d2 g (3dcB | G2 D G2 B2 d2 |$ %5
+ ^c3 C (3G2 B2 d2 c3 c2 (3AGF | G4 (3GAB | G2 G B2 c[Bc] | d2 g d2 c2 B2 e4 a2 a3 b2 a2 |$ %9
+ g d2 g (3dcB x31/3 | ^c2 D (3GBd c2 d2 x4/3 | =G2 GAB F4 G2 D (3G2 ^F2 F2 |$ %12
+ [_EF]4 A, E2 [Fd]2 G B2 c [Bc]2 | d2 g3 b | g3 D G2 ^F2 =F | _E2 B, EF !arpeggio!G B2 B (3cBc |$ %16
+ d^c d2 (3g[_ef]g (3bag | a3 D (3GBc | d7/2 g (3d2 c2 B2 | a4 aba [FAA]4 g2 d2 g d2 c2 x5/2 |$ %20
+ e4 G2 D G2 B2 d2 | z D (3GBd | c2 [Ed]2 c2 x8 | G2 | (3GFD (3C2 F2 D2 (3C2 A,2 A,2 |$ z12 | %26
+V:2
+ x21/2 || x7 | x5 | x7 | x9 |$ x20/3 [F^c]4 x13/3 | x6 | x7 | x22 |$ x16/3 F4 G2 D GB d2 | %10
+ x13/3 F4 (3AGF | x16 |$ x15 | x6 | x9 | x11 |$ x8 | x6 | x17/2 | x18 z/ [FAc_e]4 |$ x13 | x4 | %22
+ x4 (3A^FD !arpeggio!G2 G2 A2 [Ba]2 | x2 | x10 |$ G,4 G2 [F_e]4 [FA]2 | %26
+V:3
+ x21/2 || x7 | x5 | x7 | x9 |$ x15 | x6 | x7 | x22 |$ x49/3 | x25/3 ^c2 | x16 |$ x15 | x6 | x9 | %15
+ x11 |$ x8 | x6 | x17/2 | x37/2 B2 x2 |$ x13 | x4 | x14 | x2 | x10 |$ x12 | %26

@@ -1,0 +1,12 @@
+X:1
+T:STAR OF THE COUNTYDOWN (in 4/4)
+C:tmu:
+L:1/4
+M:4/4
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ E/G/ A"F" A G/A/ | c c d c/d/ |"Am" e d c G/E/ |"Em" G2 E/G/ |$"Am" A A G/A/ | c c"G" d c/d/ | %6
+"Am" e d/(3:2:2c/ G | e |$ g e e d/c/ |"G" (3d d d c/d/ |"Am" (3:2:2e d/c/ A G/E/ |"Em" G E/G/ |$ %12
+"Am" A G/A/ | c c d c/d/ |"Am" e d/c/ G | e |] %16

@@ -1,0 +1,17 @@
+X:1
+T:Gil's Schottische
+C:by Gil Kiesecker
+%%score ( 1 2 )
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+"D" DFAd fedB |"G" G2 GA B2 BB | A2 cc c2 cB |"D" A2 de [Fe]2 f2 |$ DFAd fedB |"G" G GA B2 BB | %6
+ A2 cc c2 cB |"D" A2 [Fd]2 [Fd]2 fg ||$ a2 af gf (3efg |"G" g x7 |"A" Acef gfga | %11
+"D" b2 a3/2g a2 f=g |$ a x7 | a2 BB B2 cB |"A" Acef geBc |"D" [Dd]2 d2 [Dd]4 || %16
+V:2
+ x8 | x8 | x8 | x8 |$ x8 | x7 | x8 | x8 ||$ x8 | g2 BB B2 cB | x8 | x17/2 |$ a2 af gfeg | x8 | x8 | %15
+ x8 || %16

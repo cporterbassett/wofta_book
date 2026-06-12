@@ -1,0 +1,11 @@
+X:1
+C:Andy De Jnrlis
+L:1/8
+M:2/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ FG |"D" A2 d>e | f3 z2 |"G" ed cB |"D" A3 F | G2 e>e | e3 G |"D" F2 d>d | d2 FG |$ A2 d3 | %10
+ f3 c/d/ |"G" ed cB |"D" A3 F | G2 z2 | cA Bc | d2 e>f |$ gB gB | g2 g2 | fA fA | f2 g>f | eA cd | %21
+ [Fe]2 g2 | f4- | f2 e3/2 f2 |$ gB gB | g2 a>g | fA fA | f2 g>f | eA cd | eg fe | d4- | d2 |] %32

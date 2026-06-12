@@ -1,0 +1,12 @@
+X:1
+T:La Belle GaSpésié
+C:by Marcel Messervier
+L:1/8
+M:2/2
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ AB | c3 d cBAc | fee^d e2 E2 | c2 d cBAc |"Bm" eddc d3 c |$ dcde dcBA | BABc B3 e | e[cd]f |1 %8
+ cBcd c2 E2 :|2 AcBG A4 ||$"D" aA=gA fAeA |"A" Acef ecBA |"E" E2 BE cEBE |"A" ABcd eBA |$ %14
+"D" aA=gA fAeA | Acef ecBA |"E" E2 B2 E2 cEBE |1 AcBG A4 |]2 A2 c2 B2 A2 |] %19

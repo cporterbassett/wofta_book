@@ -1,0 +1,11 @@
+X:1
+T:Farewell Trion
+L:1/8
+M:2/2
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ e g2 a g2 e2 | d2 c2 G4 | A c2 d cAGA | cAcd e4 |$ e2 g2 a g2 e2 | d2 c2 G4 | AGEC D C3 ::$ %7
+ G,A,CD EGAB | cB c4- | c4- c2 [Dc]2 | cAGc AGEC :| D2 C2 E2 [Fe]2 |$[M:2/2] G2 EF G2 E2 | %13
+ GAGE DCEF | G2 E2 [Fe]2 G2 | cAGE DCEF |$ G2 E2 [Fe]2 G2 | GAGE DCA,C | G,A,CD EAB | cAGE D C3 |] %20

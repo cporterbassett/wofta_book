@@ -1,0 +1,13 @@
+X:1
+T:Fisher ’s Hornpipe
+%%score ( 1 2 )
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ Bc | [Fe]4 dAFD | FDFD GBAG x3 |$ dA=FD GBAG | =FEDF GBAG |1 dBA=F D2 =c2 |]2 dBA=F D2 =cd | %7
+V:2
+ x2 | x8 | x7 [AAce]4 |$ x8 | x8 |1 x8 |]2 x8 | %7

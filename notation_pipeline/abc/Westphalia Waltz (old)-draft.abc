@@ -1,0 +1,20 @@
+X:1
+T:Title
+L:1/8
+M:3/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ DE F |: G4 A2 | B4 e2 | d3 e d^c | d3 D E2 | G4 A2 |"Bdim" B4 c2 | A3 [DB]2 A2 |"D7" A4 G2 |$ %9
+w: |||||||||
+w: |||||||||
+ A4 B2 | c4 g2 |"D7" f3 g fg | f4 e2 |"D7" d3 ^c de | d2 ^c2 =c2 |"G" B3 c BA |$[M:3/8]"G" g4 | %17
+w: ||||||||
+w: ||||||||
+ f4 |"G" e2 f2 | B6 |"G" B2 A2 | B2"Bdim" A2 | c3 | c4 |"D7" e4 | e4 |$ e2 f2 | f4 | d3 | B3 | B3 | %31
+w: |||||||||guitarists *|just|G|B|chords,|
+w: |||||||||the A||are|D7;|throughout|
+ d2 B2 | G3 | G3 |] %34
+w: like the|diminished||
+w: more common|||

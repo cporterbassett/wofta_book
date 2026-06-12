@@ -1,0 +1,10 @@
+X:1
+Z:New Rigged Ship
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" ded d2 f | ded d2 f | ecA Acd | ecA ABc |$ ded d2 f | ded d2 f | ecA ABc | d3 d3 ::$ %8
+ a2 f a2 f | ded dga |"Em" b2 g b2 g | efe efg |$ a2 f a2 f | ded g3 | ecA ABc | d3 d3 :| %16

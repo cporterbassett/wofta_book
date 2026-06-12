@@ -1,0 +1,11 @@
+X:1
+T:Liza Jane
+L:1/8
+M:2/2
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ ef | a2 f2 e2 [Dc]2 | fecB A2 e2 | a2 f2 e2 e2 | f6 ef |$ a2 f2 e2 ce | fecB A2 AB | cBAF E2 F2 |1 %8
+ A6 :|2 A8 |:$ c4 c3 c | B2 A2- A2 AB | c2 B2 A2 E2 | F6 E2 |$ F2 A2 B3 A | B2 c2 B2 AB | %16
+ cBAF E2 F2 |1 A8 :|2 A6 |] %19

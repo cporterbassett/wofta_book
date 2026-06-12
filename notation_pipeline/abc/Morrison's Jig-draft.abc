@@ -1,0 +1,18 @@
+X:1
+T:Morrison's ﬁg
+Z:DDuin
+%%score ( 1 2 )
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ d2 | [FAce]4 E2 E2 BEB EBE A2 F2 [Dg]2 [FAee]4 E2 E2 B[ce]2B [FA]4 dcB AFD [FAce]4 |$ %2
+ E2 BEB F4 [Ece]2BE"D" A2 g2 D2 G2 G FAA | dAG E2 E2 D2 |$ %4
+ g2 B2 e2 fee [FAce]4 a2 e2 e2 fed [Fc]4 Bee [ccef]2ee | f2 a2 g2 f2 e2 d2 [FAce]4 |$ %6
+ Bee fee g2 e2 e2 f2 e d2 e4 e2 d2 e4 BG E2 D2 |$ %7
+ B2 e2 e2 e2 A4 e2ee fed [FAc]4 Bee [Ef]2 e2 e2 F2 F2 de f2 [FAce]4 | %8
+V:2
+ x2 | x11 e4 x31 |$ x19 e4 x2 | x9 |$ x33 | x16 |$ x17 gf x16 |$ x44 | %8

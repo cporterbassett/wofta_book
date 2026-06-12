@@ -1,0 +1,11 @@
+X:1
+T:Rock the Cradle, Joe
+L:1/8
+M:none
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ [Ff]2 g2 |"D" a2 a2 fefg | a2 a2 fefg | a2 a2 f2 e2 | [df]3 e [df]2 f2- |$ f2 e2 =c2 e2 | %6
+ fgfe =c2 ef | gfe=c cABc |1 d6 ::$ Acec Acec | ccce e2 e2 | gegf g2 a2 | f3 g f4 |$ Acec Acec | %14
+ dcde f2 ef | gfed cABc |1 d3 c d4 :|2 d3 c d2 |] %18

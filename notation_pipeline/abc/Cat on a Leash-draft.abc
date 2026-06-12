@@ -1,0 +1,11 @@
+X:1
+T:Cat on a Leash
+L:1/8
+M:2/2
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ a2 ecBA | Bc- c2- c2 Bc | c2 BABc | d2 c2 B!arpeggio!A |$ a2 f2 ecBA | Bc c2 Bc | d2 c2 BAFE | %7
+ FEFG A4 ::$ E2 F A2 A2 | A B2 Bc | d2 c2 BABc | d2 c2 BA |$ E2 E2 A2 A2 | B2 A B2 Bc | d2 c2 BAE | %15
+ FEFG A4 |] %16

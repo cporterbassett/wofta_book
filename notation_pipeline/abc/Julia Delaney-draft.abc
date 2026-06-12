@@ -1,0 +1,16 @@
+X:1
+T:Julia Delaney
+%%score ( 1 2 )
+L:1/8
+M:6/4
+I:linebreak $
+K:F
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+"Dm" dcAG F2 D2 [Fe]2 |"C" E2 CE F"Dm"ED^c | dcAG F2 D2 [Fe]2 | Add^c d"Dm"efe |$ d2 x6 | %5
+"C" E2 C2 E2 F"Dm"ED^c | ccAG FDDF | Acd^c d4 ::$"Dm" f2 fe fagf |"C" ecgc acgc |"Dm" fece fagf | %11
+ ed^ce d2 e2 |$ e2 ee fagf | ecgc acgc | fede fdcA |1 Add[Bc] d2 [Dd]2 e2 :|2 Add^c d4 |] %17
+V:2
+ x10 | x8 | x10 | x8 |$ dcAG F2 DF | x10 | x8 | x8 ::$ x8 | x8 | x8 | x8 |$ x8 | x8 | x8 |1 x10 :|2 %16
+ x8 |] %17

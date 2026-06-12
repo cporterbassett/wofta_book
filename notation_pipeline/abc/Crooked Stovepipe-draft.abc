@@ -1,0 +1,12 @@
+X:1
+T:Crooked Stovepipe
+L:1/4
+M:2/2
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ G B B/c/d/B/ | G B B/c/d/B/ | G B e3/2 B/ | d c c/d/c/A/ |$ F A A/B/c/A/ | F A A/B/c/d/ | %6
+ e3/2 d/ e f |1 g f e d/c/B/A/ :| g g a ^a |]$ b3/2 c'/ b a | g2 g f | e e f g | a3 b | %13
+ c'3/2 d'/ c' a | [ef]2 e | d d e f |$ b3/2 c'/ b a | g2 g f | e e f g | a3 b | c'3/2 c'/ c' a | %21
+ f3 e | d d e f | g f/e/ d/c/B/A/ |] %24

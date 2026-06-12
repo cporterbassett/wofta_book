@@ -1,0 +1,18 @@
+X:1
+T:SALLY A BUG ON ME
+C:Glen Barry/Swan Wllh'ams
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ FG | A2 e f2 g fe | dAFG A2 dA | cAEF GABd | BADE F2 FG |$ A2 e f2 g fe | dAFG A2 dA | %7
+w: |||||||
+w: |||||||
+ =c2 cA BAcA |"D" d4 d2 ::$ cd | e2 ef edcd | e2 a2 c3 e |"E7" ^g2 b2 e3 e | a2 c'2 e2 cd |$ %14
+w: ||||* * E7 *|* * * A|* * A * *|
+w: |||||* * * l.‘~||* * ﬁqal * *|
+[K:treble-8] z2 e2 ef ed=cd | e2 a2 a3 a | g2 ge fe g2 |1 a4 :|2 a4 |] %19
+w: |||||
+w: |||||

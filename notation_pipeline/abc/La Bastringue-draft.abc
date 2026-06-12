@@ -1,0 +1,11 @@
+X:1
+T:La Bastringue
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" f2 ff f2 gf | e2 c2 d3 d | c2 d2 e2 fe | d2 e2 f2 d2 |$ f2 ff f2 gf | e2 c2 d2 A2 | %6
+ g3 f"Em" e2 d2 | B2 c2 d2 A2 ::$ d2 f2 d2 adfd | =c2 ec gcec | d2 f2 d2 adfd | bgec dcBA |$ %12
+ d2 f2 d2 adfd | =c2 ec gcec | d2 f2 d2 adfa | bgec d2 (3ABc :| %16

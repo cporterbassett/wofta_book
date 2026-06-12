@@ -1,0 +1,18 @@
+X:1
+C:reel
+%%score ( 1 2 )
+L:1/16
+M:2/4
+I:linebreak $
+K:D
+V:1 treble nm="Fiddle" snm="Fiddle"
+V:2 treble 
+L:1/4
+V:1
+ [EA]2[ce]2 [ce]2[Ae][Be] | [ce-][Be][Ae][ce] [Be]4 | F2-[Fd]2 [Fd]2de | fgaf ecBA |$ %4
+ [EA]2[ce]2 [ce]2[Ae][Be] | [ce-][Be][Ae][ce] [Be][Ae][FA][EA] |"D" dcde fgaf | ecBc A2AF :|1 %8
+ ecBd A2cd |:$ ecea fdfa | ^gefg abaf | ecea fa^gf | edcA [Be]2[Be]2 |$ ecea"D" fdfa | %14
+ [F^g]4 [F^Ge]4 | a^gab afed |1 cABc A2(3a^gf :|2 cABc A4 |] %18
+V:2
+ x2 | x2 | x2 | x2 |$ x2 | x2 | x2 | x2 :|1 x2 |:$ x2 | x2 | x2 | x2 |$ x2 | x [F^G] | x2 |1 x2 :|2 %17
+ x2 |] %18

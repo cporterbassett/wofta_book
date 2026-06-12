@@ -1,0 +1,12 @@
+X:1
+T:The Demented Dog
+C:Larry Edelman
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" A,DA,"G" B,DB, | CEC3/2"D" DAB | =cAF GG | EG AB^c |$"D" dcc AGF | dAF"G" G3 |"D" AdA cAF | %7
+ EDC"D" D3 ::$ A,DD B,D | A,DD B,2 D2 | A,DD B,DD | FDF EDB, |$ A,D B,DD | A,DD B,DD | AdA cAF | %15
+ EDC D3 |] %16

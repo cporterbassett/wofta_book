@@ -1,0 +1,17 @@
+X:1
+T:The Boggy Road to Texas
+%%score ( 1 2 )
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ A4 B || BAGB AGED | ED | GDGD E(3DB,G, | A,2 A,3 B, C3/2B, |$ A,2 B,2 C2 D2 | AGFE DCB,A, | z5 |]$ %8
+ [G,-D]2 || [G,D]2 B2 BcBA | D2 B2 BcBA | D2 B2 dcBc | A2 A2 G FG |$ A2 B2 c2 d2 | e=fg a2 a3 | %15
+ =fgef dcBA ||$ [Be]4 _b2- || bagb aged | g2 g3 d ed | g2 g2 edBd | A2 A2 G FG |$ A2 B2 c2 d2 | %22
+ F2 x7 | fgef dcBA | G2 G2- G2 |] %25
+V:2
+ x5 || x8 | x2 | x2 z x4 | x17/2 |$ x8 | x8 | G,2 G,2- G, |]$ x2 || x8 | x8 | x8 | x7 |$ x8 | x8 | %15
+ x8 ||$ x6 || x8 | x8 | x8 | x7 |$ x8 | [Fe]2 g2 a2 a3 | x8 | x6 |] %25

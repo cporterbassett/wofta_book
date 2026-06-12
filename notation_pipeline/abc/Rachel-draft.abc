@@ -1,0 +1,16 @@
+X:1
+T:Title
+%%score ( 1 2 )
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ D2- |: D2 [Fe]2 Ac dB | GA Bd g2 A2- | Ac [Fe]2 f2 gf | de dB AG F2 | D2 [Fe]2 Ac dB |$ %6
+[K:treble+8] G2 [Ag]2 Bd g2 | x8 | d2 [df]2 d2 a2 :: f2 ff g2 gg | b2 x6 | e2 [Fe]2 f2 gf |$ %12
+[K:treble] de fg a2 a2 | f2 ff g2 g-g | ba fg a2 af | e2 [Fe]2 f2 gf | d2 f2 d2 D2 :| %17
+V:2
+ x2 |: x8 | x8 | x8 | x8 | x8 |$[K:treble+8] x8 | Ac [Fe]2 f2 gf | x8 :: x8 | [ab]a fg a2 af | %11
+ x8 |$[K:treble] x8 | x8 | x8 | x8 | x8 :| %17

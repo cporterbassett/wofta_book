@@ -1,0 +1,11 @@
+X:1
+T:Washington 's March
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" DEFG AB=cA | GBG F2 D2- D2 | DEFG AGFG | Ad- d2 d4 |$ DEFG AB=cA | GBAG FD- D2 | DEFG Adfd | %7
+ eddc d4 |:$ f2 a2 f2 a2 | edcd eg- g2 | f2 a2 f2 a2 | ed c2 d4 |$ f2 a2 f2 | edcd eg- g2 | %14
+ a2 g2 fg f2 | ed c2 d4 | %16

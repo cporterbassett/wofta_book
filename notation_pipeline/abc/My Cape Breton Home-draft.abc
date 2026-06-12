@@ -1,0 +1,13 @@
+X:1
+T:Jerry Holland
+L:1/8
+M:none
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ g ||"G" g3 g f3/2g |"D" a2 f2 d2 |"C" c3 c Bc |"G" d2 B2 G2 |$"G" g3 g fg | g6 f2 d2 | %7
+"Am7" c3 c Bc |"D7" d3 f2 [Bg] |$"G" [Bg]3 g fg |"D" a2 f2 d2 | c3 c Bc |"G" d2 B2 G2 |$ E c3 cB | %14
+"D" A3 G F2 |"G" G6 | [Ge]4 G :|$"G" D3 G B2 |"C" =c3 c Bc |"G" d3 B G2 |"Am" A2 G2 E2 |$ %21
+"G" D3 G B2 |"C" c3 c Bc |"G" d2 g3 gf | d2 c2 A2 |$ D3 G B2 | c3 Bc | d2 (3:2:2B2 G2 | A2 G2 E2 |$ %29
+"G" D g3 fg | d2 c2 A2 |"G" G6 | G4- G || %33

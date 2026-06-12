@@ -1,0 +1,27 @@
+X:1
+T:WAVERLY TWO-STEP
+C:from Glenn Berry
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Violin" snm="Violin"
+V:1
+ DD F2 G2 | A4 ABAF | D2 DD F2 G2 | A4 ABAF | D2 A2 d2 e2 | f4 f3 g |$ f2 d2 e2 d2 |"A" c4 c3 d | %8
+w: ||||||||
+ c2 EE E2 F2 | G4 GAGF | E2 EE E2 F2 | G4 GAGF |$ E3 E2 A2 B2 | c3 d c2 B2 | A3 B A2 G2 | %15
+w: |||||||
+ F4 F3 G2 | F2 DD F2 G2 | A4 ABAF |$ D2 DD F2 G2 | A4 ABAF | D2 A2 d2 e2 | f4 f3 f | a2 f2 e2 d2 | %23
+w: |||A * * * H|||H .,, *||
+"G" [G,DBg]4 g3 a |$ g2 (3DEF GABd | [Bg]4 g3 | g2 d2 e2 d2 | [Af]3 f2 e2 | d2 A2 B2 A2 | %29
+w: A * *||D *||* * A||
+ e3 f e2 d2 |$ =c2 A2 B2 c2 | e4 d3 e | d2 ded =c2 d2 | e3 f e2 d2 | =c2 A2 g3 e2 |$ fafe dBAG | %36
+w: |D * * *||* E3 * * * *|* A * *|||
+ F3 F2 B2 A2 | [^GB]2 G B2 c2 | d3 d c2 B2 | A4 A3- B |$ A2 DD F2 G2 |"D" A4 ABAF | D2 DD F2 G2 | %43
+w: |||||||
+ A4 ABAF | D2 A2 d2 e2 |$ f4 f3 f | a2 f2 e2 d2 | [G,DBg]4 g3 a | g2 (3DEF GABd | [Bg]4 g3 a | %50
+w: |||||||
+ g2 d2 e2 d2 |$"D" [Af]3 a f2 e2 | d2 A2 B2 A2 |"A" e3 f e2 d2 | c2 A2 B2 c2 |"D" dedB AGFE | %56
+w: ||||||
+ D4 [Fd]4 |] %57
+w: |

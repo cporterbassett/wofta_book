@@ -1,0 +1,11 @@
+X:1
+T:Old Grey Cat
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"Em" e2 e2 E2 F | GFGA BABc | d2 d2 D3 E | FAdB AFED |$"Em" e2 e2 E3 F | GFGA BABc | dcBA BAGF | %7
+ G2 E2 E4 ::$"Em" B2 e2 e3 c | Bdef gfed | A2 d2 c2 B | ABde fedf |$"Em" e2 B2 g2 B2 | a2 B2 b3 a | %14
+ gfed B2 A2 |"Em" e4 e4 :| %16

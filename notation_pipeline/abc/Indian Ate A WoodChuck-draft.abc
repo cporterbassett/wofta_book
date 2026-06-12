@@ -1,0 +1,12 @@
+X:1
+T:Indian Ate A WoodChuck
+C:from Greg Canote
+L:1/8
+M:4/4
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ cA |: GFE"C"D CDEG | A2"F" dc d2 cA | GFED CDEG | AGAB"C" c2 cA |$ GFED CDEG | A2 dc d2 cA | %7
+ GFED CDEG | A2 B2 c4 ::$ edeg a2 g2 | e2 d2 d2 e2- | edeg a2 g2 | eged c2 cd |$ edeg a2 g2 | %14
+ e2 d2 d4 | a2 a2 abag | eged c4 :| %17

@@ -1,0 +1,11 @@
+X:1
+T:Johnny, Johnny, Don't Get Drunk
+L:1/8
+M:none
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" [Ff]2 a2- a2 a2 g2 | fdec d3 A | BABc dBAG | F2 E2- E2 E4 |$ fa- a2 a2 g2 | fcec c2 A | %6
+ BABc dBAG | FDEF D4 ::$ FA- A2 A4 | FGAB A3 A | BAB=c dBAG | F2 E2- E2 E4 |$ F2 [A-g]2 A2 A2 d2 | %13
+ BAB=c d3 A | BAB=c dBAG | FDEF D4 :| %16

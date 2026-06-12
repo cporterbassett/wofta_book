@@ -1,0 +1,11 @@
+X:1
+Z:to California
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ D2 [Fe]2 [FBd]4 | GBdg e2 [Fe]2 | gfgd edBG | ABAG E2 D2 |$"G" GFB"D" AED | GBdg e2 [Fe]2 | %6
+ gfgd"Em" edBG |1 A G2 E2 F2 G2 :|2 AGEF G2 e2 ||$ gfeg fedf | edef"Em" edBf | gfad"Em" edBG | %12
+ ABAG"D" E2 DF |$ GFGB AGED | GBdg e2 e2 | gfd"Em" edBG |1 AGEF"G" G2 [Fe]2 |] AGEF G2 |] %18

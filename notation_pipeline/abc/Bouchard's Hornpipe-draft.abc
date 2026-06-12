@@ -1,0 +1,12 @@
+X:1
+C:by Mike Springer
+Z:Bouchard's Hornpipe
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ FE |"D" DFAd"G" BcdB |"A" Acec"D" d2 ef |"G" g2 ga gfeg |"D" fedB A2 A2 |$"G" B3 A BcdB | %6
+"D" AGFG A2 (3ABc | d2 f2 ed c2 |"D" d6 ::$ [Fe]2 g2 |"D" a2 ab agea | geef g2 ag | %12
+"Em" e2 de geed | cdec A2 A2 |$ B3 A BccB | AGFG A2 (3ABc | c2 e2 e2 c2 | d6 :| %18

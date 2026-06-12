@@ -1,0 +1,15 @@
+X:1
+T:Jim, the Fiddle Maker
+C:Ivan Hicks
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ AG |"D" F2 AF E2 F2 |"D" DEFD A,2 D2 | A, D2 A, D2 E2 | F6 AG |$ F2 AF"A7" E2 FE | %6
+"D" DEFD A,2 D2 | EF^GB e2 d2 |"A7" c3 B A2 AG |$ F2 AF E2 FE |"D" DEFD A,2 D2 | A, D2 A, D2 E2 | %12
+ F6 dc |"G" B2 dB"D" A2 dA |$ FGAF E2 D2 | A,B,DE F2 E2 |"D" D6 A2 |"D" d3 d d2 AB | dBAG F2 D2 |$ %19
+ A, D2 A, D2 E2 |"D" F6 A2 | d3 d d2 AB | dBAG F2 D2 |"E7" EF^GB e2 d2 |$ c3 B A2 A2 | %25
+"D" d3 d d2 AB | dBAG F2 D2 | A, D2 A, D2 E2 |$ F6 dc |"G" B2 dB"D" A2 dA | FGAF E2 D2 | %31
+ A,B,DE F2 E2 | D8 |] %33

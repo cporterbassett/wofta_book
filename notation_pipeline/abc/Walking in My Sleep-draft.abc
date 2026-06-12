@@ -1,0 +1,12 @@
+X:1
+T:Walking in My Sleep
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ B,A, |:"G" G,A,B,C DEGA | [DB]3 c B z BA | GABd [dg]2 [Ae]2 |"D" [Af]3 g f z FE |$ DEFG ABcd | %6
+ [Ec]2 [G,E] [Ec]3 A |"G" BAGB AGED |1 [G,G]4 z2 B,A, :|2 G2 F GABd ||$ z2"G" [dg]2 [dg]2 BABd | %11
+ [dg]2 [dg]2 BABd | gfg3/2g3/2 gedB | A4- AB A2 |$ [ca]3 [ca-] [ca]2 [Bg]2 | [Af]3 g [Af] z e^c | %16
+ dABd =cAFD |1 G4 z2 Bd :|2 G4 z4 |] %19

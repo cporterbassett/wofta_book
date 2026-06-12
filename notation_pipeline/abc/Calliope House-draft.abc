@@ -1,0 +1,12 @@
+X:1
+T:Calliope House
+C:Dave Richardson.
+L:1/8
+M:6/8
+I:linebreak $
+K:E
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ B |"E" eBB gBB | eBB gBB | cff f2 e |"B" fge c2 e |"E" B3 B2 G |$[M:2/2] =d B2 =c e2 e |1 %7
+ =g2 b gee | =f3 e2 :|2 =gbg =fe=c | e3 e3 |:$ b3 gbb | ebb gbb | a3 gag | f2 e c2 e | B3 B2 G |$ %16
+ B2 c e2 e |1 g2 b gfe | f3 fga :|2 gbg fec | e3 e2 |] %21

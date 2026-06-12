@@ -1,0 +1,11 @@
+X:1
+C:John McCusker
+L:1/8
+M:2/2
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ AcBA F2 AF | EFAB cABc | d3 f eAce |"D" faec"E" BcdcB |$ AcBA F2 AF | EFAB cABc | d3 f ecAc |1 %7
+ BAGB A2 (3EFG :|2 BAGB Aefg |:$ aAAg AAfA | effe cABc | d3 f ecAc | Bcde"E" fefg |$ aAAg AAfA | %14
+ effe cABc | dffff ecAc |1 BAGB Aefg :|2 BAGB A4 |] %18

@@ -1,0 +1,11 @@
+X:1
+C:Tommy Mates
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Fiddle" snm="Fiddle"
+V:1
+ a2 a2 a2 ef | g2 f2 e3 f | g2 g2 g3 a | fe d2 d2 fg | a2 a2 a2 ef |$ g2 f2 e3 f | e2 d2 c2 A2 | %7
+ BABA c2 A2 | A4 z2 :|[M:4/4] |: AB c2 AB c2 |$"D" e2 d2 d4 | de f2 de f2 |"G" g2 f2 e3 f | %14
+ e2 d2 =c2 A2 |"E7" BABA =c2 A2 |[M:2/4] A4 :| %17

@@ -1,0 +1,13 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ D2 | A2 A2 FEDE | F2 A2 B A2 DF | F2 A2 BAFD | F2 E2 D2 E3 | F2 A2 BAFD | F2 AB A3 A2 |$ %7
+"G" BABA"D" FEDF | E2 D2"D" D2 :: AB |"D" d2 d2 (3BdB AB | d2 d2 f4 | f3 a fede | f2 f2 e3 e |$ %14
+"D" f2 a2 fedA |"G" B2 d2 B4 | dBAF EDFD | (3EFE D2"D" D2 :: A,B, |"D" D2 D2 (3B,DB, A,B, | %20
+ D2 D2 F3 F2 |$ FEDF EDB,A, | DEDB, A,2 A,B, | D2 D2 (3B,DB, A,B, | D2 D2 F3 F2 | FEDF EDB,A, | %26
+ B,2 D2 E2 D2 :| %27

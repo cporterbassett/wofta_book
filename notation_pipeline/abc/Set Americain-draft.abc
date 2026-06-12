@@ -1,0 +1,12 @@
+X:1
+C:Théodore Duguay
+Z:Set Américain
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"Bm" B2 Bc d2 e2 | f2 fg fedc | BABc dcBA |"Em" GFGA G2 F2 |$"Bm" B2 Bc d2 e2 | fefg fedc | %6
+ BABc"Em" dcBA | Bbfd"Bm" B4 ::$ dAFA DAFA | EAFA"D" DABc | dAFA DAFA |"Em" e2 df eABc |$ %12
+ dAFA DAFA | EAFA DABc | dcdf edBc |1 dfec dABc3/2 |]2 dfec d4 |] %17

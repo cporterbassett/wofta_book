@@ -1,0 +1,27 @@
+X:1
+C:Ward Allen
+%%score ( 1 2 )
+L:1/4
+M:4/4
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+L:1/8
+V:1
+ z/ A/A/ c d |: [Ae]2 [Ae]3/2 f/ | e d (3c/d/c/ B | B/c/- c c3/2 d/ | c/B/ A d c/d/ |$ %5
+w: |||||
+"E7" c B2 c |1 d2 (3c/d/c/ B | d c3/2 B/ [Dc] | c A/A/ c d :| d2 (3c/d/c/ B/c/ | B A2- A/B/ |$ %11
+w: ||||||
+ d e f g | a g/f/ e/d/c/B/ | A z A,2 |$ A D C D |: E2 E3/2 F/ | E C E A | B/c/- c c3/2 B/ | %18
+w: |A * * * * * *||||||
+ A E F E | B/4c/4B/- B B3/2 A/ |$ G E F E |1 A A/A/ G F | E D C D :|2 A A/A/ A A || A A/A/ c d || %25
+w: |||||||
+ [c^e]2 |$ A A G A |: B2 B3/2 c x | f/g/- g g3/2 f/ | e B c B |"B7" f/4g/4f/- f f3/2 e/ |$ %31
+w: ||||||
+ ^d B c d |1 e e/e/ ^d c | B A G A :|2 (3e z ^d z || =d2 c d |] %36
+w: |||||
+V:2
+ x7 |: x8 | x8 | x8 | x8 |$ x8 |1 x8 | x8 | x8 :| x8 | x8 |$ x8 | x8 | x8 |$ x8 |: x8 | x8 | x8 | %18
+ x8 | x8 |$ x8 |1 x8 | x8 :|2 x8 || x8 || x4 |$ x8 |: x7 F4 | x8 | x8 | x8 |$ x8 |1 x8 | x8 :|2 %34
+ x6 || x8 |] %36

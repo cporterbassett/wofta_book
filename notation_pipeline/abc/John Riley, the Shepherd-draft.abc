@@ -1,0 +1,13 @@
+X:1
+T:John Riley, the Shepherd
+C:from Greg Canote
+C:source - Art Stamper
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ Bd |: e2 d2 e2 g2 | edBA G2 A2 | B3 c BAGD | E3 G E2 Bd |$ e2 d2 e2 g2 | edBA G2 A2 | B3 c BAGB |1 %8
+ A3 B A2 Bd :|2 A3 B A4 |:$"G" B3 c BAGD |"C" E2 ED E2 G2 |"G" B3 c BAGD |"C" E2 ED E2 G2 |$ %14
+ B3 c BAGD | E3 | D E2 Bd | e2 d2 BAG=B |1 A3 B A4 :|2 A8 |] %20

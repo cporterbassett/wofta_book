@@ -1,0 +1,19 @@
+X:1
+T:D 7
+T:D 7
+T:D 7
+T:am
+T:D 7
+C:Benny Moﬁon
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="iddle" snm="iddle"
+V:1
+ B c^c | d2 ^c d2 c | d^c=cB z4 | B2 z ^A2 B2 A2 | B_BAG z4 |$ z =F2 =F2 ^F2 F=F | =FAce z4 | %7
+ =FAce z4 |"G" e2 d_B =Bd e2 |$"G" d2 z ^c d2 z c | d^c=cB z4 | B2 z ^A2 B2 z | B_BAG z4 |$ %13
+"D7" z F2 =F2 ^F2 F=F | FAce z4 | de d2 BGAG- |"G" G4 z ded |$ f2 fd edef | z4 z ded | %19
+"G" g2 gd edeg | z4 z ded |$ f2 fd edef | z4 z def |"G" gBc^c dGA_B | BDEG Gded |$ f2 fd edef | %26
+ z4 z ded |"G" g2 gd edeg | z G2 G2 F2 =F2 |$"E7" E2 z G BezB | dd^c=c z4 | (3Bc^c (3dc=c BGEG- | %32
+"G" G2 z2 z4 |] %33

@@ -1,0 +1,17 @@
+X:1
+T:A&EWaltz
+%%score ( 1 2 )
+L:1/8
+M:3/4
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:2 treble 
+V:1
+ C-CB, || A,3 B, CE | Ac- c4 |"D" B2 A2 (3FAF | E3 F EC |"A" A,3 B, C2 | B,6 |$ E3 F EC | Ac- c4 | %9
+"D" B2 A2 (3FAF | E6 | e3 z2 af | c2 [DB]2 A2 | E2 c2 B2 |$ A3 A G2 | G B3 [Fe]2 | g3 [Af]2 e2 | %17
+ B4 fg | [ca]2 f2 d c2 x2 | g3 f e2 |$ A G2 [Ag]2 | B3 c BA | G B3 [Fe]2 | g3 [Gf]2 e2 | B4 fg | %25
+ [ca]2"B7" f2 ^d c | B ^d3 f2 | e6 | ^d2 B2 C2 | %29
+V:2
+ x3 || x6 | x6 | x6 | x6 | x6 | x6 |$ x6 | x6 | x6 | x6 | x3 [Gf]2 x2 | x6 | x6 |$ x6 | x6 | x7 | %17
+ x6 | x5 [Fc]4 | x6 |$ B3 x2 | x6 | x6 | x7 | x6 | x6 | x6 | x6 | x2 GE ^D2 | %29

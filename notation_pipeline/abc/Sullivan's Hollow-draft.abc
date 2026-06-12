@@ -1,0 +1,14 @@
+X:1
+T:Sullivan's Hollow
+C:Freeny's Bam Dance Band,
+C:also Rayna Gellert [She Waits for Night]
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ !arpeggio![df]2 g fede | f a2 f ed3/2 [df]2 | f3 g f=edf ||$ dfed BdAB | dfed BdAG | [FA]6 AB | %6
+ dfed BdAB | dfed BdAG |$ [A,F]6 ef | a2 fe- egfe | d2- [df]2- [df]2 AB | dfed BdAB | dfed BdAG |$ %13
+ [FA]6 AB | dfed BdAB | dfed BdAG | [A,F]3 F- FE D2 | E F3- FEDE |$ F3 F E2 DE | F4- FEDE | %20
+ F3 F E2 F2 | A4- A2 [Fe]2 | a2 f2 e2- egfe | [df]8 |] %24

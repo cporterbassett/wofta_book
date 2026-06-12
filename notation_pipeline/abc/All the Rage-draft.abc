@@ -1,0 +1,12 @@
+X:1
+T:A” the Rage
+C:Larry Unger
+L:1/8
+M:none
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ A4 e |"B" fgg gfe | fgg g2 e | cee"E" Bee | gfe"B7" f2 e2 |$ fgg gfe | fgg g2 b | gfe fed | %8
+ e3- e2 ::$ e2 | cee"E" Bee | cee"E" B2 e | ece fef |"E" ^gbg"B7" f2 e |$ cee Bee | cee B2 b | %16
+ ^gfe fe^d | e3- e2 :| %18

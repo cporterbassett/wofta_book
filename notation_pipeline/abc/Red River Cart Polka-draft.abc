@@ -1,0 +1,13 @@
+X:1
+T:Red River Cart Polka
+L:1/16
+M:2/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ G,2- || G,B,DG B2d2 | b4- (3bagf2 | a2g2 g2>B2 |"Am" B2d2 c4 |$ D2>F2 A2d2 | f6 f2 | e2d2 d2^cd | %8
+ e2d2 G2G,2- |$ G,B,DG B2d2 | b4- (3bagf2 | a2g2 g3B2 | B2d2 c4 |$ a2aa abag | f2ff fgfe | %15
+ dd^cd e2f2 | | g4 g2 ::$ Bc || d2dd dcBc | d2dd dcBc | d2g2 g2>g2 | f2e2 e2AB |$ c2cc cBAB | %24
+ c2cc cBAB | c2f2 f2>f2 | e2d2 dcBc |$ d2dd dcBc | d2dd dcBc | d2g2 g2>g2 | f2e2 e4 |$ %31
+"D7" a2aa abag | =f2ff fgfe | dd^cd e2=f2 | g6 :| %35

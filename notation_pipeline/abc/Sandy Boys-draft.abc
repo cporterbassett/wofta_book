@@ -1,0 +1,11 @@
+X:1
+T:GO
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ eg |: a2 g2 e2 g2 | ed c2 A2 a2 | a2 g2 e2 g2 | a3 b a2 eg |$ abag egec | d2 c2 A2 AB | %7
+ cdec d2 c2 | A3 B A2 eg :|$ e4 e3 c | d2 c2 A3 A2 | cB A2 cB A2 | d4 f4 |$ e2 e2 efge | %14
+ d2 c2 A2 AB | cdec d2 c2 | A3 B A2 eg :| %17

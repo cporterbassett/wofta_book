@@ -1,0 +1,11 @@
+X:1
+T:Gray Eagle
+L:1/8
+M:2/2
+I:linebreak $
+K:A
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ AB | c2 e2 e3 f | ecBc A3 c- | cABA F2 EF | A3 B cBAB |$ c2 e2 e3 f | ecBc A3 c- | cABA F2 EF |1 %8
+ A3 B A2 :|2 A3 B A4 ||$ A,2 A,A, C2 CC | D2 DD F2 FF | =G2 F2 E2 EF | A2 AB ce- e2 |$ %14
+ A,2 A,A, C2 CC | D2 DD F2 FF | =G2 F2 E2 EF |1 A3 B A4 :|2 A3 B A2 |] %19

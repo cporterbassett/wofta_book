@@ -1,0 +1,14 @@
+X:1
+T:Morrison’s Jig
+Z:Copyright © 2013 by HAL LEONARD CORPORATION
+Z:lntemational Copyright Secured All Rights Reserved
+L:1/8
+M:6/8
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"Em" !arpeggio!E2 E BEB | EBE"D" AFD |"Em" E2 E B2 ^c | d^cB AFD |1$"Em" E2 E BEB | EBE"D" AFD || %6
+"C" G2 G2 FGA | dAG FED :|2$"Em" Bee fee ||2 aee fed ||2 Bee fee | a2 g fed ||2$"Em" Bee fee ||2 %13
+ aee fed ||2"C" gfe d2 A | BAG FED ||2$"Em" Bee fee ||2 aee fed | Bee fee ||2 faf def ||2$ %20
+ g2 g gfe | def g2 d | ed^c d2 A | BAG FED || %24

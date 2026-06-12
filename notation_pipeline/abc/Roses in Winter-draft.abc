@@ -1,0 +1,12 @@
+X:1
+T:Roses in Wmter
+C:Composed by Stuart Williams
+L:1/8
+M:6/8
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ (3D/E/F/ || GBd g2 g | fec A3 | FAd f2 f | ed^c dBA |$"G" GBd gfg |"C" fec A3 |"D" DFA cAc | %8
+"G" BGG G2 ::$ z || EFG EFG | EGA B3 |"Am" cec BdB |"Am" cAc"B7" BGF |$ EFG EFG | EGA B3 | %16
+ ege dBG | AFD E2 :| %18

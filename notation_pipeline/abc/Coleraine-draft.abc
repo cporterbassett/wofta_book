@@ -1,0 +1,17 @@
+X:1
+T:am
+T:am
+T:am
+T:am
+T:am
+T:am
+T:am
+L:1/8
+M:6/8
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ E2 [FAce]4 | (3Bee e2 d | cBA ABc |"E" Bz2GE E2 | A2 A2 ABc | (3Bee e2 d |$ cBA BGE |1 %7
+ A3- A2 E2 :|2 A3- A2 B |: c2 c c2 d2 | Bdg g2 ^g2 | aed cBA |$ GBG E^FG | Az2GA BAB | cde fed | %15
+ cBA B^GE |1 A3- A2 E2 :|2 A6 |] %18

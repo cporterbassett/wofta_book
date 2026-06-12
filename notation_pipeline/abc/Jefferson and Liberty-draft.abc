@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ [Fce]4 B | c2 A2 AGA | E2 A2 ABc | B2 G2 GBc | dBG GAB |$ d2 A2 AGA | E2 A2 A2 e2 | edc Bcd | %8
+ c2 A2 A2 B2 ::$ A2 B c2 d | e2 ^f g3 | e2 ^f2 g2 e | dBG GAB |$ z2 A2 B c2 d | efg a3 | edc Bcd | %16
+ c2 A2 A2 B :| %17

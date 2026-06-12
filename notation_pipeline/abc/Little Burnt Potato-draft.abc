@@ -1,0 +1,10 @@
+X:1
+T:Title
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ fg ^g2 a2 | a |d Add2 fdf | efe Bd |$ efe dcB | Ace a3 | f3 g |]1 aa b2 | d3 d2 g |:$ f2 A f2 A | %10
+ def afd |$ ga gfe | dB A3 |1 a^ga ba=g | f3 fg :|2 a^ga c | d6 |] %17

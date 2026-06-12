@@ -1,0 +1,13 @@
+X:1
+T:Maggie Brown’s Favorite
+C:Nathaniel Gow, c. 1819
+L:1/8
+M:6/8
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ g |"G" dBG GAB |"C" E2 E E2 c |"D" AFD DEF |"G" G2 G G2 g |$"G" dBG Bcd |"C" E2 E E2 c | %7
+"D" AFD DEF |"G" GBA G2 :|$ ga |"G" bgb"D" afd |"C" efg gfe |"G" dBg dBG |"D" AFD Dga |$ %14
+"G" bgb"D" afd |"Em" efg gfe |"D" faf ge^c |"D" d3 de=f |$"C" ece"G" dBd |"Am" cac"G" BgB | %20
+"Am" Ace"G" dBG |"D" FAF DEF |$ GAB EFG | ABc def | gdB cAF | G3 G2 |] %26

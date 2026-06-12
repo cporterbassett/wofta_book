@@ -1,0 +1,11 @@
+X:1
+T:Cork Road
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"D" dAF DFA |"G" Bed cBA |"D" dcd ede |"D" faf ecA |$ dAF DFA | Bed cBA | dcd ede |1 fdd d3 :|2 %8
+ fdd d2 |:$ g | fdf fga | ece efe | dcd fed | cAA A2 =c |$"G" BGB Bcd |"D" AFA ABc | dcd efg |1 %17
+ fdd d2 :|2 fdd d3 |] %19

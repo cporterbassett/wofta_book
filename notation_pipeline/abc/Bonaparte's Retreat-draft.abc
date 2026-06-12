@@ -1,0 +1,18 @@
+X:1
+T:BONAPARTE'S RETREAT
+C:ﬁ‘om Alan Jabbour
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ AB/c/ |:"D" d2 de/f/ d2 AB/c/ | dBAF A2 AB/c/ |$ d2 d/e/f/e/ d2 A/B/A/G/ |1 FD E/F/E D2 AB/c/ :|2 %5
+w: |||||
+w: |||D * * * * * A * * *|* * * * * D * * *|
+ FD E/F/E D2 D2 |:$ FDFD ADFD | EDEF GFED | FDFD A2 d>A | FA EF/E/ D2 D2 ::$ fdfd adfd | %11
+w: ||||||
+w: * * A * * D *|D * * * * * * *|A * * * * * * D||* * A * * D *||
+ edef gfed | fdfd ad/e/ f/e/d/f/ | edef d2 d2 :| %14
+w: |||
+w: |||

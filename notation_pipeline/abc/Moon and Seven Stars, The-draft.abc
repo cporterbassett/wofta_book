@@ -1,0 +1,11 @@
+X:1
+T:The Moon Seven Stars
+L:1/8
+M:6/8
+I:linebreak $
+K:none
+V:1 treble-8 nm="Voice" snm="Voice"
+V:1
+ A | d2 A AGF | GAB A2 A |"G" Bcd efg | fed cBA |$ ^c2 A AG^F | GAB"D" A2 A |"G" B^cd eeg |1 %8
+ Ad^c c2 :|2 A^c ||$[K:treble] e2 A ABA | e^fg f3 | eeg"D" ee^c | ^ccB A2 A |$ BGB A2 A | %15
+ BGB"D" A2 A |"G" B2 ^c2 | ^f2 g2 |1 Ad^c d3 :|2 Gd^c d2 |] %20

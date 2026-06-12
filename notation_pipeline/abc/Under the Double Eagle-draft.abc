@@ -1,0 +1,18 @@
+X:1
+T:Under the Double Eagle
+L:1/4
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ D2 G2 |1 E4- ||2 E G, A, B, | C2 G, C | E2 C E |"G" A2 G2 ||$ E E F ^F |"G7" G2 F E | D2 B,2 | %9
+w: |||||||||
+"C" C4 :|$ C c =B c |"F" d2 c d | c2 A F | C4 | z F E D | C2 F2 [G_Bdf]2 |$ A2 c2 | E4- | %18
+w: |||||||||
+ E c =B c | d2 c d | c2 _B G | E4 |$ z2 E D | C2 E2 | G2 c2 |"F" A4 | z c =B c | d2 c d | %28
+w: ||||||||||
+ c2 A F [FAce]2 |$ C4 | z F E D | C2 F2 | A2 c2 |"Bb" d4- | d4 [FA] |$ f4 | e2 d2 | d2 c2 | %38
+w: |||||||||G Back|
+ A A F D | C2 _B2 | A2 G2 | %41
+w: * beginning * *||Fine *|
