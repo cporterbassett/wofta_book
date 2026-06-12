@@ -55,24 +55,25 @@ diagonal — rectangular kernels would square off curves.
 
 ## Tune set
 
-9 tunes total. All 9 get health scoring; the 3 with gold ABCs also get note-accuracy scoring.
+10 tunes total. All 10 get health scoring; the 6 with gold ABCs also get note-accuracy scoring.
 
 **Health + note accuracy (gold ABCs in `abc/`):**
-- Arkansas Traveler (`Arkansas Traveler-gold.abc`)
-- Soldier's Joy (`Soldier's Joy-gold.abc`)
-- Mississippi Sawyer (`Mississippi Sawyer-gold.abc`)
+- Arkansas Traveler (`Arkansas Traveler-gold.abc`) — 18 measures, K:D
+- Soldier's Joy (`Soldier's Joy-gold.abc`) — 17 measures, K:D (pickup)
+- Mississippi Sawyer (`Mississippi Sawyer-gold.abc`) — 17 measures, K:D (pickup)
+- Angeline the Baker (`Angeline the Baker-gold.abc`) — 19 measures, K:D
+- Billy in the Lowground (`Billy in the Lowground-gold.abc`) — 16 measures, K:C (key_ok=False at baseline — useful regression check)
+- Honest John (`Honest John-gold.abc`) — 16 measures, K:G/D jig; source PNG at `old_images/Honest John.png` (symlinked to `tune_images/Honest John.png`)
 
 **Health only (no gold ABC):**
 - Big Scioty — key_ok=False, time_ok=False (worst-case control)
 - Miss McCloud's Reel — key_ok=False, time_ok=False (different source)
 - Big Con — key_ok=False only
-- Billy in the Lowground — key_ok=False only
 - Ashokan Farewell — ashokan_tell (second sharp misclassified)
-- Angeline the Baker — known reference, well-studied
 
 ## Output tables
 
-### Table 1 — Health scores (all 9 tunes)
+### Table 1 — Health scores (all 10 tunes)
 
 ```
 variant      Big Scioty           Arkansas Traveler  ...
@@ -87,13 +88,14 @@ Legend: K=key_ok T=time_ok A=ashokan_tell h=health_score
 ### Table 2 — Note accuracy (gold-standard tunes only)
 
 ```
-variant      Arkansas Traveler    Soldier's Joy    Mississippi Sawyer
-baseline     17/18 (94%)          12/17 (71%)      14/17 (82%)
-dilate_k2    ?/18                 ?/17             ?/17
+variant      Ark.Traveler  Soldier's Joy  Miss.Sawyer  Angeline  Billy  Honest John
+baseline     17/18 (94%)   12/17 (71%)    14/17 (82%)  ?/19      ?/16   ?/16
+dilate_k2    ?/18          ?/17           ?/17         ?/19      ?/16   ?/16
 ```
 
-Baseline row is filled in from prior known results as a sanity check; if the sweep's
-baseline differs, the pipeline has regressed.
+Baseline row for Arkansas Traveler, Soldier's Joy, Mississippi Sawyer is filled in from
+prior known results as a sanity check; if the sweep's baseline differs, the pipeline has
+regressed. Baseline for Angeline, Billy, Honest John will be established by the sweep.
 
 ## Success criteria
 
