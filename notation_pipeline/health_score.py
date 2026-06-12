@@ -9,7 +9,15 @@ Usage:
 Output: TSV to stdout, sorted worst-first (lowest health_score first).
 
 Health score components (lower = worse):
-  - key_ok:       KeySig present in first staff header?     missing → -40
+  - key_status:   Triage of the first-staff key signature into:
+                    present — KeySig in first staff header (no work)
+                    missed  — first header lacks it, BUT Audiveris found a key
+                              sig elsewhere (later system header, stray key-alter
+                              glyph, or an ashokan-style rest in the header band).
+                              A real, printed key sig that must be fixed → -40.
+                    absent  — no evidence of any printed key sig anywhere. The
+                              tune is probably genuinely keyless (Am / C / Dorian);
+                              this is correct behaviour, so NO penalty.
   - time_ok:      TimeSig present in first staff header?    missing → -20
   - ashokan_tell: Rest glyph inside header x-band?         present → -30
                   (sharp misclassified as quarter-rest = key will be wrong)
@@ -17,6 +25,16 @@ Health score components (lower = worse):
   - base:         100
 
 Score range roughly 0–120; lower = more GUI cleanup needed.
+
+The point of the key_status triage: a plain key_ok=False conflates "Audiveris
+missed a printed key signature" (a real fix that corrupts every pitch) with
+"this tune has no key signature" (nothing to fix). Penalising both equally made
+the worst-first queue waste GUI time on tunes that were already correct. Only
+`missed` is penalised, so the queue ranks by *real correction effort*.
+
+NOTE: `absent` is a best guess, not a guarantee. If a printed sharp/flat vanished
+entirely during recognition (no rest, no later-system key, no stray glyph), it is
+indistinguishable from genuinely keyless without looking at the source image.
 """
 
 import sys
@@ -29,8 +47,8 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BATCH_DIR = os.path.join(SCRIPT_DIR, "batch_output")
 
 TSV_HEADER = "\t".join([
-    "tune_name", "health_score", "key_ok", "time_ok", "ashokan_tell",
-    "avg_grade", "measure_count", "omr_path"
+    "tune_name", "health_score", "key_status", "key_ok", "time_ok",
+    "ashokan_tell", "avg_grade", "measure_count", "omr_path"
 ])
 
 # Weights
@@ -78,6 +96,22 @@ def parse_sheet_xml(content: str) -> dict:
     key_ok  = bool(re.search(r'<key\s*>', header_body))
     time_ok = bool(re.search(r'<time\s*>', header_body))
 
+    # ── Key signature found in ANY system header (not just the first) ─────────
+    # The Ashokan/Big-Scioty pattern: system 1 misses the key sig, but later
+    # systems recognise it.  If a <key> child appears in any header, the tune
+    # demonstrably HAS a printed key signature.
+    key_in_any_header = any(
+        re.search(r'<key\s*>', m.group(0))
+        for m in re.finditer(r'<header\b.*?</header>', content, re.DOTALL)
+    )
+
+    # ── Key-alter glyphs anywhere in the sheet ───────────────────────────────
+    # <key-alter> inters are the individual sharp/flat glyphs that make up a key
+    # signature.  Their presence (even when not assembled into a header <key>)
+    # is direct evidence of a printed key signature.  Plain per-note accidentals
+    # are <alter>/<alter-head>, which we deliberately do NOT count here.
+    key_alter_present = bool(re.search(r'<key-alter\b', content))
+
     # ── Ashokan tell ────────────────────────────────────────────────────────
     # Find all <rest …> elements and check whether their bounds x < header_stop.
     # We only care about the first staff (system 1), but since other staves
@@ -123,11 +157,13 @@ def parse_sheet_xml(content: str) -> dict:
         measure_count = len(re.findall(r'<measure\s+id=', content))
 
     return {
-        "key_ok":        key_ok,
-        "time_ok":       time_ok,
-        "ashokan_tell":  ashokan_tell,
-        "avg_grade":     avg_grade,
-        "measure_count": measure_count,
+        "key_ok":            key_ok,
+        "key_in_any_header": key_in_any_header,
+        "key_alter_present": key_alter_present,
+        "time_ok":           time_ok,
+        "ashokan_tell":      ashokan_tell,
+        "avg_grade":         avg_grade,
+        "measure_count":     measure_count,
     }
 
 
@@ -152,9 +188,22 @@ def score_omr(omr_path: str) -> dict | None:
 
     c = parse_sheet_xml(content)
 
+    # ── Key-signature triage ─────────────────────────────────────────────────
+    #   present — recognised in the first staff header (nothing to fix)
+    #   missed  — not in the first header, but there is evidence of a printed key
+    #             sig elsewhere (later-system header, a stray key-alter glyph, or
+    #             an ashokan rest inside the header band) → a real fix
+    #   absent  — no evidence of any key sig → probably genuinely keyless (correct)
+    if c["key_ok"]:
+        key_status = "present"
+    elif c["key_in_any_header"] or c["key_alter_present"] or c["ashokan_tell"]:
+        key_status = "missed"
+    else:
+        key_status = "absent"
+
     # Compute score
     score = BASE_SCORE
-    if not c["key_ok"]:
+    if key_status == "missed":
         score += W_KEY_MISSING
     if not c["time_ok"]:
         score += W_TIME_MISSING
@@ -165,6 +214,7 @@ def score_omr(omr_path: str) -> dict | None:
     return {
         "tune_name":     tune_name,
         "health_score":  round(score, 2),
+        "key_status":    key_status,
         "key_ok":        c["key_ok"],
         "time_ok":       c["time_ok"],
         "ashokan_tell":  c["ashokan_tell"],
@@ -197,6 +247,7 @@ def main():
         print("\t".join([
             r["tune_name"],
             str(r["health_score"]),
+            r["key_status"],
             str(r["key_ok"]),
             str(r["time_ok"]),
             str(r["ashokan_tell"]),

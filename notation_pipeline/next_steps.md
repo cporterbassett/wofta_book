@@ -6,8 +6,44 @@ _Updated 2026-06-12 (Opus session) after normalize_interline, health_score, veri
 _Updated 2026-06-12 (Sonnet session) after mvt1 MXL fallback fix in batch_tune.sh._
 _Updated 2026-06-12 (Sonnet session) after Audiveris -constant sweeps (Experiment D)._
 _Updated 2026-06-12 (Sonnet session) after glyph dilation sweep (Experiment E)._
+_Updated 2026-06-12 (Opus session) after key_status triage + Phase 1 completion audit._
 _Read `omr_findings.md` first for the full experiment history. This file is the
 forward-looking plan: what to build next, in priority order, and why._
+
+---
+
+## CURRENT STATE (2026-06-12) — Phase 1 done, Phase 2 is the work
+
+**Phase 1 (batch OMR) is complete.** 267/272 source tunes have `clean.omr` + a
+draft ABC; `health_scores.tsv` is fully populated (267 tunes). All preprocessing
+experiments (A–E) are concluded — A & B shipped, C/D/E are dead ends. **There is no
+more automated quality to extract.** Source heterogeneity defeats every global knob.
+
+**Phase 2 (interactive GUI cleanup) has NOT started** — 0 `*-final.abc` exist. This
+is the remaining bulk of the project: open each tune's `clean.omr` in the Audiveris
+GUI worst-first (`cleanup_loop.sh`), correct, export. Human-in-the-loop; not automatable.
+
+**The queue is now triaged by real correction effort.** `health_score.py` gained a
+`key_status` column (present / missed / absent). The old `key_ok=False` penalty was a
+false alarm for the 21 genuinely-keyless tunes (Am / C / Dorian); they no longer drag
+the queue. The 15 `missed` tunes (Audiveris dropped a *printed* key sig — found
+elsewhere in the sheet, or as a stray key-alter glyph / ashokan rest) are the real
+key fixes and now sort to the top. Distribution: 231 present, 21 absent, 15 missed.
+
+**Five source PNGs never produced a `clean.omr`** — handle these out-of-band, they
+won't flow through `cleanup_loop.sh`:
+  - `Kerry Mills' Barn Dance` — hard Audiveris failure (no MXL at all); needs GUI from scratch.
+  - `Morrison's Jig 2` — second copy, never processed.
+  - `angeline_oemer.cropped`, `angeline_oemer_updated.cropped` — stray oemer test
+    artifacts polluting the source dir; delete or move out of `../`.
+  - `Honest John` — gold tune, lives in `old_images/` (symlinked); verify it wasn't silently dropped.
+
+**Three tunes are truncated by movement-split** (the `mvt1` fallback grabbed a
+fragment) — their draft ABC is near-useless, fix in GUI: Bull Moose (2 measures),
+Pat(T)'s Country (5), Elzic's Farewell (5).
+
+**→ Next action:** run `cleanup_loop.sh` over the triaged worst-first queue
+(`health_scores.tsv`), starting with the 15 `missed` + ashokan tunes.
 
 ---
 
@@ -369,11 +405,17 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 4. ~~**Experiment A**~~ — **DONE** (`normalize_interline.py` built, integrated into `batch_tune.sh`, batch re-run in progress)
 5. ~~**Experiment B**~~ — **DONE** (`health_score.py` built, tested on 44 tunes)
 6. ~~**Experiment C**~~ — **DEAD END** (see above — Audiveris GUI already does this better)
-7. **Run `health_score.py` on full corpus** — after current batch_all.sh completes; produces the phase 2 cleanup queue sorted worst-first
+7. ~~**Run `health_score.py` on full corpus**~~ — **DONE** (2026-06-12). `health_scores.tsv`
+   has all 267 tunes; now triaged by `key_status` (present/missed/absent) so the queue
+   ranks by real correction effort, not the noisy key_ok binary.
 8. ~~**Fix mvt1 multi-MXL batch failures**~~ — **DONE** (2026-06-12). `batch_tune.sh` now falls back to `preprocessed.mvt1.mxl` when `preprocessed.mxl` is absent. Fixed 8 tunes: Bull Moose, Centralia Waltz, Fisher's Hornpipe (D/4/4), Me and My Fiddle (G/4/4), Morrison's Jig, Cherokee Shuffle (A/4/4), Road House Ramble (G/4/4), Pat(T)'s Country.
    - Pat(T)'s Country split into 3 movements; mvt1 yields only ~5 bars — needs GUI to reassemble.
 9. ~~**Experiment D**~~ — **DEAD END** (see above). Grade thresholds: zero effect. Binarization constants: have effect but no safe universal value due to source heterogeneity. Fix remaining key errors (Ashokan, Soldier's Joy) in the GUI.
 10. ~~**Experiment E**~~ — **DEAD END** (see above). Morphological dilation degrades note accuracy monotonically; no net benefit on any tune. Do not apply dilation.
+11. **→ Phase 2 — interactive GUI cleanup (THE REMAINING WORK).** Run `cleanup_loop.sh`
+    over `health_scores.tsv` worst-first. Start with the 15 `key_status=missed` and the
+    `ashokan_tell=True` tunes (real key fixes), then descend the score. Handle the 5
+    no-`clean.omr` stragglers and 3 movement-split tunes separately (see CURRENT STATE).
 
 ## Pointers to existing tooling
 
@@ -392,12 +434,19 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 - `compare_abc.py` — normalize ABC, split into measures, diff measure-by-measure; normalizes
   intra-measure whitespace; does NOT strip slurs (they're real errors if Audiveris adds them)
 - `normalize_interline.py` — measure staff interline via row projection; scale to target 18px; falls back to 1.5× on detection failure. `--measure-only` flag for survey mode.
-- `health_score.py` — parse `clean.omr` ZIP XMLs; score key/time/Ashokan-tell/avg-grade; output worst-first TSV. Run after batch completes to get phase 2 queue.
-  **Caveat on key_ok:** the −40 penalty is a false alarm for tunes that genuinely have no
-  printed key signature (Am, C major, Dorian tunes — e.g. Big Con, Billy in the Lowground).
-  But some `key_ok=False` tunes DO have a printed key sig that Audiveris failed to detect
-  (e.g. Big Scioty, G major, 1 sharp tight to the clef). Cannot assume keyless = correct
-  without looking at the image. The ashokan_tell signal is reliable: always a misclassified sharp.
+- `health_score.py` — parse `clean.omr` ZIP XMLs; score key/time/Ashokan-tell/avg-grade; output worst-first TSV. Already run over full corpus → `health_scores.tsv`.
+  **`key_status` triage (added 2026-06-12) replaces the old key_ok caveat:**
+  - `present` — key sig recognised in the first staff header. No work.
+  - `missed`  — first header lacks it, but Audiveris found a printed key sig elsewhere
+    (later-system header, stray `<key-alter>` glyph, or an ashokan rest in the header
+    band). A real fix that corrupts every pitch → penalised −40. (e.g. Big Scioty G major.)
+  - `absent`  — no evidence of any key sig anywhere → probably genuinely keyless (Am / C /
+    Dorian — Big Con, Billy in the Lowground). Correct behaviour → NOT penalised.
+  Only `missed` is penalised, so the queue ranks by real correction effort. **Caveat:**
+  `absent` is a best guess — a sharp that vanished entirely in recognition (no rest, no
+  later-system key, no stray glyph) is indistinguishable from keyless without the image.
+  Every tune still gets eyeballed in the GUI, so this only affects queue order, not coverage.
+  The ashokan_tell signal remains reliable: always a misclassified sharp.
 - `sweep_constants.py` — **Experiment D tool**. Sweeps one Audiveris `-constant` over a set of
   tunes, scores with health_score logic, prints a table. Usage: `python3 sweep_constants.py
   [--constant NAME] [--values V1,V2,...] [--tunes T1,T2,...]`. Default sweeps
