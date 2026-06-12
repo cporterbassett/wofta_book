@@ -39,7 +39,7 @@ dilate_k4   6/18 (33%)          4/19 (21%)          2/18 (11%)          1/18 (6%
 
 ### Key recovery / regressions
 
-- **Big Scioty:** key recovered at dilate_k2/k3/k4. (But Big Scioty genuinely has no key sig — this is Audiveris hallucinating a key, not a real improvement.)
+- **Big Scioty:** key recovered at dilate_k2/k3/k4. Big Scioty IS in G major (1 sharp) — the key recovery is real. Audiveris is failing at baseline to detect a printed sharp that is small and tight against the clef.
 - **Ashokan Farewell:** ashokan_tell removed at all dilation variants (K only, h=87-88 vs baseline KTA h=77). However, the time sig (T) is now missing — dilation thickened the time-sig glyphs past recognizability. Net neutral at best.
 - **All other key failures** (Miss McCloud's Reel, Big Con, Billy in the Lowground, Honest John): no recovery at any kernel size.
 - **Note accuracy degrades monotonically** with kernel size. dilate_k2 already regresses 3 of 5 gold tunes (−5% to −32%). dilate_k4 is catastrophic (−61% to −89%).
@@ -50,7 +50,7 @@ dilate_k4   6/18 (33%)          4/19 (21%)          2/18 (11%)          1/18 (6%
 
 DONE — dilation did not improve OMR quality.
 
-Dilation consistently degrades note accuracy with no net benefit: even the smallest kernel (k2) reduces accuracy on most gold tunes, and the apparent "key recovery" on Big Scioty is spurious (that tune has no printed key sig). The ashokan_tell removal on Ashokan Farewell at k2/k3/k4 is offset by a newly broken time sig. All remaining key failures are unchanged. Do not apply dilation preprocessing.
+Dilation consistently degrades note accuracy: even the smallest kernel (k2) reduces accuracy on most gold tunes. The key recovery on Big Scioty at dilate_k2 IS real (Big Scioty is G major, 1 sharp; Audiveris baseline misses the small tight-to-clef sharp), but this gain is wiped out by note-accuracy regressions elsewhere and a broken time sig on Ashokan Farewell. Do not apply dilation preprocessing globally.
 
 ---
 
@@ -270,11 +270,13 @@ being applied (confirmed by testing: Audiveris crashed at halfWindowSize=4, prov
 constants), but grade thresholds are not the binding constraint.
 
 **Root cause of "key_ok=False" findings (important reframe):**
-Visual inspection of the actual images revealed that the majority of `key_ok=False` tunes
-**genuinely have no key signature** — they are in A minor, C major, or G/D without a printed
-key sig. Examples: Big Con (Am), Billy in the Lowground (C major, labeled "C Major" in image),
-Big Scioty (no key sig despite G/D chord symbols). `health_score.py`'s −40 penalty for
-missing key is a **false alarm** for these tunes.
+Visual inspection revealed a mixed picture. Some `key_ok=False` tunes **genuinely have no
+printed key signature** — they are in A minor, C major, or similar. Examples: Big Con (Am,
+no key sig), Billy in the Lowground (C major, labeled "C Major" in image). The health_score
+−40 penalty is a false alarm for those. BUT others do have printed key signatures that
+Audiveris simply fails to detect: **Big Scioty is G major (1 sharp)** — the sharp is small
+and tight against the clef, so Audiveris misses it at baseline. Cannot assume `key_ok=False`
+is always correct behavior; visual inspection per tune is needed.
 
 **2. `AdaptiveFilter.halfWindowSize` (binarization window, integer pixels):**
 
@@ -389,9 +391,10 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 - `normalize_interline.py` — measure staff interline via row projection; scale to target 18px; falls back to 1.5× on detection failure. `--measure-only` flag for survey mode.
 - `health_score.py` — parse `clean.omr` ZIP XMLs; score key/time/Ashokan-tell/avg-grade; output worst-first TSV. Run after batch completes to get phase 2 queue.
   **Caveat on key_ok:** the −40 penalty is a false alarm for tunes that genuinely have no
-  printed key signature (Am, C major, Dorian tunes). Visual inspection showed many `key_ok=False`
-  tunes in the health_scores.tsv are actually correctly detected as keyless. The ashokan_tell
-  signal (rest in header x-band) is reliable: it always indicates a misclassified sharp.
+  printed key signature (Am, C major, Dorian tunes — e.g. Big Con, Billy in the Lowground).
+  But some `key_ok=False` tunes DO have a printed key sig that Audiveris failed to detect
+  (e.g. Big Scioty, G major, 1 sharp tight to the clef). Cannot assume keyless = correct
+  without looking at the image. The ashokan_tell signal is reliable: always a misclassified sharp.
 - `sweep_constants.py` — **Experiment D tool**. Sweeps one Audiveris `-constant` over a set of
   tunes, scores with health_score logic, prints a table. Usage: `python3 sweep_constants.py
   [--constant NAME] [--values V1,V2,...] [--tunes T1,T2,...]`. Default sweeps
