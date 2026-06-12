@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from glyph_cleanup_sweep import apply_dilation
+from glyph_cleanup_sweep import apply_dilation, score_abc_accuracy
 
 
 def _thin_line_image():
@@ -32,3 +32,20 @@ def test_apply_dilation_returns_same_shape():
     img = _thin_line_image()
     result = apply_dilation(img, kernel_size=3)
     assert result.shape == img.shape
+
+
+GOLD_DIR = os.path.join(os.path.dirname(__file__), "..", "abc")
+
+
+def test_score_abc_accuracy_self_match():
+    gold = os.path.join(GOLD_DIR, "Arkansas Traveler-gold.abc")
+    matched, total = score_abc_accuracy(gold, gold)
+    assert matched == total
+    assert total == 18
+
+
+def test_score_abc_accuracy_self_match_soldiers_joy():
+    gold = os.path.join(GOLD_DIR, "Soldier's Joy-gold.abc")
+    matched, total = score_abc_accuracy(gold, gold)
+    assert matched == total
+    assert total == 18

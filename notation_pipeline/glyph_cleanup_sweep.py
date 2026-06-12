@@ -52,6 +52,24 @@ def apply_dilation(img_bgr: np.ndarray, kernel_size: int) -> np.ndarray:
     return cv2.erode(img_bgr, kernel, iterations=1)
 
 
+def score_abc_accuracy(gold_path: str, test_path: str) -> tuple[int, int]:
+    """Diff test ABC against gold at the measure level.
+
+    Returns (matched_measures, total_gold_measures).
+    Uses compare_abc's normalization (strips chords, decorations, grace notes;
+    normalizes durations to L:1/8) so cosmetic differences don't count as errors.
+    """
+    gold_text = open(gold_path).read()
+    test_text = open(test_path).read()
+    gold_measures = split_measures(extract_body(gold_text))
+    test_measures = split_measures(extract_body(test_text))
+    gold_norm = [normalize_for_compare(m) for m in gold_measures]
+    test_norm = [normalize_for_compare(m) for m in test_measures]
+    sm = difflib.SequenceMatcher(None, gold_norm, test_norm, autojunk=False)
+    matched = sum(g2 - g1 for op, g1, g2, t1, t2 in sm.get_opcodes() if op == "equal")
+    return matched, len(gold_measures)
+
+
 # Gold ABCs: tune name → (gold_abc_path, expected_measure_count)
 GOLD_ABCS = {
     "Arkansas Traveler":      (os.path.join(ABC_DIR, "Arkansas Traveler-gold.abc"),      18),
