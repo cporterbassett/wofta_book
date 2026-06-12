@@ -38,6 +38,24 @@ from clean_mxl import clean_mxl
 from compare_abc import split_measures, extract_body, normalize_for_compare
 from abc_xml_converter import convert_xml2abc
 
+
+def apply_dilation(img_bgr: np.ndarray, kernel_size: int) -> np.ndarray:
+    """Apply morphological dilation with an elliptical kernel, 1 iteration.
+
+    Elliptical kernel chosen because sharp strokes are diagonal —
+    rectangular kernels would square off curves.
+
+    Inverts the image, dilates bright regions (which expands dark regions),
+    then inverts back to preserve the original color scheme.
+    """
+    kernel = cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
+    )
+    inverted = cv2.bitwise_not(img_bgr)
+    dilated = cv2.dilate(inverted, kernel, iterations=1)
+    return cv2.bitwise_not(dilated)
+
+
 # Gold ABCs: tune name → (gold_abc_path, expected_measure_count)
 GOLD_ABCS = {
     "Arkansas Traveler":      (os.path.join(ABC_DIR, "Arkansas Traveler-gold.abc"),      18),
