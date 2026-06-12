@@ -59,8 +59,10 @@ def score_abc_accuracy(gold_path: str, test_path: str) -> tuple[int, int]:
     Uses compare_abc's normalization (strips chords, decorations, grace notes;
     normalizes durations to L:1/8) so cosmetic differences don't count as errors.
     """
-    gold_text = open(gold_path).read()
-    test_text = open(test_path).read()
+    with open(gold_path) as f:
+        gold_text = f.read()
+    with open(test_path) as f:
+        test_text = f.read()
     gold_measures = split_measures(extract_body(gold_text))
     test_measures = split_measures(extract_body(test_text))
     gold_norm = [normalize_for_compare(m) for m in gold_measures]
@@ -73,10 +75,10 @@ def score_abc_accuracy(gold_path: str, test_path: str) -> tuple[int, int]:
 # Gold ABCs: tune name → (gold_abc_path, expected_measure_count)
 GOLD_ABCS = {
     "Arkansas Traveler":      (os.path.join(ABC_DIR, "Arkansas Traveler-gold.abc"),      18),
-    "Soldier's Joy":          (os.path.join(ABC_DIR, "Soldier's Joy-gold.abc"),          17),
-    "Mississippi Sawyer":     (os.path.join(ABC_DIR, "Mississippi Sawyer-gold.abc"),     17),
+    "Soldier's Joy":          (os.path.join(ABC_DIR, "Soldier's Joy-gold.abc"),          18),
+    "Mississippi Sawyer":     (os.path.join(ABC_DIR, "Mississippi Sawyer-gold.abc"),     18),
     "Angeline the Baker":     (os.path.join(ABC_DIR, "Angeline the Baker-gold.abc"),     19),
-    "Billy in the Lowground": (os.path.join(ABC_DIR, "Billy in the Lowground-gold.abc"), 16),
+    "Billy in the Lowground": (os.path.join(ABC_DIR, "Billy in the Lowground-gold.abc"), 17),
     "Honest John":            (os.path.join(ABC_DIR, "Honest John-gold.abc"),            16),
 }
 
