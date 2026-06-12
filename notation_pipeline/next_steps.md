@@ -205,21 +205,72 @@ Porter doesn't know by ear. That's a one-liner when needed; no script required.
 
 ---
 
-## Experiment D — Audiveris `-constant` sweeps (good, but validate source-diversely)
+## Experiment D — Audiveris `-constant` sweeps ✗ DEAD END (source diversity defeats it)
 
-Drops to 4th only because A/B/C give more for less. Audiveris batch supports
-`-constant key=value` (confirmed in `-help`). Untapped lever — all prior work was
-ImageMagick-side. Worth probing:
-- **Key-sig / sharp acceptance grade thresholds** — the Ashokan second sharp was rejected
-  at grade ~0.485. Loosening the minimum grade for key-alter inters / the header region
-  could keep it, fixing key at the source.
-- **Classifier minimum grade** so borderline noteheads/sharps aren't dropped.
-- **Binarization (Sauvola) constants** — Audiveris does its own BINARY step; tuning it for
-  degraded xerox may beat ImageMagick pre-binarization entirely.
+_Executed 2026-06-12. Script: `sweep_constants.py`._
 
-**Caution (fact #2):** what helps on one source may add false positives on another. Every
-constant change MUST be validated across a source-diverse sample, not Angeline alone.
-Clean experiment: same image, sweep one constant, diff the `.omr`, score with `health_score.py`.
+**Constant format confirmed:** `org.audiveris.omr.ClassName.fieldName=value`  
+**Flatpak sandbox note:** Audiveris can only write output to paths under `~` (not `/tmp`).
+Use dirs inside `batch_output/` for temp sweep dirs.
+
+### What was swept
+
+**1. Grade threshold constants (`keyAlterMinGrade1`, `keyAlterMinGrade2`, `keySigMinGrade`,
+`minInterGrade`, `intrinsicRatio`):**
+
+Swept `keyAlterMinGrade1` 0.01–0.5 on 7 tunes. **Zero effect.** All tunes returned identical
+results across all values. Then swept 5 different grade constants including the global
+`intrinsicRatio` on Soldier's Joy — all returned fifths=1 (K:G, wrong). The constants ARE
+being applied (confirmed by testing: Audiveris crashed at halfWindowSize=4, proving it reads
+constants), but grade thresholds are not the binding constraint.
+
+**Root cause of "key_ok=False" findings (important reframe):**
+Visual inspection of the actual images revealed that the majority of `key_ok=False` tunes
+**genuinely have no key signature** — they are in A minor, C major, or G/D without a printed
+key sig. Examples: Big Con (Am), Billy in the Lowground (C major, labeled "C Major" in image),
+Big Scioty (no key sig despite G/D chord symbols). `health_score.py`'s −40 penalty for
+missing key is a **false alarm** for these tunes.
+
+**2. `AdaptiveFilter.halfWindowSize` (binarization window, integer pixels):**
+
+This constant DOES affect key detection. Swept 12–36 on 10 tunes:
+
+| halfWin | Soldier's Joy | Ashokan Farewell | Arkansas Traveler | Mississippi Sawyer |
+|---------|--------------|------------------|-------------------|---------------------|
+| baseline (~8?) | f=1✗ | f=1✗, tell | f=2✓ | f=2✓ |
+| 12 | f=1✗ | f=1✗, tell | f=2✓ **+tell** ← BAD | f=2✓ **+tell** ← BAD |
+| 20 | f=1✗ | f=2✓ | **key BROKE** ← BAD | **key BROKE** ← BAD |
+| 24 | f=1✗ | f=2✓ | **key BROKE** ← BAD | f=2✓ |
+| 28 | f=2✓ | f=1✗ ← BAD | f=2✓ | f=2✓ |
+| 32 | f=2✓ | f=1✗ ← BAD | f=2✓ | f=2✓ |
+| 36 | f=1✗ | f=1✗ | f=2✓ | f=2✓ |
+
+(All tunes should be fifths=2, i.e. K:D. tell = ashokan_tell present.)
+
+**No single value improves all tunes without regressions.** The caution from fact #2 was
+exactly right: different typesetters respond to opposite window sizes. This is a fundamental
+source-heterogeneity problem that a single global constant cannot solve.
+
+### Conclusions
+
+1. **Grade thresholds**: not the binding constraint. The failing key detections are either
+   (a) tunes that genuinely have no key signature — correct behavior, or
+   (b) classification failures where the glyph is not being recognized as a sharp at all,
+   independent of grade thresholds.
+
+2. **`AdaptiveFilter.halfWindowSize`**: has real effect, but no safe universal value.
+   The corpus is too source-diverse.
+
+3. **Ashokan tell**: a misclassification (sharp → quarter rest), not a grade threshold issue.
+   A different binarization might help for that specific source but hurts others.
+
+4. **Soldier's Joy K:G issue**: the second sharp is simply not being found (not classified as
+   a sharp at all at 133% scale). Grade thresholds don't help. halfWindowSize=28-32 helps
+   for this source but breaks Ashokan Farewell.
+
+5. **Overall**: Experiment D cannot produce a useful global constant. The remaining key
+   errors (Ashokan Farewell, Soldier's Joy, a few others) are best fixed in the GUI — each
+   is a 1-2 click correction (fix key, delete spurious rest). Not worth the risk of global regressions.
 
 **Note on Audiveris constants:** We inspected the jar and confirmed there is NO constant to
 disable slur detection, key-repeat export, or decorations. The `-constant` system exposes
@@ -265,7 +316,7 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 7. **Run `health_score.py` on full corpus** — after current batch_all.sh completes; produces the phase 2 cleanup queue sorted worst-first
 8. ~~**Fix mvt1 multi-MXL batch failures**~~ — **DONE** (2026-06-12). `batch_tune.sh` now falls back to `preprocessed.mvt1.mxl` when `preprocessed.mxl` is absent. Fixed 8 tunes: Bull Moose, Centralia Waltz, Fisher's Hornpipe (D/4/4), Me and My Fiddle (G/4/4), Morrison's Jig, Cherokee Shuffle (A/4/4), Road House Ramble (G/4/4), Pat(T)'s Country.
    - Pat(T)'s Country split into 3 movements; mvt1 yields only ~5 bars — needs GUI to reassemble.
-9. **Experiment D** — Audiveris `-constant` sweeps, validated source-diversely.
+9. ~~**Experiment D**~~ — **DEAD END** (see above). Grade thresholds: zero effect. Binarization constants: have effect but no safe universal value due to source heterogeneity. Fix remaining key errors (Ashokan, Soldier's Joy) in the GUI.
 
 ## Pointers to existing tooling
 
@@ -285,6 +336,11 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
   intra-measure whitespace; does NOT strip slurs (they're real errors if Audiveris adds them)
 - `normalize_interline.py` — measure staff interline via row projection; scale to target 18px; falls back to 1.5× on detection failure. `--measure-only` flag for survey mode.
 - `health_score.py` — parse `clean.omr` ZIP XMLs; score key/time/Ashokan-tell/avg-grade; output worst-first TSV. Run after batch completes to get phase 2 queue.
+- `sweep_constants.py` — **Experiment D tool**. Sweeps one Audiveris `-constant` over a set of
+  tunes, scores with health_score logic, prints a table. Usage: `python3 sweep_constants.py
+  [--constant NAME] [--values V1,V2,...] [--tunes T1,T2,...]`. Default sweeps
+  `keyAlterMinGrade1`. Use 'baseline' as a value to run without any constant override.
+  **Note:** Audiveris (flatpak) can only write to paths under `~`; uses `batch_output/` for temp dirs.
 - `verify_mxl.py` — **dead end**, see Experiment C. Audiveris GUI already does this better.
 - `overlay_diff.py` — red/blue mismatch overlay for ABC renders.
 - `.omr` = ZIP with `sheet#N/sheet#N.xml` (glyph boxes, grades, header stops, SIG relations)
