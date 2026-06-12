@@ -1,9 +1,10 @@
 import sys, os
+import tempfile, shutil
 import numpy as np
 import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from glyph_cleanup_sweep import apply_dilation, score_abc_accuracy
+from glyph_cleanup_sweep import apply_dilation, score_abc_accuracy, normalize_tune, mxl_to_abc
 
 
 def _thin_line_image():
@@ -49,3 +50,31 @@ def test_score_abc_accuracy_self_match_soldiers_joy():
     matched, total = score_abc_accuracy(gold, gold)
     assert matched == total
     assert total == 18
+
+
+IMAGES_DIR = os.path.join(os.path.dirname(__file__), "..", "..")
+BATCH_DIR = os.path.join(os.path.dirname(__file__), "..", "batch_output")
+
+
+def test_normalize_tune_produces_png():
+    src = os.path.join(IMAGES_DIR, "Arkansas Traveler.png")
+    with tempfile.TemporaryDirectory() as d:
+        out = os.path.join(d, "out.png")
+        normalize_tune(src, out)
+        assert os.path.isfile(out)
+        assert os.path.getsize(out) > 0
+
+
+def test_mxl_to_abc_produces_abc():
+    # Use Arkansas Traveler's existing clean.mxl from batch_output
+    mxl_src = os.path.join(BATCH_DIR, "Arkansas Traveler", "clean.mxl")
+    if not os.path.isfile(mxl_src):
+        pytest.skip("batch_output/Arkansas Traveler/clean.mxl not present")
+    with tempfile.TemporaryDirectory() as d:
+        mxl_copy = os.path.join(d, "test.mxl")
+        shutil.copy2(mxl_src, mxl_copy)
+        abc_out = os.path.join(d, "test.abc")
+        success = mxl_to_abc(mxl_copy, abc_out)
+        assert success
+        assert os.path.isfile(abc_out)
+        assert open(abc_out).read().strip() != ""
