@@ -4,6 +4,7 @@ _Written 2026-06-11 (Opus session) as a cold-start brief for a follow-up session
 _Updated 2026-06-11 (Sonnet session) after scoring work and pipeline architecture decisions._
 _Updated 2026-06-12 (Opus session) after normalize_interline, health_score, verify_mxl, compare_abc fix._
 _Updated 2026-06-12 (Sonnet session) after mvt1 MXL fallback fix in batch_tune.sh._
+_Updated 2026-06-12 (Sonnet session) after Audiveris -constant sweeps (Experiment D)._
 _Updated 2026-06-12 (Sonnet session) after glyph dilation sweep (Experiment E)._
 _Read `omr_findings.md` first for the full experiment history. This file is the
 forward-looking plan: what to build next, in priority order, and why._
@@ -337,6 +338,12 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 - **Hunting for a higher-res source / feeding the PDF to Audiveris** — the PNGs ARE the source.
 - **Audiveris `-constant` or `-step` to suppress slurs/decorations** — not possible; no such
   constants exist. Use `clean_omr.py` instead.
+- **Audiveris grade threshold constants to fix key detection** — swept `keyAlterMinGrade1`
+  (0.01–0.5), `keyAlterMinGrade2`, `keySigMinGrade`, `minInterGrade`, `intrinsicRatio`.
+  Zero effect. The binding constraint is glyph classification, not grade thresholds.
+- **`AdaptiveFilter.halfWindowSize` as a global fix** — has real effect on key detection,
+  but no single value works across sources: smaller windows help some tunes, larger windows
+  help others, same values that fix one tune break another (tested on 10 tunes).
 
 ---
 
@@ -381,6 +388,10 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
   intra-measure whitespace; does NOT strip slurs (they're real errors if Audiveris adds them)
 - `normalize_interline.py` — measure staff interline via row projection; scale to target 18px; falls back to 1.5× on detection failure. `--measure-only` flag for survey mode.
 - `health_score.py` — parse `clean.omr` ZIP XMLs; score key/time/Ashokan-tell/avg-grade; output worst-first TSV. Run after batch completes to get phase 2 queue.
+  **Caveat on key_ok:** the −40 penalty is a false alarm for tunes that genuinely have no
+  printed key signature (Am, C major, Dorian tunes). Visual inspection showed many `key_ok=False`
+  tunes in the health_scores.tsv are actually correctly detected as keyless. The ashokan_tell
+  signal (rest in header x-band) is reliable: it always indicates a misclassified sharp.
 - `sweep_constants.py` — **Experiment D tool**. Sweeps one Audiveris `-constant` over a set of
   tunes, scores with health_score logic, prints a table. Usage: `python3 sweep_constants.py
   [--constant NAME] [--values V1,V2,...] [--tunes T1,T2,...]`. Default sweeps
