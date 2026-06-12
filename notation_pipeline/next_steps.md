@@ -254,14 +254,17 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
      seneca-square-dance 2, star-above-the-garter2
    - **Multi-MXL / ABC conversion error** (Audiveris exported multiple sheets, script picked wrong
      one): Boggy Road to Texas, Cherokee Shuffle, Eighth of January, Gypsy Waltz, Pat(T)'s Country,
-     Road House Ramble, Westphalia Waltz (new)
-   - All 11 need GUI intervention or script fix; set aside for later.
+     Road House Ramble, Westphalia Waltz (new) — 4 self-resolved in the normalize_interline re-run
+     (Boggy Road to Texas G/4/4, Eighth of January D/4/4, Gypsy Waltz F, Westphalia Waltz (new));
+     remaining 3 fixed by mvt1 fallback (item 8)
+   - Remaining failures needing GUI intervention: Kerry Mills' Barn Dance, Nixon's Farewell,
+     seneca-square-dance 2, star-above-the-garter2 (no MXL output at all)
 4. ~~**Experiment A**~~ — **DONE** (`normalize_interline.py` built, integrated into `batch_tune.sh`, batch re-run in progress)
 5. ~~**Experiment B**~~ — **DONE** (`health_score.py` built, tested on 44 tunes)
 6. ~~**Experiment C**~~ — **DEAD END** (see above — Audiveris GUI already does this better)
 7. **Run `health_score.py` on full corpus** — after current batch_all.sh completes; produces the phase 2 cleanup queue sorted worst-first
-8. ~~**Fix mvt1 multi-MXL batch failures**~~ — **DONE** (2026-06-12). `batch_tune.sh` now falls back to `preprocessed.mvt1.mxl` when `preprocessed.mxl` is absent. Recovered: Bull Moose (G/4/4), Centralia Waltz, Fisher's Hornpipe (D/4/4), Me and My Fiddle (G/4/4), Morrison's Jig.
-   - **Persistent multi-MXL failures still open:** Cherokee Shuffle, Pat(T)'s Country, Road House Ramble — Audiveris produces mvt2+ files alongside mvt1; cause differs and needs investigation.
+8. ~~**Fix mvt1 multi-MXL batch failures**~~ — **DONE** (2026-06-12). `batch_tune.sh` now falls back to `preprocessed.mvt1.mxl` when `preprocessed.mxl` is absent. Fixed 8 tunes: Bull Moose, Centralia Waltz, Fisher's Hornpipe (D/4/4), Me and My Fiddle (G/4/4), Morrison's Jig, Cherokee Shuffle (A/4/4), Road House Ramble (G/4/4), Pat(T)'s Country.
+   - Pat(T)'s Country split into 3 movements; mvt1 yields only ~5 bars — needs GUI to reassemble.
 9. **Experiment D** — Audiveris `-constant` sweeps, validated source-diversely.
 
 ## Pointers to existing tooling
