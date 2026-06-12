@@ -232,7 +232,7 @@ def _fmt_health(r: dict) -> str:
 
 
 def _fmt_abc(r: dict) -> str:
-    if "abc_matched" not in r:
+    if "abc_matched" not in r or "abc_total" not in r:
         return "—"
     m, total = r["abc_matched"], r["abc_total"]
     pct = m / total * 100 if total else 0
