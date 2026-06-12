@@ -83,6 +83,8 @@ def normalize_tune(src_png: str, out_png: str, target: float = 18.0) -> None:
         # Staff detection failed (e.g. Hey Polka, Forester's Hornpipe).
         # Fall back to fixed 1.5× resize with unsharp mask.
         img = cv2.imread(src_png)
+        if img is None:
+            raise FileNotFoundError(f"Cannot read source image: {src_png}")
         sharpened = apply_unsharp(img)
         h, w = img.shape[:2]
         resized = cv2.resize(

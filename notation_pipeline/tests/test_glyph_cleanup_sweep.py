@@ -77,4 +77,5 @@ def test_mxl_to_abc_produces_abc():
         success = mxl_to_abc(mxl_copy, abc_out)
         assert success
         assert os.path.isfile(abc_out)
-        assert open(abc_out).read().strip() != ""
+        with open(abc_out) as f:
+            assert f.read().strip() != ""
