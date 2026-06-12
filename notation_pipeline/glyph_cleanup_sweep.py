@@ -30,6 +30,10 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.path.dirname(SCRIPT_DIR)
 ABC_DIR = os.path.join(SCRIPT_DIR, "abc")
 AUDIVERIS = "flatpak run org.audiveris.audiveris"
+# Flatpak sandbox only has access to ~/Documents (xdg-documents) and ~/Pictures.
+# tempfile.mkdtemp() defaults to /tmp which is sandboxed separately, so Audiveris
+# cannot write there. Use a sweep-specific dir under SCRIPT_DIR (inside ~/Documents).
+SWEEP_TMP_DIR = os.path.join(SCRIPT_DIR, "tmp_pipeline")
 
 sys.path.insert(0, SCRIPT_DIR)
 from normalize_interline import normalize as _normalize_image, apply_unsharp
@@ -178,7 +182,8 @@ def run_one(tune: str, label: str, kernel_size: int | None,
 
     gold_abc_path, _ = GOLD_ABCS.get(tune, (None, None))
 
-    tmpdir = tempfile.mkdtemp(prefix="glyph_sweep_")
+    os.makedirs(SWEEP_TMP_DIR, exist_ok=True)
+    tmpdir = tempfile.mkdtemp(prefix="glyph_sweep_", dir=SWEEP_TMP_DIR)
     try:
         # Step 1: normalize interline (with 1.5× fallback)
         norm_png = os.path.join(tmpdir, "normalized.png")
