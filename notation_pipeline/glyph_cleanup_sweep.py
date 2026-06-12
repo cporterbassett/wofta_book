@@ -221,5 +221,137 @@ def run_one(tune: str, label: str, kernel_size: int | None,
         shutil.rmtree(tmpdir, ignore_errors=True)
 
 
+def _fmt_health(r: dict) -> str:
+    if "error" in r:
+        return f"ERR({r['error'][:8]})"
+    k = "K" if r.get("key_ok") else "."
+    t = "T" if r.get("time_ok") else "."
+    a = "A" if r.get("ashokan_tell") else "."
+    h = r.get("health_score", 0)
+    return f"{k}{t}{a}  h={h:.0f}"
+
+
+def _fmt_abc(r: dict) -> str:
+    if "abc_matched" not in r:
+        return "—"
+    m, total = r["abc_matched"], r["abc_total"]
+    pct = m / total * 100 if total else 0
+    return f"{m}/{total} ({pct:.0f}%)"
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--operation", choices=["dilation"], default="dilation",
+                        help="Glyph cleanup operation to sweep (default: dilation)")
+    parser.add_argument("--tunes", default=",".join(DEFAULT_TUNES),
+                        help="Comma-separated tune names")
+    parser.add_argument("--timeout", type=int, default=120,
+                        help="Audiveris timeout per run in seconds (default: 120)")
+    args = parser.parse_args()
+
+    tunes = [t.strip() for t in args.tunes.split(",")]
+
+    # Validate tune source PNGs exist
+    valid_tunes = []
+    for tune in tunes:
+        png = os.path.join(IMAGES_DIR, f"{tune}.png")
+        if not os.path.isfile(png):
+            print(f"WARNING: skipping {tune!r} — no source PNG at {png}", file=sys.stderr)
+        else:
+            valid_tunes.append(tune)
+    if not valid_tunes:
+        print("ERROR: no valid tunes", file=sys.stderr)
+        sys.exit(1)
+
+    variants = DILATION_VARIANTS  # only dilation for now
+    total = len(variants) * len(valid_tunes)
+    print(f"Glyph cleanup sweep: --operation {args.operation}")
+    print(f"  Tunes   : {valid_tunes}")
+    print(f"  Variants: {[v for v, _ in variants]}")
+    print(f"  Runs    : {total}")
+    print()
+
+    results: dict[tuple[str, str], dict] = {}
+
+    run_num = 0
+    for label, kernel_size in variants:
+        for tune in valid_tunes:
+            run_num += 1
+            print(f"[{run_num:2d}/{total}]  {label:12s}  {tune}", flush=True)
+            t0 = time.time()
+            r = run_one(tune, label, kernel_size, args.timeout)
+            elapsed = time.time() - t0
+            results[(label, tune)] = r
+            print(f"          → {_fmt_health(r)}  abc={_fmt_abc(r)}  ({elapsed:.0f}s)")
+
+    # ── Table 1: Health scores ────────────────────────────────────────────────
+    col_w = 20
+    val_w = 12
+    abbrevs = [t[:col_w - 1] for t in valid_tunes]
+
+    print()
+    print("=" * 70)
+    print("HEALTH SCORES")
+    print("=" * 70)
+    header = f"{'variant':{val_w}}" + "".join(f"{a:{col_w}}" for a in abbrevs)
+    print(header)
+    print("-" * len(header))
+    for label, _ in variants:
+        row = f"{label:{val_w}}"
+        for tune in valid_tunes:
+            r = results.get((label, tune), {})
+            row += f"{_fmt_health(r):{col_w}}"
+        print(row)
+    print()
+    print("Legend: K=key_ok T=time_ok A=ashokan_tell h=health_score")
+
+    # ── Table 2: Note accuracy (gold tunes only) ──────────────────────────────
+    gold_tunes = [t for t in valid_tunes if t in GOLD_ABCS]
+    if gold_tunes:
+        abbrevs_g = [t[:col_w - 1] for t in gold_tunes]
+        print()
+        print("=" * 70)
+        print("NOTE ACCURACY (gold tunes)")
+        print("=" * 70)
+        header_g = f"{'variant':{val_w}}" + "".join(f"{a:{col_w}}" for a in abbrevs_g)
+        print(header_g)
+        print("-" * len(header_g))
+        for label, _ in variants:
+            row = f"{label:{val_w}}"
+            for tune in gold_tunes:
+                r = results.get((label, tune), {})
+                row += f"{_fmt_abc(r):{col_w}}"
+            print(row)
+
+    # ── Regression check ──────────────────────────────────────────────────────
+    print()
+    print("Regressions (passing at baseline that broke):")
+    baseline_results = {tune: results.get(("baseline", tune), {}) for tune in valid_tunes}
+    for tune in valid_tunes:
+        b = baseline_results[tune]
+        if "error" in b or not b.get("key_ok"):
+            continue
+        broke = [label for label, _ in variants if label != "baseline"
+                 and not results.get((label, tune), {}).get("key_ok")]
+        if broke:
+            print(f"  {tune}: key broke at {broke}")
+        else:
+            print(f"  {tune}: no regressions")
+
+    print()
+    print("Key recovery (failing at baseline that improved):")
+    for tune in valid_tunes:
+        b = baseline_results[tune]
+        if "error" in b or b.get("key_ok"):
+            continue
+        fixed = [label for label, _ in variants if label != "baseline"
+                 and results.get((label, tune), {}).get("key_ok")]
+        if fixed:
+            print(f"  {tune}: key recovered at {fixed}")
+        else:
+            print(f"  {tune}: still failing at all variants")
+
+
 if __name__ == "__main__":
-    print("skeleton ok")
+    main()
