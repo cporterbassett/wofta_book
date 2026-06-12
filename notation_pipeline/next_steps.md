@@ -123,12 +123,15 @@ then finds the exported MXL and converts to ABC.
 
 ## Reframe #1 — score on correction effort, not key-binary (partially done)
 
-**Status:** Gold standards created; all three tunes scored at 1.5× and with interline normalization.
+**Status:** Gold standards created; 6 tunes scored at baseline interline normalization (Experiment E sweep).
 
 **Gold standard ABCs** (in `abc/`, transcribed directly from WOFTA images):
 - `Arkansas Traveler-gold.abc` — 18 measures, K:D
-- `Soldier's Joy-gold.abc` — 16 measures + pickup, K:D
-- `Mississippi Sawyer-gold.abc` — 16 measures + pickup, K:D
+- `Soldier's Joy-gold.abc` — 18 measures (incl. pickup), K:D
+- `Mississippi Sawyer-gold.abc` — 18 measures (incl. pickup), K:D
+- `Angeline the Baker-gold.abc` — 19 measures, K:D
+- `Billy in the Lowground-gold.abc` — 17 measures, K:C (Audiveris baseline misses key — useful regression check)
+- `Honest John-gold.abc` — 16 measures, K:G jig; source PNG at `old_images/Honest John.png` (symlinked)
 
 **Arkansas Traveler scores** (after MXL cleaning + compare_abc normalization):
 | Scale | Score | Main failures |
@@ -406,6 +409,6 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 - venv: `../.venv/bin/python3` (has opencv-python-headless, music21, abc_xml_converter).
 - Audiveris: `flatpak run org.audiveris.audiveris` (supports `-batch -export -constant
   key=value -output <dir> -sheets <n>`).
-- gold-standard ABCs: `abc/*-gold.abc` (Arkansas Traveler, Soldier's Joy, Mississippi Sawyer)
+- gold-standard ABCs: `abc/*-gold.abc` (Arkansas Traveler, Soldier's Joy, Mississippi Sawyer, Angeline the Baker, Billy in the Lowground, Honest John)
 - Batch output: `batch_output/<Tune Name>/` with `preprocessed.png`, `preprocessed.omr`,
   `preprocessed.mxl`, `clean.omr`, `clean.mxl`. Draft ABCs: `abc/<Tune>-draft.abc`.
