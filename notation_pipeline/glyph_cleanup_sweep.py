@@ -187,6 +187,8 @@ def run_one(tune: str, label: str, kernel_size: int | None,
         # Step 2: apply dilation (no-op for baseline)
         if kernel_size is not None:
             img = cv2.imread(norm_png)
+            if img is None:
+                return {"error": f"cv2.imread failed: {norm_png}"}
             cv2.imwrite(norm_png, apply_dilation(img, kernel_size))
 
         # Step 3: Audiveris
@@ -208,7 +210,7 @@ def run_one(tune: str, label: str, kernel_size: int | None,
             if mxl_candidates:
                 mxl_path = os.path.join(tmpdir, mxl_candidates[0])
                 abc_path = os.path.join(tmpdir, "test.abc")
-                if mxl_to_abc(mxl_path, abc_path):
+                if mxl_to_abc(mxl_path, abc_path) and os.path.isfile(gold_abc_path):
                     matched, total = score_abc_accuracy(gold_abc_path, abc_path)
                     result["abc_matched"] = matched
                     result["abc_total"] = total
