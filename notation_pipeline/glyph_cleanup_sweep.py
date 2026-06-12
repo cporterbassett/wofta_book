@@ -40,20 +40,16 @@ from abc_xml_converter import convert_xml2abc
 
 
 def apply_dilation(img_bgr: np.ndarray, kernel_size: int) -> np.ndarray:
-    """Apply morphological dilation with an elliptical kernel, 1 iteration.
+    """Thicken dark music notation strokes via morphological erosion.
 
-    Elliptical kernel chosen because sharp strokes are diagonal —
-    rectangular kernels would square off curves.
-
-    Inverts the image, dilates bright regions (which expands dark regions),
-    then inverts back to preserve the original color scheme.
+    Erosion shrinks the white background, expanding dark regions. Elliptical
+    kernel chosen because sharp strokes are diagonal — rectangular kernels
+    would square off curves.
     """
     kernel = cv2.getStructuringElement(
         cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
     )
-    inverted = cv2.bitwise_not(img_bgr)
-    dilated = cv2.dilate(inverted, kernel, iterations=1)
-    return cv2.bitwise_not(dilated)
+    return cv2.erode(img_bgr, kernel, iterations=1)
 
 
 # Gold ABCs: tune name → (gold_abc_path, expected_measure_count)
