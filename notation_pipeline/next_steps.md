@@ -96,11 +96,23 @@ Both scales produce structural errors (wrong barlines, rests, truncated measures
 accidental errors. 1.5× is the best single default — its two remaining failures are
 systematic (same C# miss, both occurrences) and would be caught by the user in one pass.
 
-**Next:** Convert Soldier's Joy and Mississippi Sawyer MXLs to ABC and score. MXLs are in:
-- `tmp_pipeline/survey/Soldier's Joy/mxl/`
-- `tmp_pipeline/survey_1.5x/Soldier's Joy/mxl/`
-- `tmp_pipeline/survey_2x/Soldier's Joy/mxl/`
-- (same pattern for Mississippi Sawyer)
+**Soldier's Joy scores** (after MXL cleaning):
+| Scale | Score | Key | Main failures |
+|-------|-------|-----|---------------|
+| 1× | 7/18 (39%) | K:D ✓ | Structural failure: B section completely garbled — barline confusion shifts entire note block |
+| 1.5× | 12/18 (67%) | K:G ❌ | Wrong key (G instead of D) — C# written explicitly as `^c` throughout. 2 failures are `g6/2e` vs `g3 e` (musically identical; compare_abc doesn't reduce `6/2` → `3`). True musical accuracy ≈ 14–16/18 if key were correct. |
+| 2× | 7/18 (39%) | K:D ✓ | Same structural failure as 1×; f notes appear as `=f` naturals throughout B section |
+
+**Mississippi Sawyer scores** (after MXL cleaning):
+| Scale | Score | Key | Main failures |
+|-------|-------|-----|---------------|
+| 1× | 12/18 (67%) | K:D ✓ | 5 consecutive B-section failures: `=f`, `=c` naturals (alter values wrong — same "baked at recognition time" pattern as Arkansas Traveler 1×) |
+| 1.5× | 15/18 (83%) | K:D ✓ | 2 failures: one note error (g→e substitution in measure 5), one barline confusion at A-section repeat boundary |
+| 2× | 7/18 (39%) | K:D ✓ | `=f`, `=c` naturals throughout; more structural failures |
+
+**Key finding:** 1.5× is confirmed best across all three scored tunes. Mississippi Sawyer 1.5× = 15/18 (83%), Arkansas Traveler 1.5× = 16/18 (89%). Soldier's Joy 1.5× has a key detection failure (K:G instead of K:D) — C# not recognized. This tune was previously noted as changing key between scales; try 1× or 2× as fallback if a tune scores poorly at 1.5×.
+
+**Notation comparison caveat:** `g6/2e` and `g3 e` are musically identical (6/2 = 3 in L:1/8) but compare as different strings because compare_abc's `normalize_durations` skips conversion when unit == L:1/8. Minor false negative affecting ≤2 measures per tune.
 
 ---
 
@@ -221,18 +233,24 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 
 ## Priority order
 
-1. **Build the two-phase pipeline** — `batch_tune.sh`, `batch_all.sh`, `cleanup_loop.sh`
-2. **Score Soldier's Joy and Mississippi Sawyer** at 1×/1.5×/2× (MXLs already exist, need
-   abc_xml_converter + clean_mxl + compare_abc)
-3. **Experiment A** — `normalize_interline.py` + glyph-cleanup flags. (the big build)
-4. **Experiment B** — `health_score.py` triage + batch-all-to-`.omr`. (needed for pipeline)
-5. **Experiment C** — MXL-render overlay-diff verification.
-6. **Experiment D** — Audiveris `-constant` sweeps, validated source-diversely.
+1. ~~**Build the two-phase pipeline**~~ — **DONE** (`batch_tune.sh`, `batch_all.sh`, `cleanup_loop.sh`)
+2. ~~**Score Soldier's Joy and Mississippi Sawyer**~~ — **DONE** (see Reframe #1 above)
+3. **Run `batch_all.sh`** — process all 269 tunes overnight; results in `batch_output/`
+4. **Experiment A** — `normalize_interline.py` + glyph-cleanup flags. (the big build)
+5. **Experiment B** — `health_score.py` triage for cleanup loop queue ordering.
+6. **Experiment C** — MXL-render overlay-diff verification.
+7. **Experiment D** — Audiveris `-constant` sweeps, validated source-diversely.
 
 ## Pointers to existing tooling
 
-- `batch_tune.sh` — rename/refactor of `run_tune_pipeline.sh`; preprocess → Audiveris batch
-  → `clean_omr.py` → `clean_mxl.py` → `abc_xml_converter`
+- `batch_tune.sh` — phase 1 single tune: preprocess → Audiveris batch → `clean_omr.py` →
+  `clean_mxl.py` → `abc_xml_converter`. Output in `batch_output/<Tune>/`. Resumable via
+  `clean.omr` checkpoint.
+- `batch_all.sh` — runs `batch_tune.sh` over all 269 PNGs; skips tunes with `clean.omr`;
+  supports `--dry-run`. Log in `batch_output/batch_all.log`.
+- `cleanup_loop.sh` — phase 2 interactive: opens `clean.omr` in Audiveris GUI, waits for
+  close, finds exported MXL, runs `clean_mxl.py` → `abc_xml_converter` → final ABC.
+  Supports `--list` and specific tune names as args. Output: `abc/<Tune>-final.abc`.
 - `clean_omr.py` — strips slur/wedge/articulation/bow/ornament/dynamics inters + relations
   from .omr XML **before** GUI opens it
 - `clean_mxl.py` — strips same categories from MXL + repeated `<key>` elements (batch path)
@@ -244,5 +262,5 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 - Audiveris: `flatpak run org.audiveris.audiveris` (supports `-batch -export -constant
   key=value -output <dir> -sheets <n>`).
 - gold-standard ABCs: `abc/*-gold.abc` (Arkansas Traveler, Soldier's Joy, Mississippi Sawyer)
-- Survey MXLs: `tmp_pipeline/survey/`, `tmp_pipeline/survey_1.5x/`, `tmp_pipeline/survey_2x/`
-  (20 tunes each; need clean_mxl + abc_xml_converter to produce scoreable ABCs)
+- Batch output: `batch_output/<Tune Name>/` with `preprocessed.png`, `preprocessed.omr`,
+  `preprocessed.mxl`, `clean.omr`, `clean.mxl`. Draft ABCs: `abc/<Tune>-draft.abc`.
