@@ -4,8 +4,52 @@ _Written 2026-06-11 (Opus session) as a cold-start brief for a follow-up session
 _Updated 2026-06-11 (Sonnet session) after scoring work and pipeline architecture decisions._
 _Updated 2026-06-12 (Opus session) after normalize_interline, health_score, verify_mxl, compare_abc fix._
 _Updated 2026-06-12 (Sonnet session) after mvt1 MXL fallback fix in batch_tune.sh._
+_Updated 2026-06-12 (Sonnet session) after glyph dilation sweep (Experiment E)._
 _Read `omr_findings.md` first for the full experiment history. This file is the
 forward-looking plan: what to build next, in priority order, and why._
+
+---
+
+## Experiment E — Glyph Cleanup (Dilation) ✗ DEAD END
+
+_Executed 2026-06-12. Script: `glyph_cleanup_sweep.py --operation dilation`. 40 jobs: 10 tunes × 4 variants (baseline, dilate_k2, dilate_k3, dilate_k4). Each variant applies a morphological dilation with the given square kernel before passing the preprocessed PNG to Audiveris._
+
+### Health scores
+
+```
+variant     Big Scioty          Miss McCloud's Reel Big Con             Ashokan Farewell    Arkansas Traveler   Angeline the Baker  Soldier's Joy       Mississippi Sawyer  Billy in the Lowgro Honest John
+baseline    ...  h=48           ...  h=47           .T.  h=69           KTA  h=77           KT.  h=108          KT.  h=108          KT.  h=108          KT.  h=108          .T.  h=68           ...  h=48
+dilate_k2   KT.  h=108          ...  h=47           .T.  h=68           K..  h=88           KT.  h=108          KT.  h=108          KT.  h=108          KT.  h=108          .T.  h=68           ...  h=48
+dilate_k3   KT.  h=108          ...  h=47           .T.  h=68           K..  h=87           KT.  h=108          K..  h=87           KT.  h=108          KT.  h=108          .TA  h=38           ...  h=48
+dilate_k4   KT.  h=108          ...  h=41           .T.  h=68           K..  h=87           KT.  h=108          ...  h=47           KT.  h=108          KT.  h=108          .T.  h=68           ...  h=47
+
+Legend: K=key_ok T=time_ok A=ashokan_tell h=health_score
+```
+
+### Note accuracy (gold tunes)
+
+```
+variant     Arkansas Traveler   Angeline the Baker  Soldier's Joy       Mississippi Sawyer  Billy in the Lowgro Honest John
+baseline    17/18 (94%)         18/19 (95%)         12/18 (67%)         14/18 (78%)         14/17 (82%)         1/16 (6%)
+dilate_k2   16/18 (89%)         12/19 (63%)         14/18 (78%)         12/18 (67%)         13/17 (76%)         0/16 (0%)
+dilate_k3   14/18 (78%)         1/19 (5%)           16/18 (89%)         14/18 (78%)         6/17 (35%)          1/16 (6%)
+dilate_k4   6/18 (33%)          4/19 (21%)          2/18 (11%)          1/18 (6%)           1/17 (6%)           1/16 (6%)
+```
+
+### Key recovery / regressions
+
+- **Big Scioty:** key recovered at dilate_k2/k3/k4. (But Big Scioty genuinely has no key sig — this is Audiveris hallucinating a key, not a real improvement.)
+- **Ashokan Farewell:** ashokan_tell removed at all dilation variants (K only, h=87-88 vs baseline KTA h=77). However, the time sig (T) is now missing — dilation thickened the time-sig glyphs past recognizability. Net neutral at best.
+- **All other key failures** (Miss McCloud's Reel, Big Con, Billy in the Lowground, Honest John): no recovery at any kernel size.
+- **Note accuracy degrades monotonically** with kernel size. dilate_k2 already regresses 3 of 5 gold tunes (−5% to −32%). dilate_k4 is catastrophic (−61% to −89%).
+- **Angeline the Baker:** key broke at dilate_k4.
+- **Billy in the Lowground:** ashokan_tell introduced at dilate_k3.
+
+### Conclusion
+
+DONE — dilation did not improve OMR quality.
+
+Dilation consistently degrades note accuracy with no net benefit: even the smallest kernel (k2) reduces accuracy on most gold tunes, and the apparent "key recovery" on Big Scioty is spurious (that tune has no printed key sig). The ashokan_tell removal on Ashokan Farewell at k2/k3/k4 is offset by a newly broken time sig. All remaining key failures are unchanged. Do not apply dilation preprocessing.
 
 ---
 
@@ -317,6 +361,7 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 8. ~~**Fix mvt1 multi-MXL batch failures**~~ — **DONE** (2026-06-12). `batch_tune.sh` now falls back to `preprocessed.mvt1.mxl` when `preprocessed.mxl` is absent. Fixed 8 tunes: Bull Moose, Centralia Waltz, Fisher's Hornpipe (D/4/4), Me and My Fiddle (G/4/4), Morrison's Jig, Cherokee Shuffle (A/4/4), Road House Ramble (G/4/4), Pat(T)'s Country.
    - Pat(T)'s Country split into 3 movements; mvt1 yields only ~5 bars — needs GUI to reassemble.
 9. ~~**Experiment D**~~ — **DEAD END** (see above). Grade thresholds: zero effect. Binarization constants: have effect but no safe universal value due to source heterogeneity. Fix remaining key errors (Ashokan, Soldier's Joy) in the GUI.
+10. ~~**Experiment E**~~ — **DEAD END** (see above). Morphological dilation degrades note accuracy monotonically; no net benefit on any tune. Do not apply dilation.
 
 ## Pointers to existing tooling
 

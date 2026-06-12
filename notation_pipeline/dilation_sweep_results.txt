@@ -1,0 +1,121 @@
+Glyph cleanup sweep: --operation dilation
+  Tunes   : ['Big Scioty', "Miss McCloud's Reel", 'Big Con', 'Ashokan Farewell', 'Arkansas Traveler', 'Angeline the Baker', "Soldier's Joy", 'Mississippi Sawyer', 'Billy in the Lowground', 'Honest John']
+  Variants: ['baseline', 'dilate_k2', 'dilate_k3', 'dilate_k4']
+  Runs    : 40
+
+[ 1/40]  baseline      Big Scioty
+          → ...  h=48  abc=—  (10s)
+[ 2/40]  baseline      Miss McCloud's Reel
+          → ...  h=47  abc=—  (11s)
+[ 3/40]  baseline      Big Con
+          → .T.  h=69  abc=—  (12s)
+[ 4/40]  baseline      Ashokan Farewell
+          → KTA  h=77  abc=—  (10s)
+[ 5/40]  baseline      Arkansas Traveler
+          → KT.  h=108  abc=17/18 (94%)  (10s)
+[ 6/40]  baseline      Angeline the Baker
+          → KT.  h=108  abc=18/19 (95%)  (10s)
+[ 7/40]  baseline      Soldier's Joy
+          → KT.  h=108  abc=12/18 (67%)  (9s)
+[ 8/40]  baseline      Mississippi Sawyer
+          → KT.  h=108  abc=14/18 (78%)  (10s)
+[ 9/40]  baseline      Billy in the Lowground
+          → .T.  h=68  abc=14/17 (82%)  (12s)
+[10/40]  baseline      Honest John
+          → ...  h=48  abc=1/16 (6%)  (10s)
+[11/40]  dilate_k2     Big Scioty
+          → KT.  h=108  abc=—  (10s)
+[12/40]  dilate_k2     Miss McCloud's Reel
+          → ...  h=47  abc=—  (12s)
+[13/40]  dilate_k2     Big Con
+          → .T.  h=68  abc=—  (13s)
+[14/40]  dilate_k2     Ashokan Farewell
+          → K..  h=88  abc=—  (11s)
+[15/40]  dilate_k2     Arkansas Traveler
+          → KT.  h=108  abc=16/18 (89%)  (11s)
+[16/40]  dilate_k2     Angeline the Baker
+          → KT.  h=108  abc=12/19 (63%)  (11s)
+[17/40]  dilate_k2     Soldier's Joy
+          → KT.  h=108  abc=14/18 (78%)  (9s)
+[18/40]  dilate_k2     Mississippi Sawyer
+          → KT.  h=108  abc=12/18 (67%)  (11s)
+[19/40]  dilate_k2     Billy in the Lowground
+          → .T.  h=68  abc=13/17 (76%)  (13s)
+[20/40]  dilate_k2     Honest John
+          → ...  h=48  abc=0/16 (0%)  (10s)
+[21/40]  dilate_k3     Big Scioty
+          → KT.  h=108  abc=—  (10s)
+[22/40]  dilate_k3     Miss McCloud's Reel
+          → ...  h=47  abc=—  (12s)
+[23/40]  dilate_k3     Big Con
+          → .T.  h=68  abc=—  (13s)
+[24/40]  dilate_k3     Ashokan Farewell
+          → K..  h=87  abc=—  (11s)
+[25/40]  dilate_k3     Arkansas Traveler
+          → KT.  h=108  abc=14/18 (78%)  (10s)
+[26/40]  dilate_k3     Angeline the Baker
+          → K..  h=87  abc=1/19 (5%)  (11s)
+[27/40]  dilate_k3     Soldier's Joy
+          → KT.  h=108  abc=16/18 (89%)  (10s)
+[28/40]  dilate_k3     Mississippi Sawyer
+          → KT.  h=108  abc=14/18 (78%)  (11s)
+[29/40]  dilate_k3     Billy in the Lowground
+          → .TA  h=38  abc=6/17 (35%)  (12s)
+[30/40]  dilate_k3     Honest John
+          → ...  h=48  abc=1/16 (6%)  (11s)
+[31/40]  dilate_k4     Big Scioty
+          → KT.  h=108  abc=—  (11s)
+[32/40]  dilate_k4     Miss McCloud's Reel
+          → ...  h=41  abc=—  (8s)
+[33/40]  dilate_k4     Big Con
+          → .T.  h=68  abc=—  (14s)
+[34/40]  dilate_k4     Ashokan Farewell
+          → K..  h=87  abc=—  (11s)
+[35/40]  dilate_k4     Arkansas Traveler
+          → KT.  h=108  abc=6/18 (33%)  (12s)
+[36/40]  dilate_k4     Angeline the Baker
+          → ...  h=47  abc=4/19 (21%)  (11s)
+[37/40]  dilate_k4     Soldier's Joy
+          → KT.  h=108  abc=2/18 (11%)  (10s)
+[38/40]  dilate_k4     Mississippi Sawyer
+          → KT.  h=108  abc=1/18 (6%)  (11s)
+[39/40]  dilate_k4     Billy in the Lowground
+          → .T.  h=68  abc=1/17 (6%)  (13s)
+[40/40]  dilate_k4     Honest John
+          → ...  h=47  abc=1/16 (6%)  (11s)
+
+======================================================================
+HEALTH SCORES
+======================================================================
+variant     Big Scioty          Miss McCloud's Reel Big Con             Ashokan Farewell    Arkansas Traveler   Angeline the Baker  Soldier's Joy       Mississippi Sawyer  Billy in the Lowgro Honest John         
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+baseline    ...  h=48           ...  h=47           .T.  h=69           KTA  h=77           KT.  h=108          KT.  h=108          KT.  h=108          KT.  h=108          .T.  h=68           ...  h=48           
+dilate_k2   KT.  h=108          ...  h=47           .T.  h=68           K..  h=88           KT.  h=108          KT.  h=108          KT.  h=108          KT.  h=108          .T.  h=68           ...  h=48           
+dilate_k3   KT.  h=108          ...  h=47           .T.  h=68           K..  h=87           KT.  h=108          K..  h=87           KT.  h=108          KT.  h=108          .TA  h=38           ...  h=48           
+dilate_k4   KT.  h=108          ...  h=41           .T.  h=68           K..  h=87           KT.  h=108          ...  h=47           KT.  h=108          KT.  h=108          .T.  h=68           ...  h=47           
+
+Legend: K=key_ok T=time_ok A=ashokan_tell h=health_score
+
+======================================================================
+NOTE ACCURACY (gold tunes)
+======================================================================
+variant     Arkansas Traveler   Angeline the Baker  Soldier's Joy       Mississippi Sawyer  Billy in the Lowgro Honest John         
+------------------------------------------------------------------------------------------------------------------------------------
+baseline    17/18 (94%)         18/19 (95%)         12/18 (67%)         14/18 (78%)         14/17 (82%)         1/16 (6%)           
+dilate_k2   16/18 (89%)         12/19 (63%)         14/18 (78%)         12/18 (67%)         13/17 (76%)         0/16 (0%)           
+dilate_k3   14/18 (78%)         1/19 (5%)           16/18 (89%)         14/18 (78%)         6/17 (35%)          1/16 (6%)           
+dilate_k4   6/18 (33%)          4/19 (21%)          2/18 (11%)          1/18 (6%)           1/17 (6%)           1/16 (6%)           
+
+Regressions (passing at baseline that broke):
+  Ashokan Farewell: no regressions
+  Arkansas Traveler: no regressions
+  Angeline the Baker: key broke at ['dilate_k4']
+  Soldier's Joy: no regressions
+  Mississippi Sawyer: no regressions
+
+Key recovery (failing at baseline that improved):
+  Big Scioty: key recovered at ['dilate_k2', 'dilate_k3', 'dilate_k4']
+  Miss McCloud's Reel: still failing at all variants
+  Big Con: still failing at all variants
+  Billy in the Lowground: still failing at all variants
+  Honest John: still failing at all variants
