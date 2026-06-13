@@ -82,8 +82,8 @@ re-promotes (overwriting `-verified`).
 ## PDF render-selection
 
 `make_pdf.py` builds the book from a canonical tune list = **union** of `source_images/*.png`
-stems and `notation_pipeline/abc/*-verified.abc` stems (the union covers Honest John, whose
-scan lives in `old_images/`). For each tune:
+stems and `notation_pipeline/abc/*-verified.abc` stems (the union is belt-and-suspenders; in
+practice every tune's scan, including Honest John's, lives in `source_images/`). For each tune:
 
 - if `notation_pipeline/abc/<Tune>-verified.abc` exists → render it as **vector** via LilyPond;
 - else → embed `source_images/<Tune>.png` as raster.
@@ -153,8 +153,9 @@ experiment renders. Keeps the 9 tunes' engraving renders (renamed to the new tie
 - `git mv` the 9 `abc/<Tune>-final.abc` → `abc/<Tune>-verified.abc`; rename their renders.
 - 294 root PNGs → `source_images/` (`git mv`). mtime ordering preserved (move doesn't touch
   mtimes; `make_pdf` sorts by name anyway).
-- Honest John's scan (`old_images/Honest John.png`) — ensure it's reachable by `make_pdf`
-  (copy/symlink into `source_images/`, or rely on the union list using its verified ABC).
+- Honest John's scan: `git mv old_images/Honest John.png source_images/` so all source scans
+  live in one place. (Its `-gold.abc`, which referenced the `old_images/` path, is deleted in
+  this same change, so nothing is left pointing at the old location.)
 
 ## Verification
 
