@@ -7,21 +7,30 @@ _Updated 2026-06-12 (Sonnet session) after mvt1 MXL fallback fix in batch_tune.s
 _Updated 2026-06-12 (Sonnet session) after Audiveris -constant sweeps (Experiment D)._
 _Updated 2026-06-12 (Sonnet session) after glyph dilation sweep (Experiment E)._
 _Updated 2026-06-12 (Opus session) after key_status triage + Phase 1 completion audit._
+_Updated 2026-06-12 (Opus session) after Phase 2 KICKED OFF — first 9 tunes finalized, GUI/render/report tooling built, key traps found (see Phase 2 section)._
 _Read `omr_findings.md` first for the full experiment history. This file is the
 forward-looking plan: what to build next, in priority order, and why._
 
 ---
 
-## CURRENT STATE (2026-06-12) — Phase 1 done, Phase 2 is the work
+## CURRENT STATE (2026-06-12) — Phase 1 done, Phase 2 STARTED (9/~31 keep-list tunes)
 
 **Phase 1 (batch OMR) is complete.** 267/272 source tunes have `clean.omr` + a
 draft ABC; `health_scores.tsv` is fully populated (267 tunes). All preprocessing
 experiments (A–E) are concluded — A & B shipped, C/D/E are dead ends. **There is no
 more automated quality to extract.** Source heterogeneity defeats every global knob.
 
-**Phase 2 (interactive GUI cleanup) has NOT started** — 0 `*-final.abc` exist. This
-is the remaining bulk of the project: open each tune's `clean.omr` in the Audiveris
-GUI worst-first (`cleanup_loop.sh`), correct, export. Human-in-the-loop; not automatable.
+**Phase 2 (interactive GUI cleanup) has STARTED — but only on a confirmed KEEP-LIST
+subset, not the whole corpus.** Porter is still waiting on the final keep/add list, so
+we only finalize tunes already known to be in the book. The 31-tune subset (worst-first
+by health_score) is in `cleanup_keep.sh`. **9 tunes finalized so far** (`abc/*-final.abc`):
+- GUI cleanup: Needle Case, Cherokee Shuffle, Red Haired Boy
+- 6 gold ABCs promoted straight to `-final` (already correct from the WOFTA images):
+  Angeline the Baker, Arkansas Traveler, Mississippi Sawyer, Soldier's Joy,
+  Billy in the Lowground, Honest John.
+
+See the **Phase 2 workflow & findings** section below for the per-tune recipe, the new
+tooling, and three traps hit in the first tunes.
 
 **The queue is now triaged by real correction effort.** `health_score.py` gained a
 `key_status` column (present / missed / absent). The old `key_ok=False` penalty was a
@@ -42,8 +51,61 @@ won't flow through `cleanup_loop.sh`:
 fragment) — their draft ABC is near-useless, fix in GUI: Bull Moose (2 measures),
 Pat(T)'s Country (5), Elzic's Farewell (5).
 
-**→ Next action:** run `cleanup_loop.sh` over the triaged worst-first queue
-(`health_scores.tsv`), starting with the 15 `missed` + ashokan tunes.
+**→ Next action:** continue `cleanup_keep.sh` down the keep-list queue. Next GUI tune
+is **Temperance Reel** (= Teetotaller's Reel, ashokan tell). 22 keep-list tunes remain.
+
+---
+
+## Phase 2 — workflow & findings (STARTED 2026-06-12)
+
+### Per-tune recipe (confirmed on the 3 GUI tunes)
+1. Open `batch_output/<Tune>/clean.omr` in the Audiveris GUI (launch in background;
+   maximize with `wmctrl -r Audiveris -b add,maximized_vert,maximized_horz`).
+2. Fix notes / key / clef in the GUI, then **Ctrl+S (Save) — NOT File→Export.**
+3. `bash export_tune.sh "<Tune>"` — batch-exports the saved `.omr`, cleans, converts to
+   `abc/<Tune>-final.abc`, and renders. **Use this, not raw commands** (it traps the
+   movement-split case — see below).
+4. Add `T:` (tune name) and chord symbols by reading them off the scan, into the ABC.
+   **Title + chords are done in the ABC, NOT in the Audiveris GUI** (GUI chord-entry is
+   slow and fiddly; chord text is large/crisp and easy to read off the scan).
+5. Render (`render_abc.sh`) and open render + scan in `firefox` to verify. Regenerate the
+   comparison page with `build_report.sh` → `finalized_report.html`.
+
+### New tooling built this session
+- `cleanup_keep.sh` — runs `cleanup_loop.sh` over the keep-list subset only, worst-first.
+- `export_tune.sh` — post-GUI export→clean→ABC→render; detects movement splits.
+- `build_report.sh` / `finalized_report.html` — side-by-side scan-vs-engraved report of
+  every `abc/*-final.abc`. Re-run after finalizing tunes.
+- `render_abc.sh` upgraded: injects `%%measurenb 0` (line-start measure numbers, like the
+  scans) + bold `%%gchordfont`/`%%repeatfont`. Voltas authored as `["1."`/`["2."` so they
+  render **1.** / **2.** (plain `|1` renders bare "1").
+
+### Three traps hit (will recur)
+1. **Movement split.** When Audiveris splits a score, batch export writes
+   `clean.mvt1.mxl` / `clean.mvt2.mxl` and the top-level `clean.mxl` is STALE — converting
+   it silently discards GUI edits. `export_tune.sh` detects this, converts each movement
+   for inspection, and stops; re-run with `--mvt N` (mvt1 = main tune; later movements are
+   often alternates/fragments). Cherokee Shuffle: mvt2 was the book's "Alt Measures 12 & 13".
+2. **Dropped systems.** `normalize_interline.py` scales the page to one median interline,
+   so on a xerox where systems differ slightly some land outside Audiveris's tight tolerance
+   and the GRID step discards whole staves. **Tell-tale: low `measure_count` in
+   health_scores.tsv** (Red Haired Boy was msr=9 of 18). Fix: re-OMR the ORIGINAL scan at a
+   plain uniform scale (130–250% all recovered Red Haired Boy's 4 systems; used 150%), check
+   `Retrieved raw line clusters: N` in the preprocessed log = number of systems, then
+   `clean_omr.py` over `batch_output/<Tune>/clean.omr`. Manual staff-adding in the GUI is
+   NOT practical. (The rescale may drop a key sig sharp — fix in GUI.)
+3. **Audiveris drops the GRAY image** from a reopened `.omr` (Gray tab blank, by design,
+   no GUI toggle). Use the **Binary** tab for in-tool reference; the true grayscale only
+   exists in the source PNG (open in firefox).
+
+### Conventions / Porter preferences
+- Chords placed at the **beat they sit over in the scan**, not defaulted to the downbeat
+  (e.g. endings: chord on the 2nd-half half-note).
+- No `nm="Voice"` voice labels (stripped automatically by `export_tune.sh`).
+- Alternate measures rendered as a labeled trailing staff (`"^Alt Measures..."` + `|]`),
+  not just an ABC comment.
+- `batch_output/` (`.omr`/`.mxl`) is intermediate and intentionally NOT version-controlled;
+  the `abc/*-final.abc` files are the committed output / source of truth.
 
 ---
 
