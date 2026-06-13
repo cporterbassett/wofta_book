@@ -82,6 +82,12 @@ else
     echo "→ final: $FINAL_ABC"
 fi
 
+DRAFT_ABC="${PIPELINE_DIR}/abc/${TUNE}-draft.abc"
+if [[ -f "$DRAFT_ABC" ]]; then
+    echo "  Normalizing linebreaks to match scan layout..."
+    "$VENV" "${HERE}/normalize_linebreaks.py" "$FINAL_ABC" "$DRAFT_ABC"
+fi
+
 RENDER="${PIPELINE_DIR}/renders/${TUNE}-candidate.render.png"
 bash "${HERE}/render_abc.sh" "$FINAL_ABC" "$RENDER" 2>&1 | tail -1
 

@@ -16,7 +16,7 @@ import io
 import xml.etree.ElementTree as ET
 
 # MusicXML namespace (Audiveris output is unnamespaced, but handle either)
-_STRIP_FROM_NOTATIONS = {'slur', 'ornaments', 'articulations', 'technical', 'dynamics'}
+_STRIP_FROM_NOTATIONS = {'ornaments', 'articulations', 'technical', 'dynamics'}
 
 
 def _tag(el):
