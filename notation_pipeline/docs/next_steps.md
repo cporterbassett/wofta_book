@@ -1,5 +1,14 @@
 # OMR Pipeline — Next Steps
 
+> **Layout note (2026-06-12 reorg):** scripts now live in `notation_pipeline/bin/`
+> (run e.g. `bash bin/cleanup_keep.sh` or `python3 bin/build_tracking_sheet.py`).
+> ABC tiers were renamed: the old `-final.abc` is split into `-candidate.abc`
+> (machine-checked) and `-verified.abc` (human-signed-off, the PDF gate);
+> `validate_final.py` → `bin/validate_abc.py`; `-gold.abc` references are retired.
+> Source scans moved to `../source_images/`. The PDF builder (`../make_pdf.py`) now
+> publishes the `-verified` engraving per tune (vector via abcm2ps), else the scan.
+> Older command examples below may show the pre-reorg flat paths.
+
 _Written 2026-06-11 (Opus session) as a cold-start brief for a follow-up session._
 _Updated 2026-06-11 (Sonnet session) after scoring work and pipeline architecture decisions._
 _Updated 2026-06-12 (Opus session) after normalize_interline, health_score, verify_mxl, compare_abc fix._
