@@ -1,0 +1,14 @@
+X:1
+T:Barlow Knife
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble
+V:1
+ ef |"G" g2 g2"D" f3 f |"G" ga ge d2 ef |"G" g2 g2"D" f3 f |"C" ef e2 "G"d2 ef |"G" g2 g2 "D"f3 f |$ %6
+"G" ga ge d2 ef |"G" g2 g2 "D"f3 f |"C" e2 e2"G" d3 d ||"G" e2 d2 B3 d | e2 d2 G3 d | e2 d2 BA GB |$ %12
+"D" A2 G2"G" G2 e2- |"G" e2 d2 B3 d | e2 d2 G3 d | e2 d2 BA GB |"D" A2 G2 "G"G2 A2- ||"D" A2 d2 "G"B3 B | %18
+ "D"A2 d2 "G"B3 B |$"D" A2 d2"G" BA GB |"D" A2 G2"G" G2 A2 |"D" A2 d2"G" B3 B |"D" A2 d2"G" B3 B | %23
+"D" A2 d2"G" BA GB |"D" A2"G" G2 G2 G2 |] %25
+W: “I've been married all my life and all I've got is a Barlow Knife"
