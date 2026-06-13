@@ -40,6 +40,10 @@ open(os.environ['ABC_OUT'],'w').write(convert_xml2abc(file_to_convert=os.environ
 " 2>/dev/null
     # Strip the "Voice" voice-name labels abc_xml_converter emits on the V: line.
     sed -i 's/ nm="[^"]*" snm="[^"]*"//' "$2"
+    # abc_xml_converter writes M:2/2 even for cut time; restore M:C| when MXL says so.
+    if grep -q 'symbol="cut"' "$cleaned" 2>/dev/null; then
+        sed -i 's/^M:2\/2$/M:C|/' "$2"
+    fi
 }
 
 # Clear old movement files so we only see this run's output.
@@ -100,5 +104,3 @@ echo ""
 echo "── Validation ──────────────────────────────────────────"
 "$VENV" "${HERE}/validate_abc.py" "$TUNE" || true
 echo "────────────────────────────────────────────────────────"
-
-easyabc "$FINAL_ABC" &
