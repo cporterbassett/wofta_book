@@ -16,8 +16,9 @@
 
 set -euo pipefail
 
-IMAGES_DIR="/home/porter/Documents/banjo/WOFTA/tune_images"
-PIPELINE_DIR="${IMAGES_DIR}/notation_pipeline"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
+IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
 BATCH_DIR="${PIPELINE_DIR}/batch_output"
 HEALTH_TSV="${PIPELINE_DIR}/health_scores.tsv"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
@@ -168,7 +169,7 @@ for TUNE in "${QUEUE[@]}"; do
 
     # Clean the exported MXL (strip residual slurs/decorations from user-exported file)
     CLEANED_MXL="${EXPORT_DIR}/exported_clean.mxl"
-    "$VENV" "${PIPELINE_DIR}/clean_mxl.py" "$NEW_MXL" "$CLEANED_MXL"
+    "$VENV" "${HERE}/clean_mxl.py" "$NEW_MXL" "$CLEANED_MXL"
 
     # Convert to ABC (use env vars to avoid quoting issues with apostrophes in tune names)
     mkdir -p "${PIPELINE_DIR}/abc"
@@ -193,7 +194,7 @@ open(os.environ['ABC_OUT'], 'w').write(result)
 
     echo ""
     echo "── Validation ──────────────────────────────────────────"
-    "$VENV" "${PIPELINE_DIR}/validate_final.py" "$TUNE" || true
+    "$VENV" "${HERE}/validate_abc.py" "$TUNE" || true
     echo "────────────────────────────────────────────────────────"
 
     echo ""

@@ -11,10 +11,11 @@
 
 set -euo pipefail
 
-IMAGES_DIR="/home/porter/Documents/banjo/WOFTA/tune_images"
-PIPELINE_DIR="${IMAGES_DIR}/notation_pipeline"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
+IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
 BATCH_DIR="${PIPELINE_DIR}/batch_output"
-SCRIPT="${PIPELINE_DIR}/batch_tune.sh"
+SCRIPT="${HERE}/batch_tune.sh"
 LOG="${BATCH_DIR}/batch_all.log"
 DRY_RUN=0
 

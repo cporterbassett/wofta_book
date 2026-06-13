@@ -17,7 +17,8 @@
 
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-IMAGES_DIR="$(cd "${HERE}/.." && pwd)"
+PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
+IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
 AUDIVERIS="flatpak run org.audiveris.audiveris"
 
@@ -25,7 +26,7 @@ TUNE="${1:?usage: export_tune.sh \"Tune Name\" [--mvt N]}"
 FORCE_MVT=""
 if [[ "${2:-}" == "--mvt" ]]; then FORCE_MVT="${3:?--mvt needs a number}"; fi
 
-TDIR="${HERE}/batch_output/${TUNE}"
+TDIR="${PIPELINE_DIR}/batch_output/${TUNE}"
 OMR="${TDIR}/clean.omr"
 [[ -f "$OMR" ]] || { echo "No clean.omr for '$TUNE' at $OMR"; exit 1; }
 
@@ -52,15 +53,15 @@ shopt -s nullglob
 MVTS=("$TDIR"/clean.mvt*.mxl)
 shopt -u nullglob
 
-FINAL_ABC="${HERE}/abc/${TUNE}-final.abc"
-mkdir -p "${HERE}/abc" "${HERE}/renders"
+FINAL_ABC="${PIPELINE_DIR}/abc/${TUNE}-final.abc"
+mkdir -p "${PIPELINE_DIR}/abc" "${PIPELINE_DIR}/renders"
 
 if [[ ${#MVTS[@]} -gt 0 ]]; then
     echo ""
     echo "⚠ MOVEMENT SPLIT — Audiveris wrote ${#MVTS[@]} movement file(s); top-level clean.mxl is STALE."
     for m in "${MVTS[@]}"; do
         base="$(basename "$m")"
-        abc="${HERE}/abc/${TUNE}-${base%.mxl}.abc"
+        abc="${PIPELINE_DIR}/abc/${TUNE}-${base%.mxl}.abc"
         mxl2abc "$m" "$abc"
         bars=$(grep -oc '|' "$abc" 2>/dev/null || echo "?")
         echo "  $base → $abc  (~$bars barlines)"
@@ -81,7 +82,7 @@ else
     echo "→ final: $FINAL_ABC"
 fi
 
-RENDER="${HERE}/renders/${TUNE}-final.render.png"
+RENDER="${PIPELINE_DIR}/renders/${TUNE}-final.render.png"
 bash "${HERE}/render_abc.sh" "$FINAL_ABC" "$RENDER" 2>&1 | tail -1
 
 KEY=$(grep -m1 '^K:' "$FINAL_ABC" | sed 's/^K://;s/ //g')

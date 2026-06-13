@@ -25,8 +25,9 @@ if [[ $# -lt 1 ]]; then
 fi
 
 TUNE="$1"
-IMAGES_DIR="/home/porter/Documents/banjo/WOFTA/tune_images"
-PIPELINE_DIR="${IMAGES_DIR}/notation_pipeline"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
+IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
 SRC="${IMAGES_DIR}/${TUNE}.png"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
 OUTDIR="${PIPELINE_DIR}/batch_output/${TUNE}"
@@ -55,7 +56,7 @@ echo "Image: ${W}×${H}px  (est. ~$(( W * 10 / 85 )) DPI on 8.5\" width)"
 # ── Step 1: Preprocess ────────────────────────────────────────────────────────
 PREPROCESSED="${OUTDIR}/preprocessed.png"
 echo "Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)..."
-NORMALIZE_LOG=$("${VENV}" "${PIPELINE_DIR}/normalize_interline.py" \
+NORMALIZE_LOG=$("${VENV}" "${HERE}/normalize_interline.py" \
     "$SRC" --output "$PREPROCESSED" --target 18 2>&1) && NORMALIZE_OK=true || NORMALIZE_OK=false
 if [[ "$NORMALIZE_OK" == true ]]; then
     echo "        ${NORMALIZE_LOG}"
@@ -84,7 +85,7 @@ fi
 # ── Step 3: Clean .omr ────────────────────────────────────────────────────────
 echo "Step 3: clean .omr..."
 if [[ -n "$RAW_OMR" ]]; then
-    "$VENV" "${PIPELINE_DIR}/clean_omr.py" "$RAW_OMR" "${OUTDIR}/clean.omr"
+    "$VENV" "${HERE}/clean_omr.py" "$RAW_OMR" "${OUTDIR}/clean.omr"
 else
     echo "        WARNING: no .omr produced; phase 2 GUI step will be unavailable for this tune"
 fi
@@ -92,7 +93,7 @@ fi
 # ── Step 4: Clean MXL ─────────────────────────────────────────────────────────
 echo "Step 4: clean MXL..."
 CLEAN_MXL="${OUTDIR}/clean.mxl"
-"$VENV" "${PIPELINE_DIR}/clean_mxl.py" "$RAW_MXL" "$CLEAN_MXL"
+"$VENV" "${HERE}/clean_mxl.py" "$RAW_MXL" "$CLEAN_MXL"
 
 # ── Step 5: MXL → ABC ─────────────────────────────────────────────────────────
 # Use env vars to pass paths — avoids shell quoting issues with apostrophes in tune names.
