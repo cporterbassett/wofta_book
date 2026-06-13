@@ -2,7 +2,7 @@
 """
 Pack all PNGs and ABC files in the current directory into a PDF.
 - PNG files: embedded as raster (scanned tunes)
-- ABC files: converted to vector PDF via LilyPond
+- ABC files: converted to vector PDF via abcm2ps (EPS) + Ghostscript
 - All tunes scaled to usable page width, packed vertically, greedy first-fit
 """
 import glob
@@ -46,35 +46,44 @@ def png_to_pdf_bytes(png_path):
         return img2pdf.convert(f.read(), layout_fun=layout)
 
 
+# Same directives render_abc.sh injects, so a tune's PDF engraving matches its
+# comparison-report render: line-start measure numbers, bold chords + volta numbers.
+ABC_DIRECTIVES = (
+    "%%measurenb 0\n"
+    "%%gchordfont Helvetica-Bold 12\n"
+    "%%repeatfont Helvetica-Bold 12\n"
+)
+
+
 def abc_to_pdf_bytes(abc_path):
-    """Convert ABC file to a cropped vector PDF via LilyPond."""
+    """Convert an ABC file to a cropped vector PDF via abcm2ps (EPS) + Ghostscript.
+
+    abcm2ps is the project's ABC renderer (see render_abc.sh) and handles the
+    book's volta / alternate-ending syntax that abc2ly mis-converts into broken
+    LilyPond. ``-E`` emits one tight-bbox vector EPS per tune; Ghostscript's
+    pdfwrite (with -dEPSCrop) turns that into a vector PDF cropped to content.
+    """
     with tempfile.TemporaryDirectory() as tmpdir:
-        abc_name = os.path.basename(abc_path)
-        tmp_abc = os.path.join(tmpdir, abc_name)
-        shutil.copy(abc_path, tmp_abc)
-
-        base = os.path.splitext(abc_name)[0]
-        ly_path = os.path.join(tmpdir, base + ".ly")
-
-        subprocess.run(["abc2ly", tmp_abc, "-o", ly_path],
-                       check=True, capture_output=True)
-
-        # Patch: abc2ly omits \paper { indent = 0 }, causing first staff misalignment
-        content = open(ly_path).read()
-        content = re.sub(
-            r"(\\version[^\n]*\n)",
-            r"\1\\paper {\n\tindent = 0\n}\n",
-            content, count=1,
-        )
-        open(ly_path, "w").write(content)
+        tmp_abc = os.path.join(tmpdir, "tune.abc")
+        with open(tmp_abc, "w") as out, open(abc_path) as src:
+            out.write(ABC_DIRECTIVES)
+            out.write(src.read())
 
         subprocess.run(
-            ["lilypond", "--pdf", "-dcrop", ly_path],
+            ["abcm2ps", "-E", "-s", "1.0", "-O", "out", "tune.abc"],
             check=True, capture_output=True, cwd=tmpdir,
         )
+        eps_files = sorted(glob.glob(os.path.join(tmpdir, "out*.eps")))
+        if not eps_files:
+            raise RuntimeError(f"abcm2ps produced no EPS for {abc_path}")
 
-        cropped = os.path.join(tmpdir, base + ".cropped.pdf")
-        with open(cropped, "rb") as f:
+        pdf_path = os.path.join(tmpdir, "out.pdf")
+        subprocess.run(
+            ["gs", "-dBATCH", "-dNOPAUSE", "-dQUIET", "-dEPSCrop",
+             "-sDEVICE=pdfwrite", "-o", pdf_path, eps_files[0]],
+            check=True, capture_output=True,
+        )
+        with open(pdf_path, "rb") as f:
             return f.read()
 
 
@@ -138,15 +147,31 @@ def render_page(page_items, output_pdf, usable_w, gap):
 def main():
     output = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
 
-    png_files = glob.glob("*.png")
-    abc_files = glob.glob("*.abc")
-    all_files = sorted(png_files + abc_files, key=sort_key)
+    HERE = os.path.dirname(os.path.abspath(__file__))
+    SCAN_DIR = os.path.join(HERE, "source_images")
+    ABC_DIR = os.path.join(HERE, "notation_pipeline", "abc")
+
+    # canonical tune set = union of scans and verified ABCs
+    scans = {os.path.splitext(os.path.basename(p))[0]: p
+             for p in glob.glob(os.path.join(SCAN_DIR, "*.png"))}
+    verified = {os.path.basename(p)[:-len("-verified.abc")]: p
+                for p in glob.glob(os.path.join(ABC_DIR, "*-verified.abc"))}
+
+    tunes = sorted(set(scans) | set(verified), key=lambda s: sort_key(s))
+    all_files = []
+    for tune in tunes:
+        if tune in verified:
+            all_files.append(verified[tune])   # crisp vector engraving
+        elif tune in scans:
+            all_files.append(scans[tune])       # original scan
 
     if not all_files:
-        print("No PNG or ABC files found.", file=sys.stderr)
+        print("No tunes found.", file=sys.stderr)
         sys.exit(1)
 
-    print(f"Processing {len(all_files)} files ({len(png_files)} PNG, {len(abc_files)} ABC)...")
+    n_eng = sum(1 for f in all_files if f.endswith(".abc"))
+    n_scan = len(all_files) - n_eng
+    print(f"Processing {len(all_files)} tunes ({n_eng} engraved, {n_scan} scanned)...")
 
     usable_w = PAGE_W - 2 * MARGIN_X
     usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
