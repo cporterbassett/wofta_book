@@ -1,0 +1,13 @@
+# Intermediate Audiveris OMR checkpoints — kept on disk, never committed
+batch_output/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# LilyPond / render intermediates
+*.ly
+*.cropped.png
+*.render.ps
+*.render.svg
+*.render.tmp.abc
