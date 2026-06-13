@@ -67,7 +67,12 @@ clarity without the path pain.
 | `<Tune>-draft.abc`       | Phase 1 auto batch (Audiveris). Rough, unverified.           | `batch_tune.sh` (unchanged) |
 | `<Tune>-candidate.abc`   | Phase 2: GUI-corrected + chords/title, passed automated `validate_abc.py`. **Not** yet eyeball-checked. | `export_tune.sh` / `cleanup_loop.sh` (renamed from `-final`) |
 | `<Tune>-verified.abc`    | Human eyeballed engraving vs scan and signed off. **PDF gate.** | `promote_tune.sh` (new tier) |
-| `<Tune>-gold.abc`        | Hand-transcribed reference standard.                         | manual (unchanged) |
+
+`-gold.abc` is **retired**: the 6 gold tunes are exactly the ones whose `-final` was promoted
+from gold, so each will have an identical `-verified.abc`; gold's only other role (accuracy
+benchmark for `compare_abc.py` during preprocessing experiments) is moot now those experiments
+are concluded dead ends. The 6 gold files are deleted (git keeps the history). `abc/` is left
+with just `-draft` (working queue) and `-verified` (signed-off).
 
 A tune is in at most one Phase-2 tier: **promotion renames** `-candidate.abc` → `-verified.abc`
 (`git mv`), which *is* the verification act. If a verified tune is later re-exported, a fresh
@@ -132,9 +137,11 @@ same configs run on both Linux Mint and macOS.
 `Angeline the Baker_teaser.png`, `angeline_audiveris_updated.png`,
 `angeline_audiveris_updated.cropped.png`, the stale `omr_report.html`.
 
-**Dead `abc/` variants (~20):** `*-audiveris-*`, `*-blanked`, `*-original*`, `*-raw`,
+**Dead `abc/` variants (~20 + 6 gold):** `*-audiveris-*`, `*-blanked`, `*-original*`, `*-raw`,
 `*-1.5x`, `*-thesession`, `*-abcnotation`, bare `Arkansas Traveler.abc` /
-`Blackberry Blossom.abc`, `Angeline the Baker.ly`. Keeps draft/gold + the migrated verified.
+`Blackberry Blossom.abc`, `Angeline the Baker.ly`, and the 6 now-redundant `*-gold.abc`
+(see tier model). Keeps `-draft` + the migrated `-verified`. (`compare_abc.py` stays — it's
+imported by `validate_abc.py` for measure-splitting, not for gold comparison.)
 
 **Dead renders:** the `*-audiveris-*`, `*-thesession`, `*-l4`/`-l8`, `Angeline_audiveris.png`
 experiment renders. Keeps the 9 tunes' engraving renders (renamed to the new tier).
