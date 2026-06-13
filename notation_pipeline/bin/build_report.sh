@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build an HTML comparison page: every finalized tune (abc/<Tune>-final.abc)
+# Build an HTML comparison page: every finalized tune (abc/<Tune>-candidate|verified.abc)
 # shown as original scan above its engraved final render.
 # Re-run anytime to pick up newly finalized tunes.
 #
