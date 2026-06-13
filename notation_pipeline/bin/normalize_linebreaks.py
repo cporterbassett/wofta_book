@@ -55,7 +55,12 @@ def get_break_bar_counts(body):
 
 
 def insert_breaks(body, target_counts):
-    """Re-insert $ into body after each barline count in target_counts."""
+    """Re-insert $ followed by newline into body after each barline in target_counts.
+
+    Placing $ at the end of a source text line (rather than mid-line) makes
+    both abcm2ps (which uses $ as linebreak in I:linebreak $ mode) and EasyABC
+    (which uses source newlines as linebreaks) render the same number of lines.
+    """
     if not target_counts:
         return body
     targets = sorted(set(target_counts))
@@ -64,14 +69,13 @@ def insert_breaks(body, target_counts):
     break_idx = 0
     i = 0
     while i < len(body):
-        # Try to match a barline token
         m = BAR_RE.match(body, i)
         if m:
             result.append(m.group())
             bar_count += 1
             i = m.end()
             while break_idx < len(targets) and bar_count >= targets[break_idx]:
-                result.append('$')
+                result.append('$\n')
                 break_idx += 1
         else:
             result.append(body[i])
@@ -91,9 +95,14 @@ def normalize(candidate_abc, draft_abc):
         print("  (no V:1 body found in candidate — skipping normalization)", file=sys.stderr)
         return candidate_abc
 
-    clean_v1 = cand_v1.replace('$', '')
-    new_v1 = insert_breaks(clean_v1, targets)
-    return pre + new_v1 + post
+    # Strip existing $ markers and %N end-of-line comments, then flatten to one
+    # string so we can re-split cleanly at the target barline positions.
+    clean = cand_v1.replace('$', '')
+    clean = re.sub(r'\s*%\d+\s*$', '', clean, flags=re.MULTILINE)
+    flat = ' '.join(line for line in clean.splitlines() if line.strip())
+
+    new_v1 = insert_breaks(flat, targets)
+    return pre + '\n' + new_v1 + '\n' + post
 
 
 if __name__ == '__main__':
