@@ -50,18 +50,30 @@ def png_to_pdf_bytes(png_path):
 # comparison-report render: line-start measure numbers, bold chords + volta numbers.
 ABC_DIRECTIVES = (
     "%%measurenb 0\n"
+    "%%measurefont Times-Italic 9\n"
+    "%%titlefont Times-Bold 24\n"
     "%%gchordfont Helvetica-Bold 12\n"
-    "%%repeatfont Helvetica-Bold 12\n"
+    "%%repeatfont Helvetica-Bold 9\n"
+)
+
+# For HTML SVG: zero margins so notation fills the full declared width (no
+# whitespace strips on either side), matching the content-crop we do for PDF.
+ABC_DIRECTIVES_HTML = ABC_DIRECTIVES + (
+    "%%leftmargin 0\n"
+    "%%rightmargin 0\n"
+    "%%topmargin 0\n"
+    "%%botmargin 0\n"
 )
 
 
 def abc_to_pdf_bytes(abc_path):
-    """Convert an ABC file to a cropped vector PDF via abcm2ps (EPS) + Ghostscript.
+    """Convert an ABC file to a content-cropped vector PDF via abcm2ps (EPS) + Ghostscript.
 
-    abcm2ps is the project's ABC renderer (see render_abc.sh) and handles the
-    book's volta / alternate-ending syntax that abc2ly mis-converts into broken
-    LilyPond. ``-E`` emits one tight-bbox vector EPS per tune; Ghostscript's
-    pdfwrite (with -dEPSCrop) turns that into a vector PDF cropped to content.
+    abcm2ps declares the full page as its EPS BoundingBox even though the
+    notation only occupies the centre (margins ~50pt each side). We use
+    gs -sDEVICE=bbox to find the actual drawn extents, then re-render with
+    those exact dimensions so the resulting PDF contains only the notation —
+    no empty margin strips — and scales correctly alongside the scanned PNGs.
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_abc = os.path.join(tmpdir, "tune.abc")
@@ -77,10 +89,29 @@ def abc_to_pdf_bytes(abc_path):
         if not eps_files:
             raise RuntimeError(f"abcm2ps produced no EPS for {abc_path}")
 
+        # Find actual drawn content extents (declared BoundingBox = full page).
+        bbox_result = subprocess.run(
+            ["gs", "-dBATCH", "-dNOPAUSE", "-dQUIET", "-sDEVICE=bbox", eps_files[0]],
+            capture_output=True, text=True,
+        )
+        llx = lly = 0.0
+        urx, ury = 612.0, 792.0
+        for line in bbox_result.stderr.splitlines():
+            if line.startswith("%%HiResBoundingBox:"):
+                parts = line.split()[1:]
+                llx, lly, urx, ury = float(parts[0]), float(parts[1]), float(parts[2]), float(parts[3])
+                break
+        w, h = urx - llx, ury - lly
+
         pdf_path = os.path.join(tmpdir, "out.pdf")
         subprocess.run(
-            ["gs", "-dBATCH", "-dNOPAUSE", "-dQUIET", "-dEPSCrop",
-             "-sDEVICE=pdfwrite", "-o", pdf_path, eps_files[0]],
+            ["gs", "-dBATCH", "-dNOPAUSE", "-dQUIET",
+             "-sDEVICE=pdfwrite",
+             f"-dDEVICEWIDTHPOINTS={w:.3f}",
+             f"-dDEVICEHEIGHTPOINTS={h:.3f}",
+             "-o", pdf_path,
+             "-c", f"<</PageSize [{w:.3f} {h:.3f}] /PageOffset [{-llx:.3f} {-lly:.3f}]>> setpagedevice",
+             "-f", eps_files[0]],
             check=True, capture_output=True,
         )
         with open(pdf_path, "rb") as f:
@@ -144,6 +175,89 @@ def render_page(page_items, output_pdf, usable_w, gap):
     page.obj.Contents = output_pdf.make_stream(content)
 
 
+def abc_to_svg_str(abc_path):
+    """Render an ABC file to inline SVG string via abcm2ps -g.
+
+    Uses zero margins so notation fills the full declared page width (no empty
+    strips on either side). Adds a viewBox and sets width=100% so the SVG
+    scales to fit its HTML container rather than overflowing at fixed px size.
+    """
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_abc = os.path.join(tmpdir, "tune.abc")
+        with open(tmp_abc, "w") as out, open(abc_path) as src:
+            out.write(ABC_DIRECTIVES_HTML)
+            out.write(src.read())
+        subprocess.run(
+            ["abcm2ps", "-g", "-s", "1.0", "-O", "out", "tune.abc"],
+            check=True, capture_output=True, cwd=tmpdir,
+        )
+        svg_files = sorted(glob.glob(os.path.join(tmpdir, "out*.svg")))
+        if not svg_files:
+            raise RuntimeError(f"abcm2ps produced no SVG for {abc_path}")
+        with open(svg_files[0]) as f:
+            raw = f.read()
+    idx = raw.index("<svg")
+    svg = raw[idx:]
+    # Replace fixed "width=Xpx height=Ypx" with a viewBox + scalable width
+    # so the browser can resize the SVG to fit its container.
+    m = re.search(r'width="([\d.]+)px"\s+height="([\d.]+)px"', svg)
+    if m:
+        w, h = m.group(1), m.group(2)
+        svg = svg[:m.start()] + f'width="100%" viewBox="0 0 {w} {h}"' + svg[m.end():]
+    return svg
+
+
+def make_html(verified, scans, html_path):
+    """Write side-by-side comparison HTML for all verified tunes."""
+    tunes = sorted(verified.keys(), key=sort_key)
+    html_dir = os.path.dirname(os.path.abspath(html_path))
+
+    rows = []
+    for tune in tunes:
+        svg = abc_to_svg_str(verified[tune])
+        scan_path = scans.get(tune)
+        if scan_path:
+            rel = os.path.relpath(scan_path, html_dir)
+            scan_html = f'<img src="{rel}" alt="Original scan">'
+        else:
+            scan_html = "<em>No scan</em>"
+        rows.append(f"""
+  <section>
+    <h2>{tune}</h2>
+    <div class="comparison">
+      <div class="panel"><h3>Engraved (ABC)</h3>{svg}</div>
+      <div class="panel"><h3>Original Scan</h3>{scan_html}</div>
+    </div>
+  </section>""")
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WOFTA Verified Tunes ({len(tunes)})</title>
+  <style>
+    body {{ font-family: sans-serif; max-width: 1600px; margin: 0 auto; padding: 20px; background: #f5f5f5; }}
+    h1 {{ color: #333; }}
+    section {{ background: white; margin: 20px 0; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,.1); }}
+    h2 {{ margin-top: 0; color: #444; border-bottom: 2px solid #eee; padding-bottom: 8px; }}
+    .comparison {{ display: flex; gap: 20px; }}
+    .panel {{ flex: 1; min-width: 0; }}
+    .panel h3 {{ font-size: .9em; color: #666; margin-bottom: 8px; }}
+    .panel svg {{ max-width: 100%; height: auto; display: block; }}
+    .panel img {{ max-width: 100%; height: auto; display: block; border: 1px solid #ddd; }}
+  </style>
+</head>
+<body>
+  <h1>WOFTA Verified Tunes ({len(tunes)})</h1>
+{''.join(rows)}
+</body>
+</html>"""
+
+    with open(html_path, "w") as f:
+        f.write(html)
+    print(f"HTML comparison written to {html_path}")
+
+
 def main():
     output = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
 
@@ -200,6 +314,11 @@ def main():
 
     print(f"\nWriting {output}...")
     output_pdf.save(output)
+
+    html_output = os.path.splitext(os.path.abspath(output))[0] + "_verified.html"
+    print(f"\nBuilding HTML comparison for {len(verified)} verified tune(s)...")
+    make_html(verified, scans, html_output)
+
     print("Done.")
 
 

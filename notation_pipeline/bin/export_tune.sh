@@ -94,3 +94,5 @@ echo ""
 echo "── Validation ──────────────────────────────────────────"
 "$VENV" "${HERE}/validate_abc.py" "$TUNE" || true
 echo "────────────────────────────────────────────────────────"
+
+easyabc "$FINAL_ABC" &
