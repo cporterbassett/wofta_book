@@ -13,12 +13,29 @@ raw scans ──▶ source_images/ ──▶ notation_pipeline (OMR + GUI cleanu
                                     (verified engraving per tune, else the scan)
 ```
 
-1. **Prep raw images** → clean `<Tune>.png` in `source_images/`. See **`docs/raw_image_prep.md`**.
-2. **Transcribe** each scan to ABC via Audiveris OMR + manual GUI cleanup. See
-   **`notation_pipeline/README.md`** (and `notation_pipeline/docs/next_steps.md` for the
-   live worklist).
-3. **Assemble the book**: `./make_pdf.sh` → `WOFTA_tunes.pdf`. For each tune it embeds the
-   `-verified` ABC as crisp vector if one exists, otherwise the original scan.
+**1. Prep raw images** → clean `<Tune>.png` in `source_images/`.
+Tools in `image_prep/`, driven by the step-by-step guide **`docs/raw_image_prep.md`**
+(extract from PDF → de-blank → trim → name → deskew → de-gray). No single command — it's
+a per-image, eyeball-as-you-go process.
+
+**2. Transcribe** each scan to ABC (Audiveris OMR + manual GUI cleanup). Two phases —
+see **`notation_pipeline/README.md`**, live worklist in `notation_pipeline/docs/next_steps.md`:
+```bash
+# Phase 1 — batch OMR (unattended): scans → abc/<Tune>-draft.abc
+bash notation_pipeline/bin/batch_all.sh            # all (resumable);  batch_tune.sh "Tune" for one
+
+# Phase 2 — GUI cleanup (one tune at a time), worst-first
+bash notation_pipeline/bin/cleanup_keep.sh         # keep-list subset (cleanup_loop.sh for full corpus)
+#   ↑ opens clean.omr in Audiveris → fix, Ctrl+S, close → writes abc/<Tune>-candidate.abc
+bash notation_pipeline/bin/promote_tune.sh "Tune"  # sign off: candidate → -verified (publishes to the book)
+python3 notation_pipeline/bin/build_tracking_sheet.py   # refresh tracking.md ledger
+```
+
+**3. Assemble the book** → `WOFTA_tunes.pdf` (per tune: `-verified` engraving as crisp
+vector if it exists, else the original scan):
+```bash
+./make_pdf.sh
+```
 
 ## Directory map
 
