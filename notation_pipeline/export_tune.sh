@@ -86,5 +86,10 @@ bash "${HERE}/render_abc.sh" "$FINAL_ABC" "$RENDER" 2>&1 | tail -1
 
 KEY=$(grep -m1 '^K:' "$FINAL_ABC" | sed 's/^K://;s/ //g')
 METER=$(grep -m1 '^M:' "$FINAL_ABC" | sed 's/^M://;s/ //g')
-BARS=$(grep -oc '|' "$FINAL_ABC" || true)
+BARS=$(grep -oP '\|' "$FINAL_ABC" | wc -l || true)
 echo "  Key=$KEY  Meter=$METER  ~$BARS barlines  →  $RENDER"
+
+echo ""
+echo "── Validation ──────────────────────────────────────────"
+"$VENV" "${HERE}/validate_final.py" "$TUNE" || true
+echo "────────────────────────────────────────────────────────"

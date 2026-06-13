@@ -19,6 +19,7 @@ set -euo pipefail
 IMAGES_DIR="/home/porter/Documents/banjo/WOFTA/tune_images"
 PIPELINE_DIR="${IMAGES_DIR}/notation_pipeline"
 BATCH_DIR="${PIPELINE_DIR}/batch_output"
+HEALTH_TSV="${PIPELINE_DIR}/health_scores.tsv"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
 AUDIVERIS="flatpak run org.audiveris.audiveris"
 
@@ -40,11 +41,28 @@ done
 if [[ ${#SPECIFIC_TUNES[@]} -gt 0 ]]; then
     QUEUE=("${SPECIFIC_TUNES[@]}")
 else
-    mapfile -t QUEUE < <(
+    # All tunes with a clean.omr, ordered WORST-FIRST by health_scores.tsv (which
+    # is already sorted worst-first). Tunes missing from the TSV are appended
+    # alphabetically so nothing is dropped.
+    mapfile -t HAVE_OMR < <(
         find "$BATCH_DIR" -maxdepth 2 -name "clean.omr" \
             | sed 's|.*/batch_output/||; s|/clean.omr||' \
             | sort
     )
+    declare -A HAS_OMR=()
+    for t in "${HAVE_OMR[@]}"; do HAS_OMR["$t"]=1; done
+
+    QUEUE=()
+    declare -A QUEUED=()
+    if [[ -f "$HEALTH_TSV" ]]; then
+        while IFS=$'\t' read -r tune _; do
+            [[ -n "${HAS_OMR[$tune]:-}" ]] || continue
+            QUEUE+=("$tune"); QUEUED["$tune"]=1
+        done < <(tail -n +2 "$HEALTH_TSV")
+    fi
+    for t in "${HAVE_OMR[@]}"; do
+        [[ -n "${QUEUED[$t]:-}" ]] || QUEUE+=("$t")
+    done
 fi
 
 if [[ ${#QUEUE[@]} -eq 0 ]]; then
@@ -172,6 +190,11 @@ open(os.environ['ABC_OUT'], 'w').write(result)
     BARS=$(grep -oP '\|' "$FINAL_ABC" | wc -l || echo "?")
     echo "→ $FINAL_ABC"
     echo "  Key=${KEY}  Meter=${METER}  ~${BARS} barlines"
+
+    echo ""
+    echo "── Validation ──────────────────────────────────────────"
+    "$VENV" "${PIPELINE_DIR}/validate_final.py" "$TUNE" || true
+    echo "────────────────────────────────────────────────────────"
 
     echo ""
     echo "Press Enter for next tune (or Ctrl+C to stop)..."

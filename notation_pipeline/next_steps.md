@@ -8,6 +8,7 @@ _Updated 2026-06-12 (Sonnet session) after Audiveris -constant sweeps (Experimen
 _Updated 2026-06-12 (Sonnet session) after glyph dilation sweep (Experiment E)._
 _Updated 2026-06-12 (Opus session) after key_status triage + Phase 1 completion audit._
 _Updated 2026-06-12 (Opus session) after Phase 2 KICKED OFF — first 9 tunes finalized, GUI/render/report tooling built, key traps found (see Phase 2 section)._
+_Updated 2026-06-12 (Opus session) after pre-scale infra: validate_final.py sanity gate (wired into export_tune.sh + cleanup_loop.sh), build_tracking_sheet.py → tracking.md, cleanup_loop.sh worst-first ordering fix, export_tune.sh barline-count fix._
 _Read `omr_findings.md` first for the full experiment history. This file is the
 forward-looking plan: what to build next, in priority order, and why._
 
@@ -70,6 +71,11 @@ is **Temperance Reel** (= Teetotaller's Reel, ashokan tell). 22 keep-list tunes 
    slow and fiddly; chord text is large/crisp and easy to read off the scan).
 5. Render (`render_abc.sh`) and open render + scan in `firefox` to verify. Regenerate the
    comparison page with `build_report.sh` → `finalized_report.html`.
+6. `export_tune.sh` and `cleanup_loop.sh` auto-run `validate_final.py "<Tune>"` after each
+   export — watch for a `FAIL` banner (missing/wrong key, or truncation = dropped staves).
+   It never aborts the loop; FAILs are advisory. Then update the tracking sheet:
+   `python3 build_tracking_sheet.py` (regenerates `tracking.md`; preserves your hand-typed
+   **Verified?** / **Notes** columns) and mark the tune verified once eyeballed against the scan.
 
 ### New tooling built this session
 - `cleanup_keep.sh` — runs `cleanup_loop.sh` over the keep-list subset only, worst-first.
@@ -79,6 +85,19 @@ is **Temperance Reel** (= Teetotaller's Reel, ashokan tell). 22 keep-list tunes 
 - `render_abc.sh` upgraded: injects `%%measurenb 0` (line-start measure numbers, like the
   scans) + bold `%%gchordfont`/`%%repeatfont`. Voltas authored as `["1."`/`["2."` so they
   render **1.** / **2.** (plain `|1` renders bare "1").
+- `validate_final.py` — post-export sanity gate over `abc/<Tune>-final.abc`. FAIL on missing/
+  inconsistent key (cross-checks `health_scores.tsv` key_status) or truncation (final < draft,
+  or `< 16` bars — the dropped-systems guard); WARN on missing meter, `< 4` chords (text
+  annotations excluded), or missing/placeholder title. Reuses `compare_abc.py`'s measure
+  splitter, so a short anacrusis final bar is not flagged. `--all` scans every final. Wired
+  into both `export_tune.sh` and `cleanup_loop.sh`; exit code is non-zero on any FAIL.
+  Thresholds `CHORD_MIN=4` / `FLOOR=16` are constants — bump down if a shorter book tune appears.
+- `build_tracking_sheet.py` → `tracking.md` — Markdown table (chosen over XLSX so it diffs in
+  git), rows = keep-list ∪ every `-final.abc`. Auto columns (health, key_status, finalized,
+  key/meter/chords/title marks, measures, truncation) regenerate from live files; the
+  **Verified?** (`No`/`Yes`/`Needs-fix`) and **Notes** columns are hand-edited and preserved
+  across runs. `--check` dry-runs to stdout. `tracking.md` IS committed; treat it as the
+  per-tune verification ledger (file-existence ≠ verified).
 
 ### Three traps hit (will recur)
 1. **Movement split.** When Audiveris splits a score, batch export writes
@@ -428,6 +447,11 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 
 ## Dead ends — do NOT redo these (see `omr_findings.md` for detail)
 
+- **LLM / non-Audiveris transcription** (pre-OMR attempts, logged in
+  `abandoned_transcription_attempts.md`): `claude -p` hallucinates noteheads; `oemer`'s
+  pitch is roughly right but rhythm is unreliable; direct in-session note-reading is accurate
+  but far too slow at corpus scale. These are why the pipeline is Audiveris + GUI correction,
+  not AI transcription.
 - **MXL/ABC key-injection** — `<alter>` values are baked at recognition time; can't recompute
   downstream. The GUI does this correctly anyway.
 - **thesession.org / abcnotation.com as gold standard** — different arrangements (0/18 match).
@@ -488,8 +512,15 @@ size/threshold tuning only. Slurs and decorations must be removed post-hoc via `
 - `batch_all.sh` — runs `batch_tune.sh` over all 269 PNGs; skips tunes with `clean.omr`;
   supports `--dry-run`. Log in `batch_output/batch_all.log`.
 - `cleanup_loop.sh` — phase 2 interactive: opens `clean.omr` in Audiveris GUI, waits for
-  close, finds exported MXL, runs `clean_mxl.py` → `abc_xml_converter` → final ABC.
-  Supports `--list` and specific tune names as args. Output: `abc/<Tune>-final.abc`.
+  close, finds exported MXL, runs `clean_mxl.py` → `abc_xml_converter` → final ABC, then
+  `validate_final.py`. Supports `--list` and specific tune names as args. With no args the
+  queue is ordered **worst-first by `health_scores.tsv`** (not alphabetical); tunes missing
+  from the TSV are appended. Output: `abc/<Tune>-final.abc`.
+- `validate_final.py` — post-export sanity gate (see Phase 2 "New tooling"). `--all` or
+  per-tune; non-zero exit + banner on FAIL. Called automatically by `export_tune.sh` and
+  `cleanup_loop.sh`; also feeds `build_tracking_sheet.py`.
+- `build_tracking_sheet.py` — regenerates `tracking.md` (the per-tune verification ledger;
+  preserves hand-edited Verified?/Notes). `--check` to dry-run. See Phase 2 "New tooling".
 - `clean_omr.py` — strips slur/wedge/articulation/bow/ornament/dynamics inters + relations
   from .omr XML **before** GUI opens it
 - `clean_mxl.py` — strips same categories from MXL + repeated `<key>` elements (batch path)
