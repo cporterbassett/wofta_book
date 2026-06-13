@@ -138,15 +138,31 @@ def render_page(page_items, output_pdf, usable_w, gap):
 def main():
     output = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
 
-    png_files = glob.glob("*.png")
-    abc_files = glob.glob("*.abc")
-    all_files = sorted(png_files + abc_files, key=sort_key)
+    HERE = os.path.dirname(os.path.abspath(__file__))
+    SCAN_DIR = os.path.join(HERE, "source_images")
+    ABC_DIR = os.path.join(HERE, "notation_pipeline", "abc")
+
+    # canonical tune set = union of scans and verified ABCs
+    scans = {os.path.splitext(os.path.basename(p))[0]: p
+             for p in glob.glob(os.path.join(SCAN_DIR, "*.png"))}
+    verified = {os.path.basename(p)[:-len("-verified.abc")]: p
+                for p in glob.glob(os.path.join(ABC_DIR, "*-verified.abc"))}
+
+    tunes = sorted(set(scans) | set(verified), key=lambda s: sort_key(s))
+    all_files = []
+    for tune in tunes:
+        if tune in verified:
+            all_files.append(verified[tune])   # crisp vector engraving
+        elif tune in scans:
+            all_files.append(scans[tune])       # original scan
 
     if not all_files:
-        print("No PNG or ABC files found.", file=sys.stderr)
+        print("No tunes found.", file=sys.stderr)
         sys.exit(1)
 
-    print(f"Processing {len(all_files)} files ({len(png_files)} PNG, {len(abc_files)} ABC)...")
+    n_eng = sum(1 for f in all_files if f.endswith(".abc"))
+    n_scan = len(all_files) - n_eng
+    print(f"Processing {len(all_files)} tunes ({n_eng} engraved, {n_scan} scanned)...")
 
     usable_w = PAGE_W - 2 * MARGIN_X
     usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
