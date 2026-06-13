@@ -22,12 +22,21 @@ TMPSVG="${STEM}.render.svg"
 # Resolution for the PNG (match scan width ~1300px at 150dpi comes out ~1350px)
 DPI=150
 
+# Inject measure-number directive (number at the start of each staff line, like
+# the WOFTA scans) without modifying the source ABC.
+TMPABC="${STEM}.render.tmp.abc"
+# measure numbers at each line start; bold chord symbols and bold 1./2. volta numbers.
+printf '%%%%measurenb 0\n%%%%gchordfont Helvetica-Bold 12\n%%%%repeatfont Helvetica-Bold 12\n' > "$TMPABC"
+cat "$ABC" >> "$TMPABC"
+
 # Render to PostScript first (abcm2ps PostScript output is the most faithful)
 abcm2ps \
     -O "$PS" \
     -s 1.0 \
     -m 0.5cm \
-    "$ABC"
+    "$TMPABC"
+
+rm -f "$TMPABC"
 
 # Convert PS → PNG via Ghostscript
 gs -dBATCH -dNOPAUSE -dQUIET \
