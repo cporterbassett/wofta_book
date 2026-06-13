@@ -24,11 +24,12 @@ import sys
 import csv
 import subprocess
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-ABC_DIR = os.path.join(HERE, 'abc')
-HEALTH_TSV = os.path.join(HERE, 'health_scores.tsv')
-OUT_PATH = os.path.join(HERE, 'tracking.md')
-KEEP_SH = os.path.join(HERE, 'cleanup_keep.sh')
+HERE = os.path.dirname(os.path.abspath(__file__))   # bin/ — for sibling imports
+ROOT = os.path.dirname(HERE)                         # notation_pipeline/ — for data
+ABC_DIR = os.path.join(ROOT, 'abc')
+HEALTH_TSV = os.path.join(ROOT, 'health_scores.tsv')
+OUT_PATH = os.path.join(ROOT, 'tracking.md')
+KEEP_SH = os.path.join(HERE, 'cleanup_keep.sh')      # sibling script, stays on HERE
 
 sys.path.insert(0, HERE)
 from validate_final import run_validation, discover_all_finals  # noqa: E402

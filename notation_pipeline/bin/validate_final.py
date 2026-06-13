@@ -28,9 +28,10 @@ import glob
 
 # ── Path setup ────────────────────────────────────────────────────────────────
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-ABC_DIR = os.path.join(HERE, 'abc')
-HEALTH_TSV = os.path.join(HERE, 'health_scores.tsv')
+HERE = os.path.dirname(os.path.abspath(__file__))   # bin/ — for sibling imports
+ROOT = os.path.dirname(HERE)                         # notation_pipeline/ — for data
+ABC_DIR = os.path.join(ROOT, 'abc')
+HEALTH_TSV = os.path.join(ROOT, 'health_scores.tsv')
 
 # ── Import compare_abc measure logic ─────────────────────────────────────────
 
