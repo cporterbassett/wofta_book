@@ -12,7 +12,7 @@
 #   bash cleanup_loop.sh --list             # list tunes queued for cleanup
 #
 # Output:
-#   abc/<Tune Name>-final.abc   (after GUI export + conversion)
+#   abc/<Tune Name>-candidate.abc   (after GUI export + conversion)
 
 set -euo pipefail
 
@@ -75,7 +75,7 @@ fi
 if [[ $LIST_ONLY -eq 1 ]]; then
     echo "Tunes queued for cleanup (${#QUEUE[@]} total):"
     for TUNE in "${QUEUE[@]}"; do
-        FINAL="${PIPELINE_DIR}/abc/${TUNE}-final.abc"
+        FINAL="${PIPELINE_DIR}/abc/${TUNE}-candidate.abc"
         STATUS="pending"
         [[ -f "$FINAL" ]] && STATUS="done"
         printf "  [%-7s] %s\n" "$STATUS" "$TUNE"
@@ -92,7 +92,7 @@ for TUNE in "${QUEUE[@]}"; do
     (( IDX++ )) || true
     TUNE_DIR="${BATCH_DIR}/${TUNE}"
     CLEAN_OMR="${TUNE_DIR}/clean.omr"
-    FINAL_ABC="${PIPELINE_DIR}/abc/${TUNE}-final.abc"
+    FINAL_ABC="${PIPELINE_DIR}/abc/${TUNE}-candidate.abc"
     EXPORT_DIR="$TUNE_DIR"
 
     echo ""

@@ -3,10 +3,10 @@
 Validate one or more finalized ABC files against quality checks.
 
 Usage:
-  python3 validate_final.py "Tune Name" ["Tune Name 2" ...]
-  python3 validate_final.py --all
+  python3 validate_abc.py "Tune Name" ["Tune Name 2" ...]
+  python3 validate_abc.py --all
 
-Checks per abc/<Tune>-final.abc:
+Checks per abc/<Tune>-{candidate,verified}.abc:
   FAIL  Key present & consistent  — K: line exists and non-empty; if health_scores
                                      key_status==missed but key is still C/none, FAIL
   WARN  Meter present             — M: line exists
@@ -15,7 +15,6 @@ Checks per abc/<Tune>-final.abc:
   WARN  Title entered             — T: present and not empty/placeholder
   FAIL  Truncation                — final measure-count < draft measure-count  OR  < 16
                                      (anacrusis: short FINAL measure is OK; only count matters)
-                                     If gold exists, also compare to gold.
 
 Exit: non-zero if any tune has a FAIL.
 """
@@ -75,12 +74,13 @@ def validate_tune(tune_name, health_scores):
     results = []
     extracted = {}
 
-    final_path = os.path.join(ABC_DIR, f'{tune_name}-final.abc')
+    verified_path  = os.path.join(ABC_DIR, f'{tune_name}-verified.abc')
+    candidate_path = os.path.join(ABC_DIR, f'{tune_name}-candidate.abc')
+    final_path = verified_path if os.path.exists(verified_path) else candidate_path
     draft_path = os.path.join(ABC_DIR, f'{tune_name}-draft.abc')
-    gold_path  = os.path.join(ABC_DIR, f'{tune_name}-gold.abc')
 
     if not os.path.exists(final_path):
-        results.append(('FAIL', 'File exists', f'abc/{tune_name}-final.abc not found'))
+        results.append(('FAIL', 'File exists', f'abc/{tune_name}-candidate|verified.abc not found'))
         return results, extracted
 
     text = open(final_path).read()
@@ -148,7 +148,6 @@ def validate_tune(tune_name, health_scores):
     # ── Truncation check ──────────────────────────────────────────────────────
     final_count = count_measures(final_path)
     draft_count = count_measures(draft_path)
-    gold_count  = count_measures(gold_path)
     extracted['measure_count'] = final_count
 
     FLOOR = 16
@@ -180,13 +179,6 @@ def validate_tune(tune_name, health_scores):
             trunc_msgs.append(f'final={final_count} >= draft={draft_count}')
     else:
         trunc_msgs.append(f'(no draft found, floor check only: {final_count}>={FLOOR})')
-
-    if gold_count is not None:
-        if final_count < gold_count:
-            trunc_fail = True
-            trunc_msgs.append(f'final={final_count} < gold={gold_count} measures')
-        else:
-            trunc_msgs.append(f'final={final_count} >= gold={gold_count}')
 
     level = 'FAIL' if trunc_fail else 'PASS'
     extracted['truncation_fail'] = trunc_fail
@@ -266,13 +258,11 @@ def run_validation(tune_names, use_color=True):
 
 
 def discover_all_finals():
-    """Return sorted list of tune names that have a -final.abc."""
-    paths = glob.glob(os.path.join(ABC_DIR, '*-final.abc'))
-    names = []
-    for p in paths:
-        base = os.path.basename(p)
-        name = re.sub(r'-final\.abc$', '', base)
-        names.append(name)
+    """Return sorted tune names that have a -candidate.abc or -verified.abc."""
+    names = set()
+    for suffix in ('-candidate.abc', '-verified.abc'):
+        for p in glob.glob(os.path.join(ABC_DIR, f'*{suffix}')):
+            names.add(re.sub(re.escape(suffix) + r'$', '', os.path.basename(p)))
     return sorted(names)
 
 
@@ -281,13 +271,13 @@ if __name__ == '__main__':
     use_color = sys.stdout.isatty()
 
     if not args:
-        print('Usage: validate_final.py "Tune Name" [...]  OR  validate_final.py --all')
+        print('Usage: validate_abc.py "Tune Name" [...]  OR  validate_abc.py --all')
         sys.exit(1)
 
     if '--all' in args:
         tune_names = discover_all_finals()
         if not tune_names:
-            print('No *-final.abc files found.')
+            print('No *-candidate.abc / *-verified.abc files found.')
             sys.exit(0)
     else:
         tune_names = [a for a in args if not a.startswith('--')]

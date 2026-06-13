@@ -13,7 +13,7 @@
 #   bash export_tune.sh "Tune Name"            # normal: expects single clean.mxl
 #   bash export_tune.sh "Tune Name" --mvt 1    # force a specific movement as final
 #
-# Output: abc/<Tune>-final.abc  +  renders/<Tune>-final.render.png
+# Output: abc/<Tune>-candidate.abc  +  renders/<Tune>-candidate.render.png
 
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -53,7 +53,7 @@ shopt -s nullglob
 MVTS=("$TDIR"/clean.mvt*.mxl)
 shopt -u nullglob
 
-FINAL_ABC="${PIPELINE_DIR}/abc/${TUNE}-final.abc"
+FINAL_ABC="${PIPELINE_DIR}/abc/${TUNE}-candidate.abc"
 mkdir -p "${PIPELINE_DIR}/abc" "${PIPELINE_DIR}/renders"
 
 if [[ ${#MVTS[@]} -gt 0 ]]; then
@@ -82,7 +82,7 @@ else
     echo "→ final: $FINAL_ABC"
 fi
 
-RENDER="${PIPELINE_DIR}/renders/${TUNE}-final.render.png"
+RENDER="${PIPELINE_DIR}/renders/${TUNE}-candidate.render.png"
 bash "${HERE}/render_abc.sh" "$FINAL_ABC" "$RENDER" 2>&1 | tail -1
 
 KEY=$(grep -m1 '^K:' "$FINAL_ABC" | sed 's/^K://;s/ //g')
@@ -92,5 +92,5 @@ echo "  Key=$KEY  Meter=$METER  ~$BARS barlines  →  $RENDER"
 
 echo ""
 echo "── Validation ──────────────────────────────────────────"
-"$VENV" "${HERE}/validate_final.py" "$TUNE" || true
+"$VENV" "${HERE}/validate_abc.py" "$TUNE" || true
 echo "────────────────────────────────────────────────────────"
