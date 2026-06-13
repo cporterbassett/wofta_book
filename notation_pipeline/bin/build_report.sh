@@ -7,14 +7,19 @@
 
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$HERE"
+PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
+cd "$PIPELINE_DIR"
+mkdir -p reports
 
-OUT="finalized_report.html"
-ORIG_DIR=".."          # original scans live one level up
-RENDER_DIR="renders"
+OUT="reports/finalized_report.html"
+# img src paths are relative to reports/ (one level under PIPELINE_DIR):
+ORIG_DIR="../../source_images"   # scans, from reports/ (for <img src>)
+RENDER_DIR="../renders"          # renders, from reports/ (for <img src>)
+# absolute scan dir for the -f existence test (CWD here is PIPELINE_DIR, not reports/):
+SCAN_ABS_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)/source_images"
 
 shopt -s nullglob
-FINALS=(abc/*-final.abc)
+FINALS=(abc/*-verified.abc abc/*-candidate.abc)
 shopt -u nullglob
 
 {
@@ -46,18 +51,24 @@ printf '<header><h1>WOFTA — Finalized Tunes <span class="count">(%s)</span></h
 # nav
 echo '<nav>'
 for abc in "${FINALS[@]}"; do
-  tune="$(basename "$abc" -final.abc)"
+  base="$(basename "$abc")"
+  if [[ "$base" == *-verified.abc ]]; then tune="${base%-verified.abc}"; tier="verified";
+  else tune="${base%-candidate.abc}"; tier="candidate"; fi
   anchor="$(echo "$tune" | tr -c 'A-Za-z0-9' '-')"
   printf '<a href="#%s">%s</a>\n' "$anchor" "$tune"
 done
 echo '</nav>'
 
 for abc in "${FINALS[@]}"; do
-  tune="$(basename "$abc" -final.abc)"
+  base="$(basename "$abc")"
+  if [[ "$base" == *-verified.abc ]]; then tune="${base%-verified.abc}"; tier="verified";
+  else tune="${base%-candidate.abc}"; tier="candidate"; fi
   anchor="$(echo "$tune" | tr -c 'A-Za-z0-9' '-')"
-  orig="${ORIG_DIR}/${tune}.png"
-  render="${RENDER_DIR}/${tune}-final.render.png"
-  trim="${RENDER_DIR}/${tune}-final.trim.png"
+  orig="${ORIG_DIR}/${tune}.png"                               # relative, for <img src>
+  orig_abs="${SCAN_ABS_DIR}/${tune}.png"                       # absolute, for -f test
+  render="${PIPELINE_DIR}/renders/${tune}-${tier}.render.png"   # absolute, for -f test + convert input
+  trim="${PIPELINE_DIR}/renders/${tune}-${tier}.trim.png"       # absolute, for convert output
+  rel_trim="${RENDER_DIR}/${tune}-${tier}.trim.png"             # relative, for <img src>
 
   # Trim whitespace off the render for a tight comparison (fall back to render).
   if [[ -f "$render" ]]; then
@@ -67,14 +78,14 @@ for abc in "${FINALS[@]}"; do
     showrender=""
   fi
 
-  printf '<section class="tune" id="%s"><h2>%s</h2><div class="pair">\n' "$anchor" "$tune"
-  if [[ -f "$orig" ]]; then
+  printf '<section class="tune" id="%s"><h2>%s <small>[%s]</small></h2><div class="pair">\n' "$anchor" "$tune" "$tier"
+  if [[ -f "$orig_abs" ]]; then
     printf '<div class="pane scan"><div class="label">Scan</div><img src="%s" alt="scan"></div>\n' "$orig"
   else
     printf '<div class="missing">original scan not found at %s</div>\n' "$orig"
   fi
   if [[ -n "$showrender" ]]; then
-    printf '<div class="pane final"><div class="label">Final</div><img src="%s" alt="final"></div>\n' "$showrender"
+    printf '<div class="pane final"><div class="label">Final</div><img src="%s" alt="final"></div>\n' "$rel_trim"
   else
     printf '<div class="missing">no render found for %s</div>\n' "$tune"
   fi
