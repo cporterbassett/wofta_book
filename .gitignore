@@ -9,3 +9,6 @@
 
 # Intermediate PNGs generated from ABC files
 *.cropped.png
+
+# Generated renders (reproducible from ABC files)
+notation_pipeline/renders/
