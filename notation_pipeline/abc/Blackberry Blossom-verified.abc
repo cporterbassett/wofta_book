@@ -1,6 +1,5 @@
 X:1
 T:Blackberry Blossom
-C:Trad. arr.Vogt
 L:1/8
 M:2/2
 I:linebreak $
@@ -8,6 +7,6 @@ K:G
 V:1 treble
 V:1
  ef |"G" g2 bg"D" (fg)af |"C" efge"G" dBAG |"C" E2 GE"G" (DE)GA |"D" BdBG Adef |$
-"G" g2 bg"D" (fg)af | "C" ef(6:4:6ge"G" dBAG |"C" (EF)GE"G" (DE)GA |"D" BGA(F"G" G2) Ac ::$
+"G" g2 bg"D" (fg)af | "C" efge"G" dBAG |"C" (EF)GE"G" (DE)GA |"D" BGA(F"G" G2) Ac ::$
 "Em" [EB]2 eB d2 ed | Bde(B dB)AG | [EB]2 eB d2 eg | "B7" fgaf g(fed) |$
-"Em" [EB]2 eB d2 ed | Bde(B dB)AG |"Am" [EB]2 eB d2 eg |"D" fga(f"G" g2) Bd :|
+"Em" [EB]2 eB d2 ed | Bde(B dB)AG |"C" [EB]2 eB "G"d2 eg |"D" fga(f"G" g2) Bd :|
