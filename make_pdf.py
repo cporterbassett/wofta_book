@@ -28,6 +28,15 @@ GAP_PREFERRED = 28
 GAP_FALLBACK = 14
 PNG_DPI = 150
 
+# --- Temporary sepia tint on engraved (ABC-rendered) tunes ----------------
+# Gives the crisp vector engravings a slight warm background so they're easy to
+# tell apart from the scans. Affects ONLY engraved tunes (PDF + comparison HTML);
+# scans are left untouched. Turn off with `SEPIA=0 ./make_pdf.sh` or flip the
+# default below to "0".
+SEPIA = os.environ.get("SEPIA", "1") != "0"
+SEPIA_HEX = "#f8efd9"                      # slight sepia / cream
+SEPIA_RGB = (0.973, 0.937, 0.851)          # same colour, 0..1 for PostScript
+
 
 def sort_key(path):
     stem = os.path.splitext(os.path.basename(path))[0]
@@ -81,9 +90,12 @@ def abc_to_pdf_bytes(abc_path):
             out.write(ABC_DIRECTIVES)
             out.write(src.read())
 
+        # Don't use check=True: abcm2ps exits non-zero on cosmetic warnings
+        # (e.g. "Line too much shrunk") while still emitting valid EPS. Only a
+        # missing EPS is a real failure.
         subprocess.run(
             ["abcm2ps", "-E", "-s", "1.0", "-O", "out", "tune.abc"],
-            check=True, capture_output=True, cwd=tmpdir,
+            capture_output=True, cwd=tmpdir,
         )
         eps_files = sorted(glob.glob(os.path.join(tmpdir, "out*.eps")))
         if not eps_files:
@@ -155,7 +167,7 @@ def render_page(page_items, output_pdf, usable_w, gap):
     content = b""
     y = PAGE_H - MARGIN_TOP
 
-    for i, (_, scaled_h, pdf_bytes) in enumerate(page_items):
+    for i, (fname, scaled_h, pdf_bytes) in enumerate(page_items):
         with Pdf.open(io.BytesIO(pdf_bytes)) as src:
             src_w = float(src.pages[0].mediabox[2])
             xobj = src.pages[0].as_form_xobject()
@@ -167,6 +179,14 @@ def render_page(page_items, output_pdf, usable_w, gap):
         scale = usable_w / src_w
         tx = MARGIN_X
         ty = y - scaled_h
+        # Slight sepia wash behind engraved (ABC) tunes only — drawn first so the
+        # notes paint on top. Scanned PNGs get no tint.
+        if SEPIA and fname.endswith(".abc"):
+            r, g, b = SEPIA_RGB
+            content += (
+                f"q {r:.4f} {g:.4f} {b:.4f} rg "
+                f"{tx:.2f} {ty:.2f} {usable_w:.2f} {scaled_h:.2f} re f Q\n"
+            ).encode()
         content += (
             f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm {xobj_name} Do Q\n"
         ).encode()
@@ -187,9 +207,11 @@ def abc_to_svg_str(abc_path):
         with open(tmp_abc, "w") as out, open(abc_path) as src:
             out.write(ABC_DIRECTIVES_HTML)
             out.write(src.read())
+        # See abc_to_pdf_bytes: tolerate non-zero exit (cosmetic warnings) as
+        # long as an SVG is produced.
         subprocess.run(
             ["abcm2ps", "-g", "-s", "1.0", "-O", "out", "tune.abc"],
-            check=True, capture_output=True, cwd=tmpdir,
+            capture_output=True, cwd=tmpdir,
         )
         svg_files = sorted(glob.glob(os.path.join(tmpdir, "out*.svg")))
         if not svg_files:
@@ -225,10 +247,14 @@ def make_html(verified, scans, html_path):
   <section>
     <h2>{tune}</h2>
     <div class="comparison">
-      <div class="panel"><h3>Engraved (ABC)</h3>{svg}</div>
+      <div class="panel engraved"><h3>Engraved (ABC)</h3>{svg}</div>
       <div class="panel"><h3>Original Scan</h3>{scan_html}</div>
     </div>
   </section>""")
+
+    # Only the engraved panel gets the slight sepia background (scans stay white).
+    sepia_css = (f".panel.engraved svg {{ background: {SEPIA_HEX}; }}"
+                 if SEPIA else "")
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -245,6 +271,7 @@ def make_html(verified, scans, html_path):
     .panel h3 {{ font-size: .9em; color: #666; margin-bottom: 8px; }}
     .panel svg {{ max-width: 100%; height: auto; display: block; }}
     .panel img {{ max-width: 100%; height: auto; display: block; border: 1px solid #ddd; }}
+    {sepia_css}
   </style>
 </head>
 <body>
