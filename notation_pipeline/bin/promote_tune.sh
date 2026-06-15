@@ -24,7 +24,15 @@ if [[ ! -f "$CAND" ]]; then
     exit 1
 fi
 
-git -C "$IMAGES_DIR" mv "$CAND" "$VERIFIED"
+# Use -f so a re-promotion (verified already exists from an earlier sign-off)
+# overwrites the old engraving instead of failing. Without -f, git mv refuses
+# to clobber an existing destination; under the verify pipeline that failure was
+# swallowed, leaving the candidate in place and the verified file stale — which
+# silently lost re-edited work.
+if [[ -f "$VERIFIED" ]]; then
+    echo "Re-promoting: overwriting existing ${TUNE}-verified.abc"
+fi
+git -C "$IMAGES_DIR" mv -f "$CAND" "$VERIFIED"
 echo "Promoted: ${TUNE} -> -verified.abc"
 
 RENDER="${PIPELINE_DIR}/renders/${TUNE}-verified.render.png"
