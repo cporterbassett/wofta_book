@@ -53,6 +53,37 @@ KEEP=(
   "June Apple"                                           # 108
   "Salt Creek"                                           # 108
   "Swinging on a Gate"                                   # 109
+
+  # --- Added 2026-06-15 (second keep batch) ---
+  "Big Scioty"
+  "Ashokan Farewell"
+  "Dill Pickles Rag"
+  "Drowsy Maggie"
+  "Frosty Morning"
+  "Galopede"
+  "Gil's Schottische"
+  "Give the Fiddler a Dram"
+  "Grasshopper Sittin' on a Sweet Potato Vine"
+  "Hollow Poplar"
+  "Ice on the Road"
+  "Jimmy Allen"
+  "Kerry Mills' Barn Dance"                              # NO clean.omr yet — needs OMR before it can be verified
+  "Mairi's Wedding"
+  "Manitoba Golden Boy"
+  "March of St. Timothy"
+  "Mason's Apron"
+  "Peacock Rag"
+  "Petronella"
+  "Pig Ankle Rag"
+  "Pink Eye Lament"
+  "Possum Up a Gum Stump"
+  "Red Bird"
+  "Rights of Man"
+  "Road to Lisdoonvarna, The"
+  "Salt Spring"
+  "Spotted Pony"
+  "Swallowtail Jig"
+  "Wind That Shakes the Barley"
 )
 
 exec bash "${HERE}/cleanup_loop.sh" "$@" "${KEEP[@]}"
