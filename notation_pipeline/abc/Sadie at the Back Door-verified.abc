@@ -1,0 +1,14 @@
+X:1
+T:Sadie at the Back Door
+C:Jere Canote
+C:Arr: Pele Showman
+L:1/8
+M:C|
+I:linebreak $
+K:G
+V:1 treble
+V:1
+ fg |: "D" a2 g2 fd AB | d4 d2 fg | a2 g2 fd AB |"C" c4- c2 (fg) |$
+"D" a2 g2 fd AB |"C" c4 "G"B4 | "C" c2 B2 "A"(AF) E2 |1"D" D4- D2 (fg) :|2"D" D4- D2 DE |:$
+"D" FE F2 D2 DE | FDEF D2 AB |"C" c2 B2 "A"(AF) E2 |"D"  D4- D2 DE |$
+ "D"FE F2 D4 |"C" c4 "G"B4 |"D" f4 d4 |1"A" BAFE "D"D2 DE :|2 "A" BAFE "D" D2 fg |]
