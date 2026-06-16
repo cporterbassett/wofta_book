@@ -112,7 +112,7 @@ def extract_body(abc_text):
 # `::` shorthand (== :|: , end-repeat + start-repeat). The `::` form has no pipe,
 # so it needs its own alternative — without it two measures merge and the count
 # comes out one short (e.g. Petronella's `... dA :: F2 ...`).
-BARLINE = re.compile(r'\s*(?::*\|+:*[12\]]?|::|\])\s*')
+BARLINE = re.compile(r'\s*(?::*\|+:*[12\]]?|::)\s*')
 
 
 def split_measures(body):
