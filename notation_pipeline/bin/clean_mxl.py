@@ -71,15 +71,20 @@ def clean_tree(root):
             for mover in list(measure.findall('backup')) + list(measure.findall('forward')):
                 measure.remove(mover)
 
-    # Keep <key> only in the first measure of each part
+    # Keep <key> and <clef> only in the first measure of each part. Audiveris
+    # restates the clef at a system break (e.g. Pink Eye Lament's measure 9, the
+    # start of line 2); abc_xml_converter emits that as a bogus inline `[K:treble]`
+    # which downstream tools read as a KEY change, resetting accidentals and
+    # mangling the rest of the tune. These are single-clef monophonic tunes, so any
+    # later clef is a redundant restatement and safe to drop.
     for part in root.iter('part'):
         first_measure = True
         for measure in part.iter('measure'):
             if not first_measure:
                 attrs = measure.find('attributes')
                 if attrs is not None:
-                    for key in list(attrs.findall('key')):
-                        attrs.remove(key)
+                    for stale in list(attrs.findall('key')) + list(attrs.findall('clef')):
+                        attrs.remove(stale)
             else:
                 first_measure = False
 
