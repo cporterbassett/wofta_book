@@ -78,6 +78,12 @@ def clean_omr(input_path, output_path):
     for name, data in entries.items():
         if re.match(r'sheet#\d+/sheet#\d+\.xml$', name):
             cleaned = clean_sheet_xml(data.decode('utf-8'))
+            # clean_sheet_xml returns the original text (declaration intact) when
+            # there's nothing to strip, but ET.tostring(...) emits none. Strip any
+            # leading declaration so we always prepend exactly one — otherwise a
+            # sheet with no strippable inters ends up with a doubled <?xml ?> PI,
+            # which Audiveris rejects ("processing instruction ... not allowed").
+            cleaned = re.sub(r'^\s*<\?xml[^>]*\?>\s*', '', cleaned)
             entries[name] = ('<?xml version="1.0" encoding="UTF-8"?>\n' + cleaned).encode('utf-8')
             modified += 1
 
