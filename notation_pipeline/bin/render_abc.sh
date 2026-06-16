@@ -29,14 +29,23 @@ TMPABC="${STEM}.render.tmp.abc"
 printf '%%%%measurenb 0\n%%%%gchordfont Helvetica-Bold 12\n%%%%repeatfont Helvetica-Bold 12\n' > "$TMPABC"
 cat "$ABC" >> "$TMPABC"
 
-# Render to PostScript first (abcm2ps PostScript output is the most faithful)
+# Render to PostScript first (abcm2ps PostScript output is the most faithful).
+# abcm2ps exits non-zero on cosmetic warnings (e.g. "Line too much shrunk" on
+# long/dense tunes) while still emitting a valid PS — don't let that abort the
+# script (and, downstream, the verify pipeline's commit). Only a MISSING PS is a
+# real failure. Mirrors the abcm2ps tolerance in make_pdf.py.
 abcm2ps \
     -O "$PS" \
     -s 1.0 \
     -m 0.5cm \
-    "$TMPABC"
+    "$TMPABC" || true
 
 rm -f "$TMPABC"
+
+if [[ ! -s "$PS" ]]; then
+    echo "render_abc.sh: abcm2ps produced no PostScript for $ABC" >&2
+    exit 1
+fi
 
 # Convert PS → PNG via Ghostscript
 gs -dBATCH -dNOPAUSE -dQUIET \
