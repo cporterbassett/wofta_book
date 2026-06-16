@@ -108,8 +108,11 @@ def extract_body(abc_text):
 
 # ── Measure splitting ─────────────────────────────────────────────────────────
 
-# Any barline variant: |, ||, |:, :|, |1, |2, |], :|2, |]2, ], etc.
-BARLINE = re.compile(r'\s*(?::\|[12:\]]?|[|]{1,2}[:\]12]{0,2}|\])\s*')
+# Any barline variant: |, ||, |:, :|, |1, |2, |], :|2, |]2, ], :|:, and the
+# `::` shorthand (== :|: , end-repeat + start-repeat). The `::` form has no pipe,
+# so it needs its own alternative — without it two measures merge and the count
+# comes out one short (e.g. Petronella's `... dA :: F2 ...`).
+BARLINE = re.compile(r'\s*(?::*\|+:*[12\]]?|::|\])\s*')
 
 
 def split_measures(body):
