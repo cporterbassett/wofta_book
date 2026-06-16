@@ -83,15 +83,30 @@ def normalize_durations(body, unit):
 # ── Body extraction ───────────────────────────────────────────────────────────
 
 def extract_body(abc_text):
-    """Strip formatting; normalize durations to L:1/8; return note string."""
+    """Strip formatting; normalize durations to L:1/8; return note string.
+
+    For multi-voice ABC, only the FIRST voice is returned. Audiveris drafts often
+    split a monophonic tune into two voices; concatenating both bodies doubles the
+    measure count and trips a false truncation FAIL (e.g. Gil's Schottische draft
+    counted 32 for a 16-measure tune; Barlow Knife likewise)."""
     unit = get_unit(abc_text)
+    first_voice = None
+    current_voice = None
     lines = []
     for line in abc_text.splitlines():
         line = line.strip()
         if not line:
             continue
+        vm = re.match(r'^V:\s*(\S+)', line)
+        if vm:
+            if first_voice is None:
+                first_voice = vm.group(1)
+            current_voice = vm.group(1)
+            continue
         if re.match(r'^[A-Za-z]:', line):
             continue
+        if current_voice is not None and current_voice != first_voice:
+            continue  # skip secondary-voice body lines
         line = re.sub(r'"[^"]*"', '', line)   # chord symbols
         line = re.sub(r'![^!]*!', '', line)    # decorations
         line = re.sub(r'\{[^}]*\}', '', line)  # grace notes
