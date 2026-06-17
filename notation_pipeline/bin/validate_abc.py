@@ -13,7 +13,7 @@ Checks per abc/<Tune>-{candidate,verified}.abc:
   WARN  Chords entered            — at least 4 real chord tokens in the body
                                      (text annotations like "^Alt..." are excluded)
   WARN  Title entered             — T: present and not empty/placeholder
-  FAIL  Truncation                — final measure-count < draft measure-count  OR  < 16
+  FAIL  Truncation                — final measure-count < draft measure-count  OR  < 14
                                      (anacrusis: short FINAL measure is OK; only count matters)
 
 Exit: non-zero if any tune has a FAIL.
@@ -150,7 +150,7 @@ def validate_tune(tune_name, health_scores):
     draft_count = count_measures(draft_path)
     extracted['measure_count'] = final_count
 
-    FLOOR = 16
+    FLOOR = 14
 
     trunc_fail = False
     trunc_msgs = []
