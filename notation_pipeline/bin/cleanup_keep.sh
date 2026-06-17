@@ -84,6 +84,30 @@ KEEP=(
   "Spotted Pony"
   "Swallowtail Jig"
   "Wind That Shakes the Barley"
+
+  # --- Added 2026-06-16 (third keep batch) ---
+  "Blackberry Blossom"
+  "Boys of Blue Hill, The"
+  "Buckshot"
+  "Chinquapin"
+  "Clinch Mountain Backstep"                            # (in A) — verified from supplied ABC (no scan)
+  "Colored Aristocracy"
+  "Devil's Dream"
+  "Florida Blues"
+  "Forked Deer"
+  "Growling Old Man and Woman"
+  "Jefferson and Liberty"                               # distinct from standalone "Liberty" above
+  "Josefin's Dopvals"
+  "Meeting of the Waters"
+  "Ookpik Waltz"
+  "Sailor's Hornpipe"
+  "Sally Ann"                                           # NOT "Sally Ann Johnson" (separate tune in source_images/)
+  "Sandy Boys"
+  "Shoes and Stockings"
+  "Ships are Sailing"
+  "Sleeping Giant Two-Step"
+  "Starry Night for a Ramble"
+  "West Fork Gals"
 )
 
 exec bash "${HERE}/cleanup_loop.sh" "$@" "${KEEP[@]}"
