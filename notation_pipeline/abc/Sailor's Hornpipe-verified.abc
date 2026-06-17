@@ -1,0 +1,12 @@
+X:1
+T:Sailor's Hornpipe
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble
+V:1
+ gf |:"G" g2 G2 G2 dc | Bdgf gbag |"A" a2 A2 A2 AG |"D" FA d2 d2 ef |$
+ "G" gfed edcB |"C" cBAG AGFE |"G"  DGFA "D"GBAc |1"G"   B2 G2 G2 gf :|2"G"  B2 G2 G2 dc |:$
+ "G" Bdgd Bdgd |"C" e2 c2 c2 ed |"A" ^ceae ceae |"D" f2 d2 d2 ef |$
+ "G" gfed edcB |"C"  cBAG AGFE |GDGFA "D"GBAc |1"G"  B2 G2 G2 dc :|2"G"  B2 G2 G2 gf |]
