@@ -92,10 +92,21 @@ def extract_body(abc_text):
     unit = get_unit(abc_text)
     first_voice = None
     current_voice = None
+    in_textblock = False
     lines = []
     for line in abc_text.splitlines():
         line = line.strip()
         if not line:
+            continue
+        # Skip free-text blocks (%%begintext .. %%endtext); their prose lines
+        # have no leading '%' so they'd otherwise be parsed as music body.
+        if line.startswith('%%begintext'):
+            in_textblock = True
+            continue
+        if line.startswith('%%endtext'):
+            in_textblock = False
+            continue
+        if in_textblock:
             continue
         vm = re.match(r'^V:\s*(\S+)', line)
         if vm:

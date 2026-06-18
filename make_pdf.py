@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
 """
-Pack all PNGs and ABC files in the current directory into a PDF.
-- PNG files: embedded as raster (scanned tunes)
-- ABC files: converted to vector PDF via abcm2ps (EPS) + Ghostscript
-- All tunes scaled to usable page width, packed vertically, greedy first-fit
+Build the two standard WOFTA tune PDFs from the union of scans + verified ABCs.
+
+  1. WOFTA_tunes.pdf            — every tune, prefer the engraved (verified ABC)
+                                  rendering over the scan. Engraved tunes get a
+                                  sepia wash. Starts with a clickable table of
+                                  contents. Letter portrait, tunes packed
+                                  vertically (greedy first-fit).
+  2. WOFTA_tunes_comparison.pdf — every engraved tune as a portrait row, original
+                                  scan on the left, engraving (sepia) on the right,
+                                  multiple tunes packed per page.
+
+PNG scans are embedded as raster; ABC files are converted to cropped vector PDFs
+via abcm2ps (EPS) + Ghostscript.
 """
 import glob
 import io
+import math
 import os
-import re
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -28,19 +36,31 @@ GAP_PREFERRED = 28
 GAP_FALLBACK = 14
 PNG_DPI = 150
 
-# --- Temporary sepia tint on engraved (ABC-rendered) tunes ----------------
-# Gives the crisp vector engravings a slight warm background so they're easy to
-# tell apart from the scans. Affects ONLY engraved tunes (PDF + comparison HTML);
-# scans are left untouched. Turn off with `SEPIA=0 ./make_pdf.sh` or flip the
-# default below to "0".
+# Sepia tint behind engraved (ABC-rendered) tunes, so the crisp vector
+# engravings read warm and are easy to tell apart from the scans. Affects ONLY
+# engraved tunes; scans are left untouched. Turn off with `SEPIA=0 ./make_pdf.sh`.
 SEPIA = os.environ.get("SEPIA", "1") != "0"
-SEPIA_HEX = "#f8efd9"                      # slight sepia / cream
-SEPIA_RGB = (0.973, 0.937, 0.851)          # same colour, 0..1 for PostScript
+SEPIA_RGB = (0.973, 0.937, 0.851)          # #f8efd9 — slight cream
 
 
 def sort_key(path):
     stem = os.path.splitext(os.path.basename(path))[0]
     return stem.lower().replace("-", " ")
+
+
+def stem_of(path):
+    return os.path.splitext(os.path.basename(path))[0]
+
+
+def pdf_escape(s):
+    return s.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
+
+
+def text_op(text, x, y, font, size):
+    """A BT..ET text-drawing operator as bytes (latin-1, lossy for odd glyphs)."""
+    esc = pdf_escape(text).encode("latin-1", "replace")
+    return (f"BT {font} {size} Tf {x:.2f} {y:.2f} Td (".encode()
+            + esc + b") Tj ET\n")
 
 
 def png_to_pdf_bytes(png_path):
@@ -56,22 +76,13 @@ def png_to_pdf_bytes(png_path):
 
 
 # Same directives render_abc.sh injects, so a tune's PDF engraving matches its
-# comparison-report render: line-start measure numbers, bold chords + volta numbers.
+# comparison render: line-start measure numbers, bold chords + volta numbers.
 ABC_DIRECTIVES = (
     "%%measurenb 0\n"
     "%%measurefont Times-Italic 9\n"
     "%%titlefont Times-Bold 24\n"
     "%%gchordfont Helvetica-Bold 12\n"
     "%%repeatfont Helvetica-Bold 9\n"
-)
-
-# For HTML SVG: zero margins so notation fills the full declared width (no
-# whitespace strips on either side), matching the content-crop we do for PDF.
-ABC_DIRECTIVES_HTML = ABC_DIRECTIVES + (
-    "%%leftmargin 0\n"
-    "%%rightmargin 0\n"
-    "%%topmargin 0\n"
-    "%%botmargin 0\n"
 )
 
 
@@ -86,17 +97,37 @@ def abc_to_pdf_bytes(abc_path):
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_abc = os.path.join(tmpdir, "tune.abc")
-        with open(tmp_abc, "w") as out, open(abc_path) as src:
-            out.write(ABC_DIRECTIVES)
-            out.write(src.read())
+        with open(abc_path) as src:
+            abc_src = src.read()
 
-        # Don't use check=True: abcm2ps exits non-zero on cosmetic warnings
-        # (e.g. "Line too much shrunk") while still emitting valid EPS. Only a
-        # missing EPS is a real failure.
-        subprocess.run(
-            ["abcm2ps", "-E", "-s", "1.0", "-O", "out", "tune.abc"],
-            capture_output=True, cwd=tmpdir,
-        )
+        def render(extra=""):
+            with open(tmp_abc, "w") as out:
+                out.write(extra)
+                out.write(ABC_DIRECTIVES)
+                out.write(abc_src)
+            # Don't use check=True: abcm2ps exits non-zero on cosmetic warnings
+            # (e.g. "Line too much shrunk") while still emitting valid EPS. Only a
+            # missing EPS is a real failure.
+            return subprocess.run(
+                ["abcm2ps", "-E", "-s", "1.0", "-O", "out", "tune.abc"],
+                capture_output=True, cwd=tmpdir,
+            )
+
+        result = render()
+
+        # -E (EPS) mode uses a narrow default staff width and auto-wraps any line
+        # that doesn't fit, ignoring the tune's `$` line breaks — so dense tunes
+        # (e.g. Dill Pickles Rag) render with the wrong, early breaks in the PDF.
+        # When abcm2ps reports an overfull/shrunk line, re-render with a wide page
+        # so every `$`-delimited line fits on one staff and the intended breaks
+        # are kept. Only the few densest tunes trigger this; the rest are
+        # unchanged. (Tunes with their own embedded %%pagewidth keep it.)
+        stderr = result.stderr.decode("utf-8", "replace").lower()
+        if "overfull" in stderr or "shrunk" in stderr:
+            for stale in glob.glob(os.path.join(tmpdir, "out*.eps")):
+                os.remove(stale)
+            render("%%pagewidth 1000pt\n")
+
         eps_files = sorted(glob.glob(os.path.join(tmpdir, "out*.eps")))
         if not eps_files:
             raise RuntimeError(f"abcm2ps produced no EPS for {abc_path}")
@@ -136,6 +167,62 @@ def get_pdf_size(pdf_bytes):
         return float(mb[2]) - float(mb[0]), float(mb[3]) - float(mb[1])
 
 
+# --- Fonts shared across generated text pages ------------------------------
+
+def make_fonts(out):
+    """Return (regular, bold) indirect Helvetica font objects for `out`."""
+    reg = out.make_indirect(Dictionary(
+        Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica))
+    bold = out.make_indirect(Dictionary(
+        Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold")))
+    return reg, bold
+
+
+def new_page(out, width, height, fonts):
+    """Create + append a blank page with F1 (regular) / F2 (bold) fonts."""
+    reg, bold = fonts
+    page_obj = out.make_indirect(Dictionary(
+        Type=Name.Page,
+        MediaBox=Array([0, 0, width, height]),
+        Resources=Dictionary(
+            XObject=Dictionary(),
+            Font=Dictionary(F1=reg, F2=bold),
+        ),
+        Contents=out.make_stream(b""),
+    ))
+    out.pages.append(pikepdf.Page(page_obj))
+    return page_obj
+
+
+def embed_form(out, page_obj, pdf_bytes, name, box, sepia=False):
+    """Place a single-page PDF as a form XObject fit (aspect-preserving) into
+    `box` = (x, y, w, h), centred horizontally and top-aligned. Returns the
+    content-stream bytes to draw it (and an optional sepia wash behind it)."""
+    bx, by, bw, bh = box
+    with Pdf.open(io.BytesIO(pdf_bytes)) as src:
+        mb = src.pages[0].mediabox
+        src_w = float(mb[2]) - float(mb[0])
+        src_h = float(mb[3]) - float(mb[1])
+        xobj = out.copy_foreign(src.pages[0].as_form_xobject())
+    page_obj.Resources.XObject[name] = xobj
+
+    scale = min(bw / src_w, bh / src_h)
+    draw_w, draw_h = src_w * scale, src_h * scale
+    tx = bx + (bw - draw_w) / 2
+    ty = by + bh - draw_h          # top-aligned within the box
+
+    content = b""
+    if sepia:
+        r, g, b = SEPIA_RGB
+        content += (f"q {r:.4f} {g:.4f} {b:.4f} rg "
+                    f"{tx:.2f} {ty:.2f} {draw_w:.2f} {draw_h:.2f} re f Q\n").encode()
+    content += (f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm "
+                f"{name} Do Q\n").encode()
+    return content
+
+
+# --- PDF 1: full book with table of contents -------------------------------
+
 def pack_pages(items, gap, usable_h):
     """Greedy first-fit packing. items: list of (fname, scaled_h, pdf_bytes)"""
     pages, current, current_h = [], [], 0
@@ -153,200 +240,265 @@ def pack_pages(items, gap, usable_h):
     return pages
 
 
-def render_page(page_items, output_pdf, usable_w, gap):
-    """Composite items onto a new letter-size page using pikepdf form XObjects."""
-    page_obj = output_pdf.make_indirect(Dictionary(
-        Type=Name.Page,
-        MediaBox=Array([0, 0, PAGE_W, PAGE_H]),
-        Resources=Dictionary(XObject=Dictionary()),
-        Contents=output_pdf.make_stream(b""),
-    ))
-    output_pdf.pages.append(pikepdf.Page(page_obj))
-    page = output_pdf.pages[-1]
-
+def render_content_page(out, fonts, page_items, usable_w, gap):
+    """Composite packed tunes onto a new letter page. Returns the page object."""
+    page_obj = new_page(out, PAGE_W, PAGE_H, fonts)
     content = b""
     y = PAGE_H - MARGIN_TOP
-
     for i, (fname, scaled_h, pdf_bytes) in enumerate(page_items):
         with Pdf.open(io.BytesIO(pdf_bytes)) as src:
             src_w = float(src.pages[0].mediabox[2])
-            xobj = src.pages[0].as_form_xobject()
-            xobj_copy = output_pdf.copy_foreign(xobj)
-
+            xobj = out.copy_foreign(src.pages[0].as_form_xobject())
         xobj_name = f"/Fm{i}"
-        page.obj.Resources.XObject[xobj_name] = xobj_copy
-
+        page_obj.Resources.XObject[xobj_name] = xobj
         scale = usable_w / src_w
         tx = MARGIN_X
         ty = y - scaled_h
-        # Slight sepia wash behind engraved (ABC) tunes only — drawn first so the
-        # notes paint on top. Scanned PNGs get no tint.
         if SEPIA and fname.endswith(".abc"):
             r, g, b = SEPIA_RGB
-            content += (
-                f"q {r:.4f} {g:.4f} {b:.4f} rg "
-                f"{tx:.2f} {ty:.2f} {usable_w:.2f} {scaled_h:.2f} re f Q\n"
-            ).encode()
-        content += (
-            f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm {xobj_name} Do Q\n"
-        ).encode()
+            content += (f"q {r:.4f} {g:.4f} {b:.4f} rg "
+                        f"{tx:.2f} {ty:.2f} {usable_w:.2f} {scaled_h:.2f} re f Q\n").encode()
+        content += (f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm "
+                    f"{xobj_name} Do Q\n").encode()
         y = ty - gap
-
-    page.obj.Contents = output_pdf.make_stream(content)
-
-
-def abc_to_svg_str(abc_path):
-    """Render an ABC file to inline SVG string via abcm2ps -g.
-
-    Uses zero margins so notation fills the full declared page width (no empty
-    strips on either side). Adds a viewBox and sets width=100% so the SVG
-    scales to fit its HTML container rather than overflowing at fixed px size.
-    """
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmp_abc = os.path.join(tmpdir, "tune.abc")
-        with open(tmp_abc, "w") as out, open(abc_path) as src:
-            out.write(ABC_DIRECTIVES_HTML)
-            out.write(src.read())
-        # See abc_to_pdf_bytes: tolerate non-zero exit (cosmetic warnings) as
-        # long as an SVG is produced.
-        subprocess.run(
-            ["abcm2ps", "-g", "-s", "1.0", "-O", "out", "tune.abc"],
-            capture_output=True, cwd=tmpdir,
-        )
-        svg_files = sorted(glob.glob(os.path.join(tmpdir, "out*.svg")))
-        if not svg_files:
-            raise RuntimeError(f"abcm2ps produced no SVG for {abc_path}")
-        with open(svg_files[0]) as f:
-            raw = f.read()
-    idx = raw.index("<svg")
-    svg = raw[idx:]
-    # Replace fixed "width=Xpx height=Ypx" with a viewBox + scalable width
-    # so the browser can resize the SVG to fit its container.
-    m = re.search(r'width="([\d.]+)px"\s+height="([\d.]+)px"', svg)
-    if m:
-        w, h = m.group(1), m.group(2)
-        svg = svg[:m.start()] + f'width="100%" viewBox="0 0 {w} {h}"' + svg[m.end():]
-    return svg
+    page_obj.Contents = out.make_stream(content)
+    return page_obj
 
 
-def make_html(verified, scans, html_path):
-    """Write side-by-side comparison HTML for all verified tunes."""
-    tunes = sorted(verified.keys(), key=sort_key)
-    html_dir = os.path.dirname(os.path.abspath(html_path))
+TOC_TITLE_H = 44
+TOC_LINE_H = 14
+TOC_FONT = 10
+TOC_COL_GAP = 24
 
-    rows = []
-    for tune in tunes:
-        svg = abc_to_svg_str(verified[tune])
-        scan_path = scans.get(tune)
-        if scan_path:
-            rel = os.path.relpath(scan_path, html_dir)
-            scan_html = f'<img src="{rel}" alt="Original scan">'
+
+def toc_geometry(n_entries):
+    usable_w = PAGE_W - 2 * MARGIN_X
+    col_w = (usable_w - TOC_COL_GAP) / 2
+    top_y = PAGE_H - MARGIN_TOP - TOC_TITLE_H
+    lines_per_col = int((top_y - MARGIN_BOTTOM) / TOC_LINE_H)
+    entries_per_page = lines_per_col * 2
+    n_pages = max(1, math.ceil(n_entries / entries_per_page))
+    return col_w, top_y, lines_per_col, entries_per_page, n_pages
+
+
+def build_toc_pages(out, fonts, entries, n_toc_pages):
+    """entries: list of (name, printed_pageno, dest_page_obj) in display order.
+    Builds the TOC pages, inserts them at the front of the document."""
+    col_w, top_y, lines_per_col, entries_per_page, _ = toc_geometry(len(entries))
+    col_x = [MARGIN_X, MARGIN_X + col_w + TOC_COL_GAP]
+    num_w = 34  # reserved right strip for the page number
+    name_max_w = col_w - num_w - 6
+
+    toc_page_objs = []
+    for p in range(n_toc_pages):
+        page_obj = new_page(out, PAGE_W, PAGE_H, fonts)
+        content = text_op("Contents", MARGIN_X, PAGE_H - MARGIN_TOP - 22, "/F2", 20)
+        annots = []
+        chunk = entries[p * entries_per_page:(p + 1) * entries_per_page]
+        for j, (name, pageno, dest) in enumerate(chunk):
+            col = j // lines_per_col
+            row = j % lines_per_col
+            x = col_x[col]
+            y = top_y - row * TOC_LINE_H
+            # Truncate long names to keep the page-number column clear.
+            disp = name
+            while len(disp) > 1 and _approx_w(disp, TOC_FONT) > name_max_w:
+                disp = disp[:-1]
+            if disp != name:
+                disp = disp[:-1] + "…"
+            content += text_op(disp, x, y, "/F1", TOC_FONT)
+            num = str(pageno)
+            nx = x + col_w - _approx_w(num, TOC_FONT)
+            content += text_op(num, nx, y, "/F1", TOC_FONT)
+            # Clickable jump to the tune's page.
+            annots.append(out.make_indirect(Dictionary(
+                Type=Name.Annot, Subtype=Name.Link,
+                Rect=Array([x, y - 3, x + col_w, y + TOC_FONT]),
+                Border=Array([0, 0, 0]),
+                A=Dictionary(S=Name.GoTo, D=Array([dest, Name.Fit])),
+            )))
+        page_obj.Contents = out.make_stream(content)
+        if annots:
+            page_obj.Annots = Array(annots)
+        toc_page_objs.append(page_obj)
+
+    # Move the freshly-appended TOC pages to the front, preserving order.
+    for idx, tp in enumerate(toc_page_objs):
+        out.pages.remove(pikepdf.Page(tp))
+        out.pages.insert(idx, pikepdf.Page(tp))
+    return toc_page_objs
+
+
+# Approximate Helvetica advance widths (per 1pt em) for the common ASCII range.
+def _approx_w(text, size):
+    return sum(0.50 if c in "iIl.,;:'|!" else
+               0.78 if c in "mwMW" else 0.556 for c in text) * size
+
+
+def make_main_pdf(pairs, output):
+    """pairs: list of (tune_name, file_path) already in display order."""
+    usable_w = PAGE_W - 2 * MARGIN_X
+    usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
+    name_of = {path: name for name, path in pairs}
+
+    items = []
+    for i, (name, f) in enumerate(pairs, 1):
+        label = "ABC" if f.endswith(".abc") else "PNG"
+        print(f"  [{i}/{len(pairs)}] {label}: {name}")
+        pdf_bytes = abc_to_pdf_bytes(f) if f.endswith(".abc") else png_to_pdf_bytes(f)
+        w, h = get_pdf_size(pdf_bytes)
+        items.append((f, h * (usable_w / w), pdf_bytes))
+
+    pages = pack_pages(items, GAP_FALLBACK, usable_h)
+    _, _, _, _, n_toc_pages = toc_geometry(len(items))
+
+    print(f"\nPacking {len(items)} tunes onto {len(pages)} content pages "
+          f"(+{n_toc_pages} TOC page(s))...")
+    out = Pdf.new()
+    fonts = make_fonts(out)
+
+    tune_dest = {}   # tune name -> (printed_pageno, page_obj)
+    for ci, page_items in enumerate(pages, 1):
+        content_h = sum(h for _, h, _ in page_items)
+        gap = (GAP_PREFERRED
+               if content_h + (len(page_items) - 1) * GAP_PREFERRED <= usable_h
+               else GAP_FALLBACK)
+        page_obj = render_content_page(out, fonts, page_items, usable_w, gap)
+        printed = n_toc_pages + ci
+        for fname, _, _ in page_items:
+            tune_dest[name_of[fname]] = (printed, page_obj)
+
+    entries = [(name, tune_dest[name][0], tune_dest[name][1])
+               for name in sorted(tune_dest, key=lambda s: s.lower().replace("-", " "))]
+    build_toc_pages(out, fonts, entries, n_toc_pages)
+
+    print(f"Writing {output}...")
+    out.save(output)
+
+
+# --- PDF 2: portrait side-by-side comparison, packed -----------------------
+
+COMP_TITLE_H = 28      # space above each pair: tune name + panel captions
+COMP_PANEL_GAP = 18    # horizontal gap between the scan + engraving columns
+COMP_BLOCK_GAP = 24    # vertical gap between consecutive tune rows
+
+
+def render_comparison_page(out, fonts, page_blocks, panel_w, left_x, right_x):
+    """One portrait page of stacked tune rows: scan left, engraving right."""
+    page_obj = new_page(out, PAGE_W, PAGE_H, fonts)
+    content = b""
+    y = PAGE_H - MARGIN_TOP
+    for idx, (tune, block_h, eng_bytes, scan_bytes, panels_h) in enumerate(page_blocks):
+        top = y
+        content += text_op(tune, MARGIN_X, top - 13, "/F2", 13)
+        content += text_op("Original", left_x, top - COMP_TITLE_H + 3, "/F1", 8)
+        content += text_op("Engraved", right_x, top - COMP_TITLE_H + 3, "/F1", 8)
+        panel_bottom = top - COMP_TITLE_H - panels_h
+        left_box = (left_x, panel_bottom, panel_w, panels_h)
+        right_box = (right_x, panel_bottom, panel_w, panels_h)
+        if scan_bytes is not None:
+            content += embed_form(out, page_obj, scan_bytes, f"/S{idx}", left_box)
         else:
-            scan_html = "<em>No scan</em>"
-        rows.append(f"""
-  <section>
-    <h2>{tune}</h2>
-    <div class="comparison">
-      <div class="panel engraved"><h3>Engraved (ABC)</h3>{svg}</div>
-      <div class="panel"><h3>Original Scan</h3>{scan_html}</div>
-    </div>
-  </section>""")
+            content += text_op("(no scan)", left_x, panel_bottom + panels_h / 2,
+                               "/F1", 10)
+        content += embed_form(out, page_obj, eng_bytes, f"/E{idx}", right_box,
+                              sepia=SEPIA)
+        y = top - block_h - COMP_BLOCK_GAP
+    page_obj.Contents = out.make_stream(content)
+    return page_obj
 
-    # Only the engraved panel gets the slight sepia background (scans stay white).
-    sepia_css = (f".panel.engraved svg {{ background: {SEPIA_HEX}; }}"
-                 if SEPIA else "")
 
-    html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>WOFTA Verified Tunes ({len(tunes)})</title>
-  <style>
-    body {{ font-family: sans-serif; max-width: 1600px; margin: 0 auto; padding: 20px; background: #f5f5f5; }}
-    h1 {{ color: #333; }}
-    section {{ background: white; margin: 20px 0; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,.1); }}
-    h2 {{ margin-top: 0; color: #444; border-bottom: 2px solid #eee; padding-bottom: 8px; }}
-    .comparison {{ display: flex; gap: 20px; }}
-    .panel {{ flex: 1; min-width: 0; }}
-    .panel h3 {{ font-size: .9em; color: #666; margin-bottom: 8px; }}
-    .panel svg {{ max-width: 100%; height: auto; display: block; }}
-    .panel img {{ max-width: 100%; height: auto; display: block; border: 1px solid #ddd; }}
-    {sepia_css}
-  </style>
-</head>
-<body>
-  <h1>WOFTA Verified Tunes ({len(tunes)})</h1>
-{''.join(rows)}
-</body>
-</html>"""
+def make_comparison_pdf(verified, scans, output):
+    tunes = sorted(verified, key=lambda s: s.lower().replace("-", " "))
+    usable_w = PAGE_W - 2 * MARGIN_X
+    usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
+    panel_w = (usable_w - COMP_PANEL_GAP) / 2
+    left_x = MARGIN_X
+    right_x = MARGIN_X + panel_w + COMP_PANEL_GAP
+    cap_h = usable_h - COMP_TITLE_H
 
-    with open(html_path, "w") as f:
-        f.write(html)
-    print(f"HTML comparison written to {html_path}")
+    blocks = []
+    for i, tune in enumerate(tunes, 1):
+        print(f"  [{i}/{len(tunes)}] compare: {tune}")
+        eng_bytes = abc_to_pdf_bytes(verified[tune])
+        ew, eh = get_pdf_size(eng_bytes)
+        scan = scans.get(tune)
+        if scan:
+            scan_bytes = png_to_pdf_bytes(scan)
+            sw, sh = get_pdf_size(scan_bytes)
+            scan_h = sh * (panel_w / sw)
+        else:
+            scan_bytes, scan_h = None, 0
+        eng_h = eh * (panel_w / ew)
+        # Each column fills the half-width; row height = the taller of the two,
+        # capped so a single tall tune still fits one page.
+        panels_h = min(max(scan_h, eng_h), cap_h)
+        block_h = COMP_TITLE_H + panels_h
+        blocks.append((tune, block_h, eng_bytes, scan_bytes, panels_h))
 
+    # Greedy first-fit: as many tune rows per page as fit.
+    items = [(b, b[1]) for b in blocks]   # (block, height)
+    pages, current, cur_h = [], [], 0
+    for block, h in items:
+        g = COMP_BLOCK_GAP if current else 0
+        if current and cur_h + g + h > usable_h:
+            pages.append(current)
+            current, cur_h = [block], h
+        else:
+            current.append(block)
+            cur_h += g + h
+    if current:
+        pages.append(current)
+
+    out = Pdf.new()
+    fonts = make_fonts(out)
+    _, _, _, _, n_toc_pages = toc_geometry(len(tunes))
+
+    tune_dest = {}   # tune name -> (printed_pageno, page_obj)
+    for ci, page_blocks in enumerate(pages, 1):
+        page_obj = render_comparison_page(out, fonts, page_blocks,
+                                          panel_w, left_x, right_x)
+        printed = n_toc_pages + ci
+        for block in page_blocks:
+            tune_dest[block[0]] = (printed, page_obj)
+
+    entries = [(name, tune_dest[name][0], tune_dest[name][1])
+               for name in sorted(tune_dest, key=lambda s: s.lower().replace("-", " "))]
+    build_toc_pages(out, fonts, entries, n_toc_pages)
+
+    print(f"Writing {output} ({len(pages)} content + {n_toc_pages} TOC pages)...")
+    out.save(output)
+
+
+# --- entry point -----------------------------------------------------------
 
 def main():
-    output = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
+    main_out = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
+    comp_out = os.path.splitext(main_out)[0] + "_comparison.pdf"
 
     HERE = os.path.dirname(os.path.abspath(__file__))
     SCAN_DIR = os.path.join(HERE, "source_images")
     ABC_DIR = os.path.join(HERE, "notation_pipeline", "abc")
 
-    # canonical tune set = union of scans and verified ABCs
-    scans = {os.path.splitext(os.path.basename(p))[0]: p
-             for p in glob.glob(os.path.join(SCAN_DIR, "*.png"))}
+    scans = {stem_of(p): p for p in glob.glob(os.path.join(SCAN_DIR, "*.png"))}
     verified = {os.path.basename(p)[:-len("-verified.abc")]: p
                 for p in glob.glob(os.path.join(ABC_DIR, "*-verified.abc"))}
 
-    tunes = sorted(set(scans) | set(verified), key=lambda s: sort_key(s))
-    all_files = []
-    for tune in tunes:
-        if tune in verified:
-            all_files.append(verified[tune])   # crisp vector engraving
-        elif tune in scans:
-            all_files.append(scans[tune])       # original scan
-
-    if not all_files:
+    tunes = sorted(set(scans) | set(verified), key=lambda s: s.lower().replace("-", " "))
+    pairs = [(t, verified[t] if t in verified else scans[t]) for t in tunes]
+    if not pairs:
         print("No tunes found.", file=sys.stderr)
         sys.exit(1)
 
-    n_eng = sum(1 for f in all_files if f.endswith(".abc"))
-    n_scan = len(all_files) - n_eng
-    print(f"Processing {len(all_files)} tunes ({n_eng} engraved, {n_scan} scanned)...")
+    n_eng = sum(1 for _, f in pairs if f.endswith(".abc"))
+    print(f"=== Book PDF: {len(pairs)} tunes "
+          f"({n_eng} engraved, {len(pairs) - n_eng} scanned) ===")
+    make_main_pdf(pairs, main_out)
 
-    usable_w = PAGE_W - 2 * MARGIN_X
-    usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
+    print(f"\n=== Comparison PDF: {len(verified)} engraved tune(s), portrait packed ===")
+    make_comparison_pdf(verified, scans, comp_out)
 
-    items = []
-    for i, f in enumerate(all_files, 1):
-        label = "ABC" if f.endswith(".abc") else "PNG"
-        print(f"  [{i}/{len(all_files)}] {label}: {f}")
-        if f.endswith(".abc"):
-            pdf_bytes = abc_to_pdf_bytes(f)
-        else:
-            pdf_bytes = png_to_pdf_bytes(f)
-        w, h = get_pdf_size(pdf_bytes)
-        scale = usable_w / w
-        items.append((f, h * scale, pdf_bytes))
-
-    pages = pack_pages(items, GAP_FALLBACK, usable_h)
-
-    print(f"\nPacking {len(items)} tunes onto {len(pages)} pages...")
-    output_pdf = Pdf.new()
-    for i, page_items in enumerate(pages, 1):
-        content_h = sum(h for _, h, _ in page_items)
-        gap = GAP_PREFERRED if content_h + (len(page_items) - 1) * GAP_PREFERRED <= usable_h else GAP_FALLBACK
-        render_page(page_items, output_pdf, usable_w, gap)
-        print(f"  Page {i}/{len(pages)}: {len(page_items)} tune(s) — {', '.join(os.path.basename(f) for f, _, _ in page_items)}")
-
-    print(f"\nWriting {output}...")
-    output_pdf.save(output)
-
-    html_output = os.path.splitext(os.path.abspath(output))[0] + "_verified.html"
-    print(f"\nBuilding HTML comparison for {len(verified)} verified tune(s)...")
-    make_html(verified, scans, html_output)
-
-    print("Done.")
+    print("\nDone.")
 
 
 if __name__ == "__main__":

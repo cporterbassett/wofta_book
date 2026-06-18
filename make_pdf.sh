@@ -2,11 +2,13 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-OUTPUT="${1:-"$SCRIPT_DIR/WOFTA_tunes.pdf"}"
-HTML_OUTPUT="${OUTPUT%.pdf}_verified.html"
+MAIN_OUTPUT="${1:-"$SCRIPT_DIR/WOFTA_tunes.pdf"}"
+COMP_OUTPUT="${MAIN_OUTPUT%.pdf}_comparison.pdf"
 
 cd "$SCRIPT_DIR"
-"$SCRIPT_DIR/.venv/bin/python3" "$SCRIPT_DIR/make_pdf.py" "$OUTPUT"
+"$SCRIPT_DIR/.venv/bin/python3" "$SCRIPT_DIR/make_pdf.py" "$MAIN_OUTPUT"
 
-firefox "$HTML_OUTPUT" &
-firefox "$OUTPUT" &
+# 1. full book (engraved preferred, sepia, with table of contents)
+# 2. portrait scan-vs-engraved comparison (packed multiple tunes per page)
+firefox "$MAIN_OUTPUT" &
+firefox "$COMP_OUTPUT" &
