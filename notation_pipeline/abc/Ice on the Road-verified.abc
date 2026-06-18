@@ -6,7 +6,7 @@ I:linebreak $
 K:G
 V:1 treble
 V:1
-%%deco turn 6 turn 14 0 5
+%%deco turn 0 turn 14 0 5
  GF | "Em"!turn!E2 B,E G2 EG | BEGB dBGB |"D" ADFA d2 (Ad) |"Em" BdAG !turn!F2 D2 |$
  "Em"!turn!E2 B,E G2 EG |"D" BEGB dBGB |  ADFA dAFA |1 GEFD "Em"E2 B,2 :|2 GEFD "Em"E2 (3DEF |:$
  "G"G2 DG B2 GB | ddBd gdBd |"C" c2 ec "G"(Bc)dB |"D7" (!turn!cB)AG (FD)EF |$
