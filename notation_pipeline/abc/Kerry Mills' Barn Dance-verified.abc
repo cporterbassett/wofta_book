@@ -1,0 +1,21 @@
+X:1
+T:Kerry Mills' Barn Dance
+C:Kerry Mills — from Sheila Everts, Post Falls, Idaho
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble
+V:1
+%% SCAFFOLD ONLY — each bar holds a chord-root WHOLE-NOTE placeholder (e.g. "D"D8).
+%% Replace each placeholder with the real notes read from the scan; chords and
+%% !trill! marks are already positioned. Add/remove barlines to match the scan.
+||((3d/c/B/|"D"A) f2f2 e dB |A f2 !trill!f2 e dB |A d2d e2f2|(a6a) (^g  |"A"a2) ee2f ga |"D" !trill!f2 ec "B7"d3 !trill!f |$
+"E7"e2 B B2 c de |"A7"cd !trill!B A4 !trill!(B |"D"A) f2f2 e dB |Af2!trill!f2 e dB |A d2d e2f2 |(a6a) (^g  | $
+"D7" a2) b!trill!a2f ed |"G"g2a "Em"!trill!g2 e de|"D"fafe "A7"d!trill!d c2|"D"d6 (=C2 |"A"C4) (A4 |A)^GAB A(=GF)E |$
+"D" D4 d3 (A|A4A) F ED | "A"C4,A4|(A,4 A,) (G F) E| "D" D4d3(d | A6) =C| $
+"A" C4 (A4|A)^GAB A(=GF)E|"D" |D4d3(d | (A4)A)A _B2 |"G" BB_B=B "G#dim7"c3B |"D" AA^GA B"B7"4 | $
+"E7" FEFF "A7"AFE2 |"D"D2F2D4 ||[K:G]"G"D3 E/F/ G2A2 |B2ed2B AG |"C" EG2BA2G2 |"G"B6 B,C    |$
+"G"D3 E/F/ G3A |B2ed2 B AG |"A7" E A3 B2 E(A |"D7"A6) B,C | "G" D3E/F/ G3A|B2ed2B AG   | $
+"C" EG2B A2G2| "B7" B6 BA | "E7" d2^c2=c2B2 | "A7" e2 c4 !trill!BA |  "D7" d3e B3A |1 "G" G2^G2 A3:|"G" G8 |]
+ 
