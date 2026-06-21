@@ -14,7 +14,6 @@ Spotted Dog	48.37	missed	False	False	False	0.9183	18	/home/porter/Documents/banj
 Nancy's Waltz	58.47	present	True	False	True	0.9236	33	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Nancy's Waltz/clean.omr
 Moon and Seven Stars, The	68.01	missed	False	True	False	0.9003	20	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Moon and Seven Stars, The/clean.omr
 Needle Case	68.27	missed	False	True	False	0.9133	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Needle Case/clean.omr
-Turning of the Tide, The	68.57	missed	False	True	False	0.9286	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Turning of the Tide, The/clean.omr
 Ashokan Farewell	77.55	present	True	True	True	0.8776	27	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ashokan Farewell/clean.omr
 Colored Aristocracy	77.81	present	True	True	True	0.8906	32	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Colored Aristocracy/clean.omr
 Sally Put a Bug on Me	78.05	present	True	True	True	0.9026	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Sally Put a Bug on Me/clean.omr
@@ -28,7 +27,6 @@ Miss McCloud's Reel	87.16	absent	False	False	False	0.8582	15	/home/porter/Docume
 My Cape Breton Home	87.24	present	True	False	False	0.8619	33	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/My Cape Breton Home/clean.omr
 Morrison's Jig	87.29	absent	False	False	False	0.8644	8	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Morrison's Jig/clean.omr
 Tombigbee Waltz	87.56	present	True	False	False	0.8782	33	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Tombigbee Waltz/clean.omr
-Shoo Fly	87.7	present	True	False	False	0.885	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Shoo Fly/clean.omr
 Fly Around My Pretty Little Miss	87.73	present	True	False	False	0.8866	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Fly Around My Pretty Little Miss/clean.omr
 Gypsy Waltz	87.73	present	True	False	False	0.8863	26	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gypsy Waltz/clean.omr
 Round the Horn	87.8	present	True	False	False	0.8898	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Round the Horn/clean.omr
@@ -46,7 +44,6 @@ Sarah Armstrong	88.43	present	True	False	False	0.9214	17	/home/porter/Documents/
 Red Haired Boy	88.44	present	True	False	False	0.9218	9	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red Haired Boy/clean.omr
 My Darling Asleep	88.48	absent	False	False	False	0.9238	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/My Darling Asleep/clean.omr
 Meeting of the Waters	88.5	present	True	False	False	0.925	33	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Meeting of the Waters/clean.omr
-All the Rage	88.53	present	True	False	False	0.9267	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/All the Rage/clean.omr
 Smash the Windows	88.53	present	True	False	False	0.9264	24	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Smash the Windows/clean.omr
 Gaspe Reel	88.58	present	True	False	False	0.9289	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gaspe Reel/clean.omr
 Mouth of the Tobique	88.58	present	True	False	False	0.929	27	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Mouth of the Tobique/clean.omr
@@ -57,7 +54,6 @@ Morpeth Rant	88.76	present	True	False	False	0.938	16	/home/porter/Documents/banj
 Ships are Sailing	88.81	present	True	False	False	0.9406	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ships are Sailing/clean.omr
 Petronella	88.85	present	True	False	False	0.9424	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Petronella/clean.omr
 Woodchopper's Reel	88.9	present	True	False	False	0.945	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Woodchopper's Reel/clean.omr
-Martha Campbell	88.91	present	True	False	False	0.9457	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Martha Campbell/clean.omr
 Temperance Reel	88.94	present	True	False	False	0.9472	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Temperance Reel/clean.omr
 Logger - Pays de Haut, The	88.95	present	True	False	False	0.9476	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Logger - Pays de Haut, The/clean.omr
 Devil's Dream	89.03	present	True	False	False	0.9515	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Devil's Dream/clean.omr
@@ -169,7 +165,6 @@ West Fork Gals	108.34	present	True	True	False	0.9172	16	/home/porter/Documents/b
 Bottom of the Punchbowl, The	108.35	present	True	True	False	0.9176	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Bottom of the Punchbowl, The/clean.omr
 Coleraine	108.35	absent	False	True	False	0.9174	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Coleraine/clean.omr
 J. B. Milne	108.35	present	True	True	False	0.9175	32	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/J. B. Milne/clean.omr
-Nine Miles	108.35	present	True	True	False	0.9173	28	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Nine Miles/clean.omr
 seneca-square-dance 2	108.35	present	True	True	False	0.9177	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/seneca-square-dance 2/clean.omr
 Porter's Reel	108.36	present	True	True	False	0.9181	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Porter's Reel/clean.omr
 Farewell Trion	108.37	absent	False	True	False	0.9185	20	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Farewell Trion/clean.omr
@@ -208,14 +203,12 @@ Growling Old Man and Woman	108.54	present	True	True	False	0.9268	18	/home/porter
 Jenny Lind Polka	108.54	present	True	True	False	0.9269	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Jenny Lind Polka/clean.omr
 Sullivan's Hollow	108.54	present	True	True	False	0.9272	24	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Sullivan's Hollow/clean.omr
 Red Bird	108.55	present	True	True	False	0.9275	27	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red Bird/clean.omr
-Twin Sisters	108.55	present	True	True	False	0.9277	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Twin Sisters/clean.omr
 Acorn Hill Breakdown	108.56	present	True	True	False	0.9278	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Acorn Hill Breakdown/clean.omr
 Gale, The	108.56	absent	False	True	False	0.9279	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gale, The/clean.omr
 Hey Polka	108.56	present	True	True	False	0.9282	21	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Hey Polka/clean.omr
 Grizzly Bear	108.57	absent	False	True	False	0.9286	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Grizzly Bear/clean.omr
 You Married My Daughter but yet You Didn't	108.57	present	True	True	False	0.9286	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/You Married My Daughter but yet You Didn't/clean.omr
 Border Collie	108.58	present	True	True	False	0.9291	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Border Collie/clean.omr
-Gray Eagle	108.58	present	True	True	False	0.9292	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gray Eagle/clean.omr
 Ice on the Road	108.58	present	True	True	False	0.9291	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ice on the Road/clean.omr
 Muckin' o' Geordie's Byre	108.58	present	True	True	False	0.9289	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Muckin' o' Geordie's Byre/clean.omr
 Hommage à Edmond Parizeau	108.59	present	True	True	False	0.9297	27	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Hommage à Edmond Parizeau/clean.omr
@@ -230,14 +223,12 @@ Farewell to Whiskey	108.65	present	True	True	False	0.9323	18	/home/porter/Docume
 Forester's Hornpipe	108.65	present	True	True	False	0.9323	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Forester's Hornpipe/clean.omr
 Road to Batoche, The	108.66	present	True	True	False	0.9329	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Road to Batoche, The/clean.omr
 Paddy on the Handcar	108.67	present	True	True	False	0.9334	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Paddy on the Handcar/clean.omr
-Cincinnati Hornpipe	108.68	present	True	True	False	0.9341	14	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cincinnati Hornpipe/clean.omr
 June Apple	108.68	present	True	True	False	0.9342	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/June Apple/clean.omr
 Rachel	108.68	present	True	True	False	0.9342	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Rachel/clean.omr
 Drowsy Maggie	108.69	present	True	True	False	0.9343	13	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Drowsy Maggie/clean.omr
 Indian Ate A WoodChuck	108.69	absent	False	True	False	0.9347	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Indian Ate A WoodChuck/clean.omr
 Roses in Winter	108.69	present	True	True	False	0.9346	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Roses in Winter/clean.omr
 Cooley's Reel	108.7	present	True	True	False	0.9348	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cooley's Reel/clean.omr
-Wake Up Susan	108.7	present	True	True	False	0.9348	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Wake Up Susan/clean.omr
 Bill Cheatham	108.72	present	True	True	False	0.936	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Bill Cheatham/clean.omr
 East Tennessee Blues	108.72	absent	False	True	False	0.9359	21	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/East Tennessee Blues/clean.omr
 Ragtime Annie	108.72	present	True	True	False	0.9359	33	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ragtime Annie/clean.omr
@@ -249,15 +240,11 @@ Flowers of Edinburgh	108.75	present	True	True	False	0.9373	18	/home/porter/Docum
 Galopede	108.75	present	True	True	False	0.9375	24	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Galopede/clean.omr
 Merry Blacksmith - Paddy On the Railroad, The	108.75	present	True	True	False	0.9376	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Merry Blacksmith - Paddy On the Railroad, The/clean.omr
 Red River Cart Polka	108.75	present	True	True	False	0.9375	35	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red River Cart Polka/clean.omr
-Sidereal Shuffle	108.76	present	True	True	False	0.9378	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Sidereal Shuffle/clean.omr
-Come Dance and Sing	108.77	present	True	True	False	0.9383	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Come Dance and Sing/clean.omr
 Staten Island Hornpipe	108.77	present	True	True	False	0.9383	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Staten Island Hornpipe/clean.omr
 Top of Cork Road	108.77	present	True	True	False	0.9387	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Top of Cork Road/clean.omr
-Washington's March	108.77	present	True	True	False	0.9383	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Washington's March/clean.omr
 Salt Creek	108.81	present	True	True	False	0.9405	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Salt Creek/clean.omr
 Set Americain	108.81	present	True	True	False	0.9404	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Set Americain/clean.omr
 Waynesboro	108.81	present	True	True	False	0.9405	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Waynesboro/clean.omr
-Yellow Barber	108.81	present	True	True	False	0.9407	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Yellow Barber/clean.omr
 Sailor's Hornpipe	108.84	present	True	True	False	0.942	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Sailor's Hornpipe/clean.omr
 Blackberry Blossom	108.9	present	True	True	False	0.9448	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Blackberry Blossom/clean.omr
 Frank's Reel	108.9	present	True	True	False	0.9449	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Frank's Reel/clean.omr
