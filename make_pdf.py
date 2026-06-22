@@ -79,6 +79,7 @@ def png_to_pdf_bytes(png_path):
 # comparison render: line-start measure numbers, bold chords + volta numbers.
 ABC_DIRECTIVES = (
     "%%measurenb 0\n"
+    "%%contbarnb 1\n"  # count 1st/2nd endings as separate measures (match the WOFTA scans)
     "%%measurefont Times-Italic 9\n"
     "%%titlefont Times-Bold 24\n"
     "%%gchordfont Helvetica-Bold 12\n"
