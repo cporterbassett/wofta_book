@@ -4,7 +4,18 @@ L:1/8
 M:3/4
 I:linebreak $
 K:A
-%%tuplets 0 0 1 2
+%%beginps
+/lbrk {	gsave 1.6 setlinewidth 0 setlinecap
+	2 copy moveto 0 26 rlineto stroke
+	2 copy moveto 4 0 rlineto stroke
+	2 copy 26 add moveto 4 0 rlineto stroke grestore } def
+/rbrk {	gsave 1.6 setlinewidth 0 setlinecap
+	2 copy moveto 0 26 rlineto stroke
+	2 copy moveto -4 0 rlineto stroke
+	2 copy 26 add moveto -4 0 rlineto stroke grestore } def
+%%endps
+%%deco lbrk 2 lbrk 26 5 0
+%%deco rbrk 2 rbrk 26 0 5
 V:1 treble
 V:1
 "A" A,3 C E2 | A c3 B2 |"D" A3 F D2 |"A" E3 F/E/ D2 |$
@@ -15,4 +26,4 @@ V:1
 "A"e3c A2 |  A4 E2 |"D"  Fd3F2 |"A"Fc3e2 | $
 "Bm" e3dc2 | "E7" B3A Bc | "D" d3 e f2 | "E7" g3 a b2 | $
 "A" a2e2c2 | "D" f3 g a2 | "A" e2c2A2 | "D" F d3 "E7"G2 |1 $
-"A" (A6 | A4) e2  :|2 (A6 | A3) (3:3:3E CB, | $
+"A" (A6 | A4) e2  :|2 (A6 | A3) !lbrk!E C !rbrk!B, |
