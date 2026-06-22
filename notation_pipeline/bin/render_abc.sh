@@ -26,7 +26,9 @@ DPI=150
 # the WOFTA scans) without modifying the source ABC.
 TMPABC="${STEM}.render.tmp.abc"
 # measure numbers at each line start; bold chord symbols and bold 1./2. volta numbers.
-printf '%%%%measurenb 0\n%%%%gchordfont Helvetica-Bold 12\n%%%%repeatfont Helvetica-Bold 12\n' > "$TMPABC"
+# %%contbarnb 1 = count 1st/2nd endings as SEPARATE measures (matches the WOFTA
+# scans' numbering, e.g. line 3 of Jerusalem's Ridge starts at m10 not m9).
+printf '%%%%measurenb 0\n%%%%contbarnb 1\n%%%%gchordfont Helvetica-Bold 12\n%%%%repeatfont Helvetica-Bold 12\n' > "$TMPABC"
 cat "$ABC" >> "$TMPABC"
 
 # Render to PostScript first (abcm2ps PostScript output is the most faithful).

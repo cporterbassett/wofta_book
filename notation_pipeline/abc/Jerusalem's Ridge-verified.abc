@@ -1,0 +1,17 @@
+X:1
+T:Jerusalem's Ridge
+C:Bill Monroe
+L:1/8
+M:4/4
+I:linebreak $
+K:Am
+V:1 treble
+V:1
+ "Am"A,B,CD E2 EF | EDCE DCEC | A,B,CD EGAG |"E7" EDCE DCA,G, |$
+ "Am"A,B,CD E2 EF | EDCE DCEC | A,B,CD EGAG |1"E7" (3EGE DC "Am"A,3 G, :|2"E7" (3EGE DC "Am"A,3 D |:$
+ "Am"E2 A2 A3 A | EGAB cdcA | E2 A2 A2 AB |"E7" c2 e2 e3 A |$
+ "Am"E2 A2 A3 A | EGAB cdcA | EGAB cecA |1"E7" GEDC "Am"A,3 D :|2"E7" GEDC "Am"A,4 |:$
+ "Am"z2 (3AGF E4 | "Dm"z EFE D4 | "E7"z DED C4 |1"Am" z G, (3B,CB, A,4 :|2"Am" z G, (3B,CB, A,4- ||[M:2/4] A,4 |:$
+ [M:4/4]"Am" e2 a2 a3 g | a2 b2 c'4 |"C" eg-ga g2 g2- | gc'ag edcd |$
+ "Am"eaee a2 ab | c'abc' ac'gd | e2 e2 edcd |"E7" edcG A4 |"Am" A3 c AG E2 |$
+ "Dm"D(EE)G EDCD |"E7" ECDC "Am"A,4 | z2 D/C/B, A,4 |[M:2/4] A,4 :|
