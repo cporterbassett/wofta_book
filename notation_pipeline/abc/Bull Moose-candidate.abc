@@ -3,14 +3,13 @@ T:Bull Moose
 C:Andy De Jarlis
 R:reel
 N:Emma Lake Tape, Around CD
-N:SKELETON ONLY — chords/structure from the scan; each note is the chord root (single eighth) as a melody anchor for hand entry (scan too degraded to OMR/read pitches)
 L:1/8
 M:C|
 I:linebreak $
-K:D
+K:G
 V:1 treble
 V:1
- "D"D"C"C |"D"D"Am"A |"C"C"G/B"G |"G"G"C"C |$
- "D"D"C"C |"D"D"Am"A |"C"C"G/B"G |"Em"E"D"D |$
- "D"D |"C"C"G"G |"D"D |"A"A"D"D |$
- "D"D |"C"C"G"G |"D"D"Am7"A |"D"D |
+|:DB,|"D" A,B,DF "C" E2DF |"D" Ad^cd "Am" fdAB |"C" c2 cB "G/B" cdef |"G" gagf "C" e2 fe |$
+"D" defd "C" ABAG |"D" FDFA "Am" d2 AB |"C" c2cB  "G/B" cBAG |"C" FDFA "D" d2 :|$
+|: ze| "D" fefg afdf |"C" ec2c "G" cdeg |"D" f2d2 ABAG |"A" FDFA "D" d3 e |$
+"D" fefg afdf |"C" ec2c  "G" cdeg |"D"f2d2 "Am7"ABAG |"D" F2D2D2 |
