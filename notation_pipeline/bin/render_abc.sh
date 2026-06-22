@@ -61,8 +61,10 @@ PAGES=( "${OUT%.png}"-*.png )
 if [[ ${#PAGES[@]} -eq 1 ]]; then
     mv "${PAGES[0]}" "$OUT"
 else
-    # use ImageMagick to stack pages
-    convert -append "${PAGES[@]}" "$OUT"
+    # use ImageMagick to stack pages — trim each page's whitespace FIRST so the
+    # page-break margin (page-1 bottom + page-2 top) doesn't become a huge gap
+    # between systems when a tune spills just over one page.
+    convert "${PAGES[@]}" -trim +repage -append "$OUT"
     rm "${PAGES[@]}"
 fi
 
