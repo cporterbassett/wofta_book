@@ -1,0 +1,732 @@
+[22:23:29] starting OMR on 44 tunes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Acorn Hill Breakdown
+Image: 1518×870px  (est. ~178 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1518×870 → 1952×1119  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Acorn Hill Breakdown/preprocessed.png
+        → 1952×1119px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Acorn Hill Breakdown/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Acorn Hill Breakdown/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Acorn Hill Breakdown/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Acorn Hill Breakdown/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Acorn Hill Breakdown-draft.abc
+        Key=D  Meter=4/4  ~16 barlines
+Done: Acorn Hill Breakdown
+[22:23:39]  1/44  OK      ( 10s)  Acorn Hill Breakdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Clearwater Stomp
+Image: 1500×1360px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=13.0px  scale=1.385 (138%)  1500×1360 → 2077×1883  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Clearwater Stomp/preprocessed.png
+        → 2077×1883px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Clearwater Stomp/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Clearwater Stomp/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Clearwater Stomp/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Clearwater Stomp/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Clearwater Stomp-draft.abc
+        Key=none  Meter=4/4  ~34 barlines
+Done: Clearwater Stomp
+[22:23:52]  2/44  OK      ( 13s)  Clearwater Stomp
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Cricket On a Hearth
+Image: 1365×528px  (est. ~160 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1365×528 → 1755×679  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cricket On a Hearth/preprocessed.png
+        → 1755×679px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cricket On a Hearth/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cricket On a Hearth/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cricket On a Hearth/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cricket On a Hearth/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Cricket On a Hearth-draft.abc
+        Key=D  Meter=4/4  ~18 barlines
+Done: Cricket On a Hearth
+[22:24:03]  3/44  OK      ( 11s)  Cricket On a Hearth
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Far From Home
+Image: 1500×980px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=13.8px  scale=1.309 (131%)  1500×980 → 1964×1283  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far From Home/preprocessed.png
+        → 1964×1283px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far From Home/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far From Home/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far From Home/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far From Home/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Far From Home-draft.abc
+        Key=G  Meter=2/2  ~15 barlines
+Done: Far From Home
+[22:24:14]  4/44  OK      ( 11s)  Far From Home
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Fisher's Hornpipe
+Image: 1500×888px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=13.0px  scale=1.385 (138%)  1500×888 → 2077×1230  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Fisher's Hornpipe/preprocessed.png
+        → 2077×1230px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Fisher's Hornpipe/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Fisher's Hornpipe/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Fisher's Hornpipe/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Fisher's Hornpipe/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Fisher's Hornpipe-draft.abc
+        Key=D  Meter=4/4  ~19 barlines
+Done: Fisher's Hornpipe
+[22:24:26]  5/44  OK      ( 12s)  Fisher's Hornpipe
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Gypsy Waltz
+Image: 1534×1468px  (est. ~180 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1534×1468 → 1972×1887  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gypsy Waltz/preprocessed.png
+        → 1972×1887px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gypsy Waltz/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gypsy Waltz/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gypsy Waltz/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Gypsy Waltz/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Gypsy Waltz-draft.abc
+        Key=Bb  Meter=3/4  ~32 barlines
+Done: Gypsy Waltz
+[22:24:49]  6/44  OK      ( 23s)  Gypsy Waltz
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Laura Susan
+Image: 1500×794px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=16.0px  scale=1.125 (112%)  1500×794 → 1688×893  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Laura Susan/preprocessed.png
+        → 1688×893px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Laura Susan/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Laura Susan/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Laura Susan/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Laura Susan/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Laura Susan-draft.abc
+        Key=F  Meter=2/4  ~17 barlines
+Done: Laura Susan
+[22:24:58]  7/44  OK      (  9s)  Laura Susan
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Lost Indian
+Image: 1500×1786px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=17.0px  scale=1.059 (106%)  1500×1786 → 1588×1891  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lost Indian/preprocessed.png
+        → 1588×1891px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lost Indian/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lost Indian/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lost Indian/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lost Indian/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Lost Indian-draft.abc
+        Key=D  Meter=4/4  ~28 barlines
+Done: Lost Indian
+[22:25:09]  8/44  OK      ( 11s)  Lost Indian
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : MacArthur Road
+Image: 1401×1911px  (est. ~164 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1401×1911 → 1801×2457  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/MacArthur Road/preprocessed.png
+        → 1801×2457px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/MacArthur Road/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/MacArthur Road/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/MacArthur Road/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/MacArthur Road/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/MacArthur Road-draft.abc
+        Key=E  Meter=4/4  ~27 barlines
+Done: MacArthur Road
+[22:25:23]  9/44  OK      ( 14s)  MacArthur Road
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Miss McCloud's Reel
+Image: 1418×931px  (est. ~166 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1418×931 → 1823×1197  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miss McCloud's Reel/preprocessed.png
+        → 1823×1197px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miss McCloud's Reel/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miss McCloud's Reel/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miss McCloud's Reel/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miss McCloud's Reel/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Miss McCloud's Reel-draft.abc
+        Key=G  Meter=2/2  ~16 barlines
+Done: Miss McCloud's Reel
+[22:25:33] 10/44  OK      ( 10s)  Miss McCloud's Reel
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Monkey in the Dogcart
+Image: 1401×569px  (est. ~164 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.2px  scale=1.263 (126%)  1401×569 → 1770×719  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Monkey in the Dogcart/preprocessed.png
+        → 1770×719px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Monkey in the Dogcart/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Monkey in the Dogcart/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Monkey in the Dogcart/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Monkey in the Dogcart/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Monkey in the Dogcart-draft.abc
+        Key=none  Meter=4/4  ~15 barlines
+Done: Monkey in the Dogcart
+[22:25:41] 11/44  OK      (  8s)  Monkey in the Dogcart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Moonlight
+Image: 1425×995px  (est. ~167 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1425×995 → 1832×1279  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Moonlight/preprocessed.png
+        → 1832×1279px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Moonlight/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Moonlight/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Moonlight/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Moonlight/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Moonlight-draft.abc
+        Key=D  Meter=4/4  ~11 barlines
+Done: Moonlight
+[22:25:51] 12/44  OK      ( 10s)  Moonlight
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Morrison's Jig
+Image: 1535×1408px  (est. ~180 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=13.0px  scale=1.385 (138%)  1535×1408 → 2125×1950  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Morrison's Jig/preprocessed.png
+        → 2125×1950px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Morrison's Jig/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Morrison's Jig/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Morrison's Jig/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Morrison's Jig/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Morrison's Jig-draft.abc
+        Key=D  Meter=6/8  ~26 barlines
+Done: Morrison's Jig
+[22:26:10] 13/44  OK      ( 19s)  Morrison's Jig
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : None of Your Business
+Image: 1521×982px  (est. ~178 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=9.5px  scale=1.895 (189%)  1521×982 → 2882×1861  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/None of Your Business/preprocessed.png
+        → 2882×1861px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/None of Your Business/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/None of Your Business/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/None of Your Business/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/None of Your Business/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/None of Your Business-draft.abc
+        Key=none  Meter=2/2  ~21 barlines
+Done: None of Your Business
+[22:26:36] 14/44  OK      ( 26s)  None of Your Business
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Red Apple Rag
+Image: 1401×1932px  (est. ~164 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1401×1932 → 1801×2484  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red Apple Rag/preprocessed.png
+        → 1801×2484px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red Apple Rag/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red Apple Rag/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red Apple Rag/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red Apple Rag/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Red Apple Rag-draft.abc
+        Key=G  Meter=4/4  ~16 barlines
+Done: Red Apple Rag
+[22:26:47] 15/44  OK      ( 11s)  Red Apple Rag
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Red River Cart Polka
+Image: 1491×1802px  (est. ~175 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=18.0px  scale=1.000 (100%)  1491×1802 → 1491×1802  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red River Cart Polka/preprocessed.png
+        → 1491×1802px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red River Cart Polka/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red River Cart Polka/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red River Cart Polka/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red River Cart Polka/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Red River Cart Polka-draft.abc
+        Key=G  Meter=2/4  ~36 barlines
+Done: Red River Cart Polka
+[22:27:00] 16/44  OK      ( 13s)  Red River Cart Polka
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Salmon Tails Up the Water
+Image: 1500×722px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=15.0px  scale=1.200 (120%)  1500×722 → 1800×866  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Salmon Tails Up the Water/preprocessed.png
+        → 1800×866px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Salmon Tails Up the Water/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Salmon Tails Up the Water/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Salmon Tails Up the Water/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Salmon Tails Up the Water/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Salmon Tails Up the Water-draft.abc
+        Key=G  Meter=2/4  ~24 barlines
+Done: Salmon Tails Up the Water
+[22:27:09] 17/44  OK      (  9s)  Salmon Tails Up the Water
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Stone's Rag
+Image: 1500×1002px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=15.0px  scale=1.200 (120%)  1500×1002 → 1800×1202  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Stone's Rag/preprocessed.png
+        → 1800×1202px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Stone's Rag/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Stone's Rag/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Stone's Rag/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Stone's Rag/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Stone's Rag-draft.abc
+        Key=none  Meter=4/4  ~38 barlines
+Done: Stone's Rag
+[22:27:22] 18/44  OK      ( 13s)  Stone's Rag
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Waverly Two-Step
+Image: 1500×2018px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1500×2018 → 1929×2595  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Waverly Two-Step/preprocessed.png
+        → 1929×2595px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Waverly Two-Step/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Waverly Two-Step/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Waverly Two-Step/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Waverly Two-Step/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Waverly Two-Step-draft.abc
+        Key=D  Meter=4/4  ~49 barlines
+Done: Waverly Two-Step
+[22:27:40] 19/44  OK      ( 18s)  Waverly Two-Step
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Woodchopper's Reel
+Image: 1500×846px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=9.5px  scale=1.895 (189%)  1500×846 → 2842×1603  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Woodchopper's Reel/preprocessed.png
+        → 2842×1603px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Woodchopper's Reel/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Woodchopper's Reel/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Woodchopper's Reel/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Woodchopper's Reel/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Woodchopper's Reel-draft.abc
+        Key=D  Meter=2/2  ~17 barlines
+Done: Woodchopper's Reel
+[22:28:00] 20/44  OK      ( 20s)  Woodchopper's Reel
+SKIP (clean.omr exists): Black Jack Grove
+[22:28:00] 21/44  OK      (  0s)  Black Jack Grove
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Blueberry Jig
+Image: 1500×1032px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=16.0px  scale=1.125 (112%)  1500×1032 → 1688×1161  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Blueberry Jig/preprocessed.png
+        → 1688×1161px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Blueberry Jig/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Blueberry Jig/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Blueberry Jig/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Blueberry Jig/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Blueberry Jig-draft.abc
+        Key=D  Meter=6/8  ~20 barlines
+Done: Blueberry Jig
+[22:28:10] 22/44  OK      ( 10s)  Blueberry Jig
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Camp Meeting on the Fourth of July
+Image: 1500×633px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=10.8px  scale=1.674 (167%)  1500×633 → 2512×1060  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Camp Meeting on the Fourth of July/preprocessed.png
+        → 2512×1060px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Camp Meeting on the Fourth of July/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Camp Meeting on the Fourth of July/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Camp Meeting on the Fourth of July/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Camp Meeting on the Fourth of July/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Camp Meeting on the Fourth of July-draft.abc
+        Key=none  Meter=none  ~7 barlines
+Done: Camp Meeting on the Fourth of July
+[22:28:22] 23/44  OK      ( 12s)  Camp Meeting on the Fourth of July
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Cock o' the North
+Image: 1500×905px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=12.5px  scale=1.440 (144%)  1500×905 → 2160×1303  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cock o' the North/preprocessed.png
+        → 2160×1303px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cock o' the North/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cock o' the North/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cock o' the North/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cock o' the North/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Cock o' the North-draft.abc
+        Key=A  Meter=none  ~14 barlines
+Done: Cock o' the North
+[22:28:34] 24/44  OK      ( 12s)  Cock o' the North
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Crested Hens
+Image: 1500×1172px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=16.0px  scale=1.125 (112%)  1500×1172 → 1688×1318  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Crested Hens/preprocessed.png
+        → 1688×1318px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Crested Hens/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Crested Hens/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Crested Hens/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Crested Hens/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Crested Hens-draft.abc
+        Key=D  Meter=3/4  ~20 barlines
+Done: Crested Hens
+[22:28:44] 25/44  OK      ( 10s)  Crested Hens
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Dogs in the Dishes
+Image: 1500×2064px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=12.5px  scale=1.440 (144%)  1500×2064 → 2160×2972  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Dogs in the Dishes/preprocessed.png
+        → 2160×2972px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Dogs in the Dishes/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Dogs in the Dishes/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Dogs in the Dishes/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Dogs in the Dishes/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Dogs in the Dishes-draft.abc
+        Key=D  Meter=2/2  ~17 barlines
+Done: Dogs in the Dishes
+[22:28:58] 26/44  OK      ( 14s)  Dogs in the Dishes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Ebenezer
+Image: 1500×696px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1500×696 → 1929×895  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ebenezer/preprocessed.png
+        → 1929×895px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ebenezer/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ebenezer/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ebenezer/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ebenezer/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Ebenezer-draft.abc
+        Key=G  Meter=4/4  ~15 barlines
+Done: Ebenezer
+[22:29:08] 27/44  OK      ( 10s)  Ebenezer
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Far Away
+Image: 1407×525px  (est. ~165 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=8.8px  scale=2.057 (206%)  1407×525 → 2894×1080  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far Away/preprocessed.png
+        → 2894×1080px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far Away/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far Away/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far Away/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Far Away/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Far Away-draft.abc
+        Key=D  Meter=3/4  ~17 barlines
+Done: Far Away
+[22:29:22] 28/44  OK      ( 14s)  Far Away
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Harvest Home
+Image: 1500×679px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.5px  scale=1.241 (124%)  1500×679 → 1862×843  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Harvest Home/preprocessed.png
+        → 1862×843px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Harvest Home/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Harvest Home/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Harvest Home/preprocessed.mvt1.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Harvest Home/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Harvest Home-draft.abc
+        Key=G  Meter=4/4  ~8 barlines
+Done: Harvest Home
+[22:29:32] 29/44  OK      ( 10s)  Harvest Home
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Haste to the Wedding
+Image: 1500×635px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=13.8px  scale=1.309 (131%)  1500×635 → 1964×831  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Haste to the Wedding/preprocessed.png
+        → 1964×831px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Haste to the Wedding/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Haste to the Wedding/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Haste to the Wedding/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Haste to the Wedding/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Haste to the Wedding-draft.abc
+        Key=D  Meter=6/8  ~18 barlines
+Done: Haste to the Wedding
+[22:29:41] 30/44  OK      (  9s)  Haste to the Wedding
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Hector the Hero
+Image: 1413×1253px  (est. ~166 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1413×1253 → 1817×1611  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Hector the Hero/preprocessed.png
+        → 1817×1611px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Hector the Hero/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Hector the Hero/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Hector the Hero/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Hector the Hero/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Hector the Hero-draft.abc
+        Key=D  Meter=none  ~27 barlines
+Done: Hector the Hero
+[22:29:53] 31/44  OK      ( 12s)  Hector the Hero
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Lamplighter's Hornpipe
+Image: 1500×802px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=15.0px  scale=1.200 (120%)  1500×802 → 1800×962  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lamplighter's Hornpipe/preprocessed.png
+        → 1800×962px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lamplighter's Hornpipe/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lamplighter's Hornpipe/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lamplighter's Hornpipe/preprocessed.mvt1.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Lamplighter's Hornpipe/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Lamplighter's Hornpipe-draft.abc
+        Key=A  Meter=4/4  ~3 barlines
+Done: Lamplighter's Hornpipe
+[22:30:04] 32/44  OK      ( 11s)  Lamplighter's Hornpipe
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Miller's Reel
+Image: 1500×929px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=8.5px  scale=2.118 (212%)  1500×929 → 3176×1967  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miller's Reel/preprocessed.png
+        → 3176×1967px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miller's Reel/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miller's Reel/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miller's Reel/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miller's Reel/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Miller's Reel-draft.abc
+        Key=A  Meter=2/2  ~16 barlines
+Done: Miller's Reel
+[22:30:30] 33/44  OK      ( 26s)  Miller's Reel
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Romeo's Last Chance
+Image: 1500×1518px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=10.0px  scale=1.800 (180%)  1500×1518 → 2700×2732  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Romeo's Last Chance/preprocessed.png
+        → 2700×2732px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Romeo's Last Chance/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Romeo's Last Chance/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Romeo's Last Chance/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Romeo's Last Chance/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Romeo's Last Chance-draft.abc
+        Key=D  Meter=6/8  ~17 barlines
+Done: Romeo's Last Chance
+[22:30:55] 34/44  OK      ( 25s)  Romeo's Last Chance
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Roscoe
+Image: 1500×1079px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=13.5px  scale=1.333 (133%)  1500×1079 → 2000×1439  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Roscoe/preprocessed.png
+        → 2000×1439px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Roscoe/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Roscoe/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Roscoe/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Roscoe/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Roscoe-draft.abc
+        Key=G  Meter=4/4  ~19 barlines
+Done: Roscoe
+[22:31:06] 35/44  OK      ( 11s)  Roscoe
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Silver Spear
+Image: 1500×652px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=12.5px  scale=1.440 (144%)  1500×652 → 2160×939  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Silver Spear/preprocessed.png
+        → 2160×939px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Silver Spear/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Silver Spear/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Silver Spear/preprocessed.mvt1.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Silver Spear/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Silver Spear-draft.abc
+        Key=none  Meter=none  ~9 barlines
+Done: Silver Spear
+[22:31:16] 36/44  OK      ( 10s)  Silver Spear
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Snake River Reel
+Image: 1500×980px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=16.0px  scale=1.125 (112%)  1500×980 → 1688×1102  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Snake River Reel/preprocessed.png
+        → 1688×1102px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Snake River Reel/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Snake River Reel/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Snake River Reel/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Snake River Reel/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Snake River Reel-draft.abc
+        Key=D  Meter=4/4  ~18 barlines
+Done: Snake River Reel
+[22:31:27] 37/44  OK      ( 11s)  Snake River Reel
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : South Missouri
+Image: 1500×574px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=15.0px  scale=1.200 (120%)  1500×574 → 1800×689  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/South Missouri/preprocessed.png
+        → 1800×689px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/South Missouri/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/South Missouri/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/South Missouri/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/South Missouri/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/South Missouri-draft.abc
+        Key=none  Meter=none  ~12 barlines
+Done: South Missouri
+[22:31:37] 38/44  OK      ( 10s)  South Missouri
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Squirrel Hunters
+Image: 1401×2005px  (est. ~164 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1401×2005 → 1801×2578  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Squirrel Hunters/preprocessed.png
+        → 1801×2578px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Squirrel Hunters/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Squirrel Hunters/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Squirrel Hunters/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Squirrel Hunters/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Squirrel Hunters-draft.abc
+        Key=G  Meter=4/4  ~18 barlines
+Done: Squirrel Hunters
+[22:31:50] 39/44  OK      ( 13s)  Squirrel Hunters
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Golden Ticket, The
+Image: 1476×1155px  (est. ~173 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=15.5px  scale=1.161 (116%)  1476×1155 → 1714×1341  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Golden Ticket, The/preprocessed.png
+        → 1714×1341px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+ERROR: Audiveris produced no MXL — see /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Golden Ticket, The/audiveris.log
+  	at org.audiveris.omr.CLI$CliTask.call(CLI.java:513)
+  	at org.audiveris.omr.Main.runBatchTasks(Main.java:361)
+  	at org.audiveris.omr.Main.main(Main.java:263)
+  	at Audiveris.main(Audiveris.java:50)
+  WARN  []                      Main 298  | Exit forced. Failure
+[22:31:53] 40/44  FAIL    (  3s)  Golden Ticket, The
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Texas Gales
+Image: 1401×1446px  (est. ~164 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=14.0px  scale=1.286 (129%)  1401×1446 → 1801×1859  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Texas Gales/preprocessed.png
+        → 1801×1859px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Texas Gales/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Texas Gales/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Texas Gales/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Texas Gales/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Texas Gales-draft.abc
+        Key=none  Meter=4/4  ~28 barlines
+Done: Texas Gales
+[22:32:06] 41/44  OK      ( 13s)  Texas Gales
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Cuckoo's Nest, The
+Image: 1500×1497px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=15.0px  scale=1.200 (120%)  1500×1497 → 1800×1796  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cuckoo's Nest, The/preprocessed.png
+        → 1800×1796px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cuckoo's Nest, The/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cuckoo's Nest, The/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cuckoo's Nest, The/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cuckoo's Nest, The/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Cuckoo's Nest, The-draft.abc
+        Key=D  Meter=4/4  ~19 barlines
+Done: Cuckoo's Nest, The
+[22:32:17] 42/44  OK      ( 11s)  Cuckoo's Nest, The
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Mackadavie, The
+Image: 1500×789px  (est. ~176 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=12.0px  scale=1.500 (150%)  1500×789 → 2250×1184  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Mackadavie, The/preprocessed.png
+        → 2250×1184px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Mackadavie, The/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Mackadavie, The/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Mackadavie, The/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Mackadavie, The/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Mackadavie, The-draft.abc
+        Key=A  Meter=4/4  ~12 barlines
+Done: Mackadavie, The
+[22:32:30] 43/44  OK      ( 13s)  Mackadavie, The
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tune : Whistling Rufus
+Image: 1398×1996px  (est. ~164 DPI on 8.5" width)
+Step 1: preprocess (normalize interline → target 18px + unsharp 0x1)...
+        interline=13.0px  scale=1.385 (138%)  1398×1996 → 1936×2764  → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Whistling Rufus/preprocessed.png
+        → 1936×2764px
+Step 2: Audiveris OMR (this takes 1–3 min)...
+Step 3: clean .omr...
+Cleaned 1 sheet(s): /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Whistling Rufus/preprocessed.omr -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Whistling Rufus/clean.omr
+  Stripped inter types: articulation, bow, dynamics, ornament, slur, wedge
+Step 4: clean MXL...
+Cleaned: /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Whistling Rufus/preprocessed.mxl -> /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Whistling Rufus/clean.mxl
+Step 5: MXL → ABC...
+        → /home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/abc/Whistling Rufus-draft.abc
+        Key=none  Meter=none  ~66 barlines
+Done: Whistling Rufus
+[22:32:47] 44/44  OK      ( 17s)  Whistling Rufus
+[22:32:47] DONE  ok=43 fail=1 / 44

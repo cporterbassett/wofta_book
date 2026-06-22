@@ -1,0 +1,4 @@
+# Bulky, regenerable image intermediates — keep the text tooling tracked, not these.
+new/
+replace/
+verified/

@@ -1,0 +1,25 @@
+# new PDF basename (no .pdf) | proposed canonical name (CONFIRM with user)
+Black Jack Grove|Black Jack Grove
+Blueberry Jig D|Blueberry Jig
+Camp Meeting on the Fourth of July D|Camp Meeting on the Fourth of July
+Cock o’ the North A|Cock o' the North
+Crested Hens Em|Crested Hens
+Dogs in the Dishes D |Dogs in the Dishes
+Ebenezer|Ebenezer
+Far Away  bm:G|Far Away
+Harvest Home|Harvest Home
+Haste to the Wedding 2|Haste to the Wedding
+Hector the Hero finale - Score|Hector the Hero
+Lamplighter’s Hornpipe A|Lamplighter's Hornpipe
+Miller’s Reel A|Miller's Reel
+Romeo’s Last Chance D|Romeo's Last Chance
+Roscoe  G|Roscoe
+Silver Spear|Silver Spear
+Snake River Reel D|Snake River Reel
+South Missouri D|South Missouri
+Squirrel Hunters - Score|Squirrel Hunters
+THe Golden Ticket|Golden Ticket, The
+Texas Gales C|Texas Gales
+The Cuckoo's Nest D|Cuckoo's Nest, The
+The Mackadavie 2|Mackadavie, The
+whistling rufus G|Whistling Rufus
