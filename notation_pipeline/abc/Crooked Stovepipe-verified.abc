@@ -10,3 +10,7 @@ V:1
 "D" F A A/B/c/A/ | F A A/B/c/d/ |  e3/2 d/ e f |1"G" g f/e/ "D"d/c/B/A/ :|2"G" g g a ^a || $
 "G" b3/2 c'/ b a | g2 g f |"C" e e f g |"Am" a3 b |"D" c'3/2 d'/ c' a |e3/2 d | d d e f |"G" g g a ^a | $
 "G" b3/2 c'/ b a | g2 g f |"C" e e f g |"Am" a3 b |"D" c'3/2 c'/ c' a | f3 e | d d e f |"G" g f/e/ "D"d/c/B/A/ |]
+%%vskip -0.55cm
+%%begintext right
+Last time end on G chord
+%%endtext
