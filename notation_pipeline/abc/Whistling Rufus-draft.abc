@@ -1,0 +1,20 @@
+X:1
+T:wmsmuq QUFus
+C:View MILLS 1899
+C:CLAW Kzssmqse
+%%score 1 2
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble-8 nm="FOL." snm="FOL."
+V:2 treble-8 nm="FIDOLE" snm="FIDOLE"
+V:1
+ z10 | z8 | z8 | z8 |$ z8 | z8 | z9 | z9 |$ G2 G2 Bcde | g2 g2 edBA | GFGA BABc | d4 g4 | %12
+ efge d(ged) |$ z8 | z8 | z8 |$ z8 | z8 | z8 | z8 |$ c4 c4 | [Ac]4 d2 c2 |"G" B4 B4 | B2 DF GABc |$ %24
+ d'4 d'4 | d'4 e'2 d'2 |"C" [ac']4 c'4 | c'4 d'2 c'2 |"G" b4 b2 ab |$ z8 | z9 | z13 | z5 | %33
+V:2
+ DF G2 G2 Bcde | g2 g2 edBA | GFGA BABc | d6 DF |$ G2 G2 Bcde | gedg edfg | z | a2 z fa edBA |$ %8
+ z8 | z8 | z8 | z8 | z8 |$ BAGB AG E2 | BAGB AGEF | G2 DF GABc |$ d4 d4 | d2 de dBAG | z | %19
+ F4 E2 D2 |$ z8 | z8 | z8 | z8 |$ z8 | z8 | z8 | z8 | z8 |$ cBAG FDEF | G2 EG DCB,B,2 | %31
+ G,2 D2B,3 DF [DB]4 | G,2 G,B,2 |] %33

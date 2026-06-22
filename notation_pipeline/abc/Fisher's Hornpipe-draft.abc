@@ -1,13 +1,11 @@
 X:1
-T:Fisher ’s Hornpipe
-%%score ( 1 2 )
+T:Title
 L:1/8
 M:4/4
 I:linebreak $
 K:D
 V:1 treble nm="Voice" snm="Voice"
-V:2 treble 
 V:1
- Bc | [Fe]4 dAFD | FDFD GBAG x3 |$ dA=FD GBAG | =FEDF GBAG |1 dBA=F D2 =c2 |]2 dBA=F D2 =cd | %7
-V:2
- x2 | x8 | x7 [AAce]4 |$ x8 | x8 |1 x8 |]2 x8 | %7
+ (3ABc |: dAFD GBAG |"D" FDFD GBAG |"D" FDFD"G" GEGE | FDFD E2 ABc |$ dAF(D G)BAG | FDFD (GB)AG | %7
+ FAdf edce |1 d2 d2 c2 d2 :|2 d2 dc d2 cd |:$ ecAc efge | fdAd fgaf | ecAc efgf | edcB A2 A2 | %14
+ BGDG BcdB |$ AFDF ABdA | BdcB AGFE |1 D2 DE D2 cd :|2 [DA-]2 [FA]2 [DA]2 z2 |] %19

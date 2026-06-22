@@ -1,26 +1,11 @@
 X:1
-T:Title
-%%score ( 1 2 )
+T:when resolving to a G chord at the end.
 L:1/8
-M:none
+M:2/2
 I:linebreak $
-K:none
+K:G
 V:1 treble nm="Voice" snm="Voice"
-V:2 treble 
 V:1
- e4 g2 BA | g2 e/g/ | BB/[GA]/ B2 | D2 e/g/ | (3:2:2AG/ A2 c2 B2 | D2 eg | B2 BA Bc d2 | %7
-w: |||||||
-w: |||||||
- e>f e/f/ |$[M:4/4] B2 | A2 | BB/!fermata!A/ B/c/B/A/ | A2 c2 d2 G2 | A>[K:bass]B,, C,2 | B,,E, | %14
-w: |Also||Uncle * * * * or *|[lop * * High|Ladies when *|starting *|
-w: |||chord * at * * the *|end. * * *|||
- D, E, G,4- G,/A,/ || %15
-w: the second * part and|
-w: |
-V:2
- z8 | x3 | x4 | x3 | x7 | x4 | x8 | x3 |$[M:4/4] x2 | A2 | x g2 x | x8 | x3/2[K:bass] x5/2 | x2 | %14
-w: |||||||||as|||||
-w: |||||||||G|||||
- x7 || %15
-w: |
-w: |
+ BA |"G" G2 g2 edeg | B2 BA BcBA | G2 g2 edeg |"D7" A2 AG AcBA |$"G" G2 g2 edeg | B2 BA Bc d2 | %7
+"C" e3 f edef |"D7" gedB A2 BA ::$"G" GABc dBGA | c2 BA BcBA | GABc dBGB |"D7" A2 AG AcBA |$ %13
+"G" GABc dBGA | B2 BA Bc d2 |"C" e3 f edef |"D7" gedB A4 :| %17

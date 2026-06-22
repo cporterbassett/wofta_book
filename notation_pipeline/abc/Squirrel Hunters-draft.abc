@@ -1,0 +1,14 @@
+X:1
+T:The Squirrel Hunters
+C:from Samuel Bayard
+C:through John Hartford
+C:and Katrina Nicolayeff
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ e3 d BABd | efed BdBA |"G" GABc dAdc | dAcA Bcd^d |$ efed BABd | efed BdBA |"G" GABc dAcB |1 %7
+ AFEF D4 :|2 A4 A4 |:$ edeg abag | edef gedB |"G" GABc dAdc | dAcA Bcd^d |$ edeg abag | edef gedB | %15
+ GABc dAcB |1 AFEF D4 :| [AA]8 |] %18

@@ -1,0 +1,13 @@
+X:1
+T:b‘
+T:a
+Z:BlackJack Grove
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ egag e2 d2 | cdef"G" g2 ef | z/ g2 ag e2 d2 | cde^g a2 e2 |$ abag e2 d2 | cdef"G" g2 ef | %6
+ g^gag e2 d2 | e2 d2 B2 A4 |]$ cBAc B2 A2 |"E" ^GGBG E2 AB |"B" ^GGBG A2 AB |$ cBAc B2 A2 | %12
+ ^GGBG E2 e2 | ed B2 A4 |] %14

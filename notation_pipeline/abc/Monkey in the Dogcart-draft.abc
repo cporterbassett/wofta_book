@@ -1,16 +1,11 @@
 X:1
-T:G7
-Z:Monkey in the Dogcart
-%%score ( 1 2 )
+T:Monkey in the Dogcart
 L:1/8
 M:4/4
 I:linebreak $
 K:none
 V:1 treble nm="Voice" snm="Voice"
-V:2 treble 
 V:1
-"C" e3 d c2 A2 |: dcAc- c3 e | e2 d2 c2 A2 |"G7" g3 a [Bg]3 e |$ eg e2 c4 | dcAc A3 | B2 A2 B2 |1 %7
- d c2 || c2 e2 d2 c2 :|2 (3:2:2d c2 x8/3 |:$ c2 c'2 e2 g2 | aged c3 c- | c2 c'2 a2 g2 | a3 b a3 |$ %14
- g2 c'2 e2 g2 | aged c2 Ac |"G7" B2 G2 BB A2 | %17
-V:2
- x8 |: x8 | x8 | x8 |$ x8 | x7 | x6 |1 x3 || x8 :|2 x2/3 F4 |:$ x8 | x8 | x8 | x7 |$ x8 | x8 | x8 | %17
+ e3 d c2 A2 | dcAc- c3 e- | e2 d2 c2 A2 | [Bg]3 a [Bg]3 e- | eg e2 c4 |$ dcAc A3 [G,G-] | %6
+"G7" [G,G]2 B2 A2 B2 | [Ec]3 d [Ec]3 c- ::"C" c2 c'2 e2 g2 | aged c3 c- |$ c2 c'2 a2 g2 | %11
+ a3 b a3 g- | g2 c'2 e2 g2 | aged c2 Ac | B2 G2 A2 B2 | [Ec]4 [Ec]4 :| %16

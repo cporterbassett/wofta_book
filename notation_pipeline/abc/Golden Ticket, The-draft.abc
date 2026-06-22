@@ -1,0 +1,22 @@
+X:1
+T:Golden Ticket, The
+% DRAFT — dense 5-system sheet; OMR split into 2 movements &
+% mis-detected voices. Expect heavy Phase-2 cleanup from clean.omr.
+L:1/8
+M:none
+K:G
+% --- movement 1 ---
+V:1
+ F,,2 .A,,2- .A,,2 z4 B,,2 (A,,2 B,,)A,,F,,E,, D,,C,,B,,,D,, |"G" E,,2 E,,F,, G,,F,,E,,F,, | %2
+ .C,,2- C,,2 [D,,D,]2 (C,,F,,)G,,F,, || %3
+% --- movement 2 ---
+V:1
+ z8 | z6 | z10 | z10 |$ z9 | z79/3 |$ [eg]2"D" A2 A!tenuto!B AA z _FD ||"E" (AB-) | %8
+ BAz4GG- G2 z4 z4 |$ z8 | z12 | z7 | %12
+V:2
+"G" D2 F2 (G2 F2 | G)C B,A,G,B, |"E" C2 (C2 [Ee]2) DB,CE |1 D2 (G,D)E!breath!D F4 ||$"^1 G" z9 | %5
+ ABB!breath!A B(3:2:2AB(3:2:1c x58/3 |$ z11 | z2 | z18 |$"G" C2 C2 DB,CE | %10
+"^1 E" D2 G,2"D" !tenuto!A2 G2 [FB]4 | D2 !breath!G,- !breath!.[G,A]4 |] %12
+V:3
+ x8 | x6 | x10 |1 x10 ||$"^I; E" D2 A,2- .A,2 z A!tenuto!A | %5
+ x5 (3:2:1A2 [FA]4 B2 A2 G2 (F2 GFG) (3:2:2B2 cBcd |$ x11 | x2 | x18 |$ x8 | x12 | z7 |] %12

@@ -1,0 +1,12 @@
+X:1
+T:Crested Hens
+C:Gilles Chabenaz
+L:1/8
+M:3/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+|:"Em" E3 G FE | B4 Bc |"Em" dc Be dc | dc BA GF |$"Em" E3 G2 F2 | B4 Bc | dc BA GA |1 B3 A GF :|2 %8
+ B4 ef |:$"Em" gB Bg gB | =c4 ef | gf ag fe | ^d2 e2 f2 |$"Em" gB Bg gB | =c4 ef | %15
+"Am" g2 f2"Bm" ag |1 e4 ef :|2 e6 || %18

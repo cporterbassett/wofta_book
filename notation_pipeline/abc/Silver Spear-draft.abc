@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ F2 A2 BAFA | dfed [DB]2 d2 d2 | FAAA BAFA | dfed B2 A2 |$ FAAA BAFA | %5
+ dfed Bdef [FA]4 g2 ge f2 f2 e2 | dfed B2 A2 F4 |$ faaa baaf gfed [DB]2 d2 d2 | %8
+ faaa b3 a2 f2 e4 gfed B2 A2 [FAc]4 | %9

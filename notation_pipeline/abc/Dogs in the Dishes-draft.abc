@@ -1,0 +1,12 @@
+X:1
+T:Dogs In the Dishes
+L:1/8
+M:2/2
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ !arpeggio!AG |"D" F2 A2 A=cBA | G2"G" B2 B=cBA | F2 A2 A2 eg |$ fded BcdB |"D" F2 A2 A=cBA | %6
+"G" G2 B2 B=cBA |"D" F2 A2 A2 eg |"A" fdec"D" d4 ::$ z4 z2 ef |"G" g2 f2 e2 d2 | c2 B2 A3 A- | %12
+ Acec"D" d2 ge | fdec"D" d2 ef |$"G" g2 (3fgf e2 d2 | cdcB A3 A- |"A7" Acec"D" d2 ge | %17
+ fdec"D" d4 :| %18

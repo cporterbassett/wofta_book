@@ -1,15 +1,14 @@
 X:1
-T:None of Your Business
-C:Garry Harrison
-C:transcribed from Scott Markx 2019
-C:source - Carthy Sisco
+T:Nana oneur Business
+C:Gany Harrison
 L:1/8
 M:2/2
 I:linebreak $
 K:none
 V:1 treble nm="Voice" snm="Voice"
 V:1
-"C" e4 a3 g | e2 c4 e2- | e2 ed c2 d2 | e4- ed c2 |"C" e4 a3 g | e2 c4 c2- |$ cBAG EGAB |1 %7
- c4- c2 d2 :|2 c4- c2 c2- || cBAG E2 AB | cBAG E2 (3DE^F |$"G" G2 BG AG B2 | [E-A]4 [EA]2 AB | %13
-"C" cBAG EGAB | cBAG E2 (3DE^F |"G" G2 BG AG B2 |$ [EA]8 |"D" [DA]2 A2 ABAG | ^F2 D4 (3DEF | %19
-"G" G2 BG AG B2 |"C" c8 |] %21
+ (e4 ((a3) g) | (e2) (c4 (e2-)) | (e2 e2) d2) c2 | e4- e(d (c2) | (e4) ((a3) g)) | (e2 c4-) c2- |$ %6
+ ((cB)(A)(G) (EG(A))B) | (c4- c2 (((d2) |] c4-))) c2- c2- | cBAG (E2 (A(B)) | %10
+ c)B(((AG (E2))) (DE)^F) |$ (G2 B(G A)((G) B2 | [E-A]4)) [EA]2 (AB) | ((c(B)A)((G) EG)A)B | %14
+ cBAG (E2 (3(D)((E)^F | G2)) BG ((AG) B2) |$ [EA]8 | [DA-]2 ((A2 AB))(((AG)) | (^F2) D4) (3(DEF | %19
+ (G2) B((G (A)G)) B2) | c8 |] %21

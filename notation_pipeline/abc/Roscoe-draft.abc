@@ -1,0 +1,13 @@
+X:1
+T:Roscoe
+C:Old-Time Fiddle Tune
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ ef |: g2 d2 ed B2 | dB (f | g)(fg)(f e)(f g2) |"D" a3 (^g a3) f |$ g2 d2 ed B2 | c3 (B c4) | %7
+ (Bc)d(B"D" A)(G F2) |1"G" G3 (F G2) (ef) :|2"G" G3 F G2 (3DEF |:$ G2 B2 ((A B3)) | c3 (B c4) | %12
+"G" BAGB A(G E2) | D3 (E D2) (3DEF |$ G2 B2 ((A B3)) | c3 (B c4) | (Bc)d(B"D" A)(G F2) |1 %17
+"G" G3 (F G2) (3(DEF :|2"G" G8) |] %19

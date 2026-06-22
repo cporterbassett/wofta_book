@@ -1,0 +1,12 @@
+X:1
+T:Title
+L:1/8
+M:none
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ e8 A4 e2 [Fe]4 [Af]2 [ca]2 f2 e2 dA B2 [Bg]2 B2 [Bg]2 | [Af]3 [ca]2 f2 e2 dA | %2
+ c2 [ce]2 c2 [ce]2 [Af]2 [ca]2 f2 e2 dA | B2 [Bg]2 B2 [Bg]2 |$ a3 b a2 g2 ed | ^cA Bc d2 ^FG | g2 | %7
+ BA B^c dB A^F !arpeggio!AB dA BA F2 D2 |$ ED CB, A,2 FG | A2AB AG FG AA | BA =Bc d2 f2 | %11
+ ed [Fe]2 f2 gf ed e4 cA Bc d2 |] %12

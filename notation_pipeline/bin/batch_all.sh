@@ -14,6 +14,9 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
 IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
+# Corpus lives in source_images/ (moved there in 775e68bd); fall back to repo root.
+SCAN_DIR="${IMAGES_DIR}/source_images"
+[[ -d "$SCAN_DIR" ]] || SCAN_DIR="$IMAGES_DIR"
 BATCH_DIR="${PIPELINE_DIR}/batch_output"
 SCRIPT="${HERE}/batch_tune.sh"
 LOG="${BATCH_DIR}/batch_all.log"
@@ -27,7 +30,7 @@ mkdir -p "$BATCH_DIR"
 
 # Collect the 269 real tune PNGs (exclude test/scratch files)
 mapfile -t PNGS < <(
-    find "$IMAGES_DIR" -maxdepth 1 -name "*.png" \
+    find "$SCAN_DIR" -maxdepth 1 -name "*.png" \
         ! -name "*oemer*" \
         ! -name "*cropped*" \
         ! -name "*teaser*" \

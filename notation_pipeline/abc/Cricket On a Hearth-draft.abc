@@ -7,10 +7,6 @@ K:D
 V:1 treble nm="Voice" snm="Voice"
 V:1
  FG |: A2 AA f2 e2 |"G" B2 BB g2 BB | A2 AA f2 e2 | ed cB A2 FG | B2 BB g2 gg |$ a2 ab a2 g2 | %7
-w: |||||||
- cA Bc d2 FG :: A2 AA A2 FG | AB AF DE F2 | [A,E]2 [A,E][A,E] [CE]2 [CE][CE] | %11
-w: ||||
- [A,E]2 [A,E][A,E] [CE]2 [CE][CE] |$ g4 ^g2 =g2 | [Fe]2 f2 e2 d2 ||"D" A2 AA A2 FG | %15
-w: |* * <RHYTHM|REST- * * *||
- AB A2 [Fg]2 DE | D2 DD D2 :| %17
-w: ||
+ cA Bc"D" (3:2:2d2 FG ::"D" A2 AA A2 FG | AB AF DE F2 | [A,E]2 [A,E][A,E] [CE]2 [CE][CE] | %11
+ [A,E]2 [A,E][A,E] [CE]2 [CE][CE] |$ (^g2 =g2) f2 | [Fe]2 f2 ed cB ||"D" A2 AA A2 FG | %15
+ AB AF DE F2 | [A,E]2 [A,E][A,E] CB, C2 |"D" D2 DD D2 :| %18

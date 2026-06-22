@@ -1,0 +1,11 @@
+X:1
+T:Title
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+|: [Ff]2 g2 | a2 a2 fedf | efed B2 AB | d2 d2 fede | faaf a2 [Ff]2 |$ a2 a2 fedf | efed B2 AB | %7
+ d2 d2 BAFE | D6 ::$ AB | =c2 =cA B2 BG | A2 AB AFDA | =c2 =cA B2 AG | A2 d4 AB |$ =c2 =cA B2 BG | %15
+ A2 AB AF D2 | A,DDE FD E2 | D6 :| %18

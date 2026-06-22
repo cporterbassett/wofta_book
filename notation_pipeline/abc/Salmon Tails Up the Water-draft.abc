@@ -1,12 +1,12 @@
 X:1
-T:SALMON TAILS THE WATER
-C:N011hmnbn'an Rant
+T:SALMON TAILS UP THE WATER
+C:Northumbnan Rant
 L:1/8
 M:2/4
 I:linebreak $
 K:G
-V:1 treble nm="ddle" snm="ddle"
+V:1 treble nm="Fiddle" snm="Fiddle"
 V:1
-"G" GE DE | G2 G>A | Bd AB/A/ | GE D>E |"G" GE DE | G2 G>A |$ Bd A2 |"G" G2- GA ::"G" Bd dc/A/ | %9
- ce e2 |"G" dB A2 | GE"D" ED |$"G" Bd dc/B/ | ce e>f |"G" gf ed |"D" ef"G" g2 |"G" Bd dc/A/ | %17
- ce e2 |$ dB AB/A/ | GE ED | GE D>E | G2 G>A | Bd AB/A/ | G4 :| %24
+"G" GE DE | G2 G3 | Bd AB/A/ |"C" GE D3 |"G" GE DE | G2 G3 |$ Bd AB/A/ |"G" G2- GA |]"G" Bd dc/A/ | %9
+ ce e2 |"G" dB AB/A/ | GE"D" ED |$"G" Bd dc/B/ | ce e>f |"G" gf ed |"D" ef g2 |"G" Bd dc/A/ | %17
+ ce e2 |$ dB AB/A/ | GE ED | GE D>E | G2 G>A | Bd AB/A/ | G4 |] %24

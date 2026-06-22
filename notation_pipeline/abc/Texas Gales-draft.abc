@@ -1,0 +1,14 @@
+X:1
+T:Texas Gales
+L:1/8
+M:4/4
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ ([DA] |:"C" [Ec])E- [Ec]2"G" BcdB |"C" cdcA G2 AB | cE- [Ec]2"G" BcdB |"C" c2 [Ec]4 z [DA] |$ %5
+ [Ec]E- [Ec]2 BcdB |"C" cdcA G2 (Ac) |"G" BAGB AGAB |1"C" c2 [Ec]4 z [DA] :|2"C" c2 [Ec]6 |:$ %10
+ [Ae](c [cg]2) [cg]2 (ge) | gage dcAc | [Ae](c [cg]2) gfeg | ([ca]3 [cb]) [ca]4 |$ %14
+[M:4/4] (c2 [cg]2) [cg]2 (ge) | gg2ge dcAc | BAGB AGAB |1 c2 [Ec]6 :|2 c2 [Ec]4 (3(G,A,B,) |:$ %19
+ CB,CD ECDE | FEFG AGFA | G^FGA BGAB | cBcd cAGE |$ CB,CD ECDE | FEFG AGFA | G^FGA GEDB, |1 %26
+ C2 [CE]4 (3(G,A,B,) :|2 C2 z2 [Ec]4 |] %28

@@ -28,7 +28,10 @@ TUNE="$1"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
 IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
-SRC="${IMAGES_DIR}/${TUNE}.png"
+# Corpus lives in source_images/ (moved there in 775e68bd); fall back to the
+# legacy repo-root layout for backward compatibility.
+SRC="${IMAGES_DIR}/source_images/${TUNE}.png"
+[[ -f "$SRC" ]] || SRC="${IMAGES_DIR}/${TUNE}.png"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
 OUTDIR="${PIPELINE_DIR}/batch_output/${TUNE}"
 OUT_ABC="${PIPELINE_DIR}/abc/${TUNE}-draft.abc"
@@ -75,6 +78,20 @@ flatpak run org.audiveris.audiveris -batch -export -output "${OUTDIR}" "$PREPROC
 
 RAW_MXL=$(find "${OUTDIR}" -maxdepth 1 \( -name "preprocessed.mxl" -o -name "preprocessed.mvt1.mxl" \) | head -1)
 RAW_OMR=$(find "${OUTDIR}" -maxdepth 1 -name "preprocessed.omr" | head -1)
+
+# Fallback: the unsharp+rescale in normalize_interline can fragment thin staff
+# lines on dense sheets, making Audiveris read a bogus ~3px interline and reject
+# the sheet ("too low interline ... NOT RELIABLE"). Retry once on the raw source
+# image (no normalize/unsharp), which Audiveris scales itself.
+if [[ -z "$RAW_MXL" ]] && grep -q "too low interline" "${OUTDIR}/audiveris.log" 2>/dev/null; then
+    echo "        normalize made the sheet unreadable — retrying Audiveris on raw source..."
+    rm -f "${OUTDIR}"/preprocessed*.mxl "${OUTDIR}"/preprocessed.omr
+    cp "$SRC" "$PREPROCESSED"
+    flatpak run org.audiveris.audiveris -batch -export -output "${OUTDIR}" "$PREPROCESSED" \
+        >> "${OUTDIR}/audiveris.log" 2>&1 || true
+    RAW_MXL=$(find "${OUTDIR}" -maxdepth 1 \( -name "preprocessed.mxl" -o -name "preprocessed.mvt1.mxl" \) | head -1)
+    RAW_OMR=$(find "${OUTDIR}" -maxdepth 1 -name "preprocessed.omr" | head -1)
+fi
 
 if [[ -z "$RAW_MXL" ]]; then
     echo "ERROR: Audiveris produced no MXL — see ${OUTDIR}/audiveris.log"

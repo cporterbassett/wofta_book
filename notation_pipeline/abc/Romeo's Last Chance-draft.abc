@@ -1,0 +1,11 @@
+X:1
+T:(Romeo's 1st
+C:nomloe andmn
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ (f/g/ ||"D" (3a2) ^g2 a2 b2 | afd Adf | g2 f2 g2 | gec Ace |$ a2 ^g2 a2 | afd Adf | gec ABc |]$ %8
+ D-"D" DFA dcB | ABA F2 A,- | A,CE GFE |"D" DFB A2 D |$ DFA dcB | ABA F2 | GFE A,B,C |"D" DDD D2 | %16

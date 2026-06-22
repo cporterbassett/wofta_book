@@ -1,0 +1,12 @@
+X:1
+T:Blueberry Jig
+C:By Andy DeJarlis
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ (3A/B/c/ || dAF DFA | dfb a2 f | ge=c cBc | GAB =cBc |$ dAF DFA | dfb a2 f | gec ABc | %8
+"D" dfe d2 |]$ [Af]2 g2 || a2 d a2 d | a3 b2 a | g2 =c g2 c | g3 a2 g2 |$ a2 d2 a2 | a3 b2 a | %16
+ gec ABc |"D" dfe d2 |] %18

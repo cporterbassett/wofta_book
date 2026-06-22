@@ -7,7 +7,8 @@ I:linebreak $
 K:E
 V:1 treble nm="Voice" snm="Voice"
 V:1
- ec | BG (3GGG Bcef | fg-ge fece | f2 fg fece | afge fece |$ BG (3GGG Bcef | fg-ge fece | %7
- f2 fg fece |1 Bcef e2 z2 :|213 Bcef e2 [Ag]2 ||$ be (3eee bec'e | be (3eee fece | f2 fg fece | %13
- afge fece |$ be (3eee bec'e | be (3eee fece | f2 fg fece |"B" Bcef"E" e2 ga |$ be (3eee bec'e | %19
- be (3eee fece | f2 fg fece | afge fece | %22
+ ec | BG (3GGG Bcef | fg-ge fece | f2 fg fece | afge fece |$"E" BG (3GGG Bcef | fg-ge fece | %7
+ f2 fg fece |1 Bcef e2 z2 :|2 Bcef e2 [Ag]2 ||$"E" be (3eee bec'e | be (3eee fece | f2 fg fece | %13
+ afge (fe)ce |$"E" be (3eee bec'e | be (3eee fece | f2 fg fece | Bce(f e2) ga |$ %18
+"E" be (3eee bec'e | be (3eee fece | f2 fg fece | afge fece |$"E" BG (3GGG Bcef | fg-ge fece | %24
+ f2 fg fece | Bcef e4 |] %26

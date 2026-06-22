@@ -1,11 +1,12 @@
 X:1
-T:Red Apple Rag
+T:RED APPLE RAG
+C:Arthur Smith
 L:1/8
 M:4/4
 I:linebreak $
 K:G
 V:1 treble nm="Voice" snm="Voice"
 V:1
- D2 | B, | D2G E2 G2 A | BBG GBG EAB | ec- ccB |$ AdBB2 dcde | | f2 d2 [df]2 f2 | g2e | %9
- d2 B2 G2 :|$ Bc | g2- gf g2 | b^a3/2g- gage | g2- ge g2 | | e2 B4 c2 |$ GB2 dde | fafd [df]2 f2 | %18
- dBF G2 :| %19
+ DC |: B,CDG EFGA | Bd B G2 B AG |"C" EFGB cBcd | e_e =e c2 d cB |$ AdBc d^cde | fa f d3 ef | %7
+ gbge dBAF | G6 Bc ::$ d2 (e g2 f) g2 | b_b =b g2 a ge | cd e g2 e g2 | ag e c2 d cB |$ %13
+ AdBc d^cde | fa f d3 _g2 | gbge dBAF | G6 z2 :| %17
