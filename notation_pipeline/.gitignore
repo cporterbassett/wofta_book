@@ -5,6 +5,9 @@ batch_output/
 __pycache__/
 *.pyc
 
+# Personal verify-queue parking list (verify_tune.sh --skip)
+verify_skip.txt
+
 # LilyPond / render intermediates
 *.ly
 *.cropped.png
