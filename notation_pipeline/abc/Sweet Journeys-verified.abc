@@ -6,11 +6,12 @@ I:linebreak $
 K:A
 %%beginps
 /lbrk {	gsave 1.6 setlinewidth 0 setlinecap
+	exch 7 sub exch
 	2 copy moveto 0 26 rlineto stroke
 	2 copy moveto 4 0 rlineto stroke
 	2 copy 26 add moveto 4 0 rlineto stroke grestore } def
 /rbrk {	gsave 1.6 setlinewidth 0 setlinecap
-	exch 11 add exch
+	exch 17 add exch
 	2 copy moveto 0 26 rlineto stroke
 	2 copy moveto -4 0 rlineto stroke
 	2 copy 26 add moveto -4 0 rlineto stroke grestore } def
