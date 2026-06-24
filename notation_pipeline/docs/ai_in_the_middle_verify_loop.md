@@ -58,8 +58,19 @@ there is no `--stage2` flag. Scope:
 - `L:` — default note length.
 
 **Structure**
-- Linebreaks (`$`): normalize so the measures-per-line match the scan's
-  systems — one ABC source line per scan system.
+- Linebreaks (`$`) — **REQUIRED, verify by hand every tune.** The layout must
+  match the scan: **one ABC source line per scan system**, so the source text,
+  the engraved render, and the original scan all break at the same places (this
+  is what makes the result navigable side-by-side). Do NOT trust the export's
+  auto-normalizer — it routinely gets the first system or two right and dumps
+  the rest onto one giant line. Procedure: count the scan's systems and the
+  measures in each; then for each system boundary put a `$` AND a real newline
+  in the source (`… |$`). No trailing `$` on the last line (page-gap gotcha).
+  After editing, render and confirm the engraved line count equals the scan's
+  system count before handing to stage 3. (If the candidate is mis-barred, the
+  per-line measure counts won't match the scan exactly yet — lay the lines out
+  to approximate the systems anyway; the source↔engraving match still holds and
+  the note fixes happen in EasyABC.)
 - Repeats: `|:` `:|` `::` matching the scan's repeat barlines.
 - Return / volta endings: `|1 … :|2 … |` with `%%contbarnb 1` set so the
   voltas don't add a phantom measure.
@@ -121,6 +132,14 @@ must:
 1. Kill the tracked EasyABC PID.
 2. Make the edit to the candidate ABC.
 3. Relaunch `easyabc` on the candidate (new PID to track).
+
+**Gotcha — don't kill EasyABC with a self-matching `pkill -f`.** A command like
+`pkill -f "easyabc.*<Tune>"` matches its OWN command line (the pattern contains
+the same words), so it kills the launching shell too and returns a confusing
+exit code (e.g. 144). Kill by the launched process/task handle instead, or use
+a pattern that can't match the killer (e.g. anchor on the binary path, or
+`pgrep`-then-`kill` the specific PID). The kill still lands, but the self-match
+makes it look like it failed.
 
 The `live_compare.sh` watcher picks up the file change automatically and
 refreshes the compare — it does not need to be restarted.
