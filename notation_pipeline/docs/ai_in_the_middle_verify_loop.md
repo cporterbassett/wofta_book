@@ -92,6 +92,25 @@ there is no `--stage2` flag. Scope:
 - Spacing convention: a space on both sides of the chord mid-measure; no
   leading space when the chord is the first thing in the measure.
 
+**Directive text — "To Coda" / "D.C." / "Fine" etc.** (engraving notes; both
+`render_abc.sh` and the final `make_pdf.py` use **abcm2ps**, so abcm2ps text
+directives carry through to the handout — they are NOT abc2ly/LilyPond):
+- Write the words as a text annotation, e.g. `"^To Coda"` (the leading `^`/`_`/
+  `<`/`>`/`@` marks it as an annotation, not a chord — without it, it's parsed
+  as a chord symbol).
+- **Collision bump:** annotations and chord symbols are both text scripts above
+  the staff. When an annotation sits horizontally near a chord, the engraver
+  stacks them and pushes the *chord* up, knocking the chord row out of level.
+  A short measure has no clear gap, so nudging the annotation sideways rarely
+  fixes it.
+- **Fix — lift it above the chord row with an explicit offset:** `"@x,yText"`
+  (x,y in points; +y is up). e.g. `"@0,11To Coda"` puts the text straight up,
+  above the chord tier, so the chord drops back into line. Tune `y` to taste.
+- **Bolder annotation:** `%%annotationfont Helvetica-Bold 14` in the tune header
+  bolds ALL annotations (chords use the separate `%%gchordfont`, so they're
+  unaffected). If a tune has other annotations you don't want bold, use an
+  inline abcm2ps `$` font escape on just that string instead.
+
 **Degraded / handwritten scans**
 - If the scan is OMR-proof (e.g. a handwritten lead sheet), produce a
   SKELETON only: chords + structure, melody left as rests. Do not fabricate
