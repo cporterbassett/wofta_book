@@ -22,9 +22,23 @@
 #   bash verify_tune.sh "Tune Name"     # a specific tune
 #   bash verify_tune.sh --skip          # park the current auto-pick, run the next
 #   bash verify_tune.sh --skip "Tune"   # park a named tune, run the next
+#   bash verify_tune.sh --queue         # auto-pick from notation_pipeline/verify_queue.txt (in order)
+#   bash verify_tune.sh --queue-file F  # auto-pick from a custom queue file
+#   bash verify_tune.sh --queue --loop  # walk the whole queue, one tune after another
+#   bash verify_tune.sh --queue --list  # print the remaining eligible tunes and exit (no GUI)
+#   bash verify_tune.sh --no-export "Tune"  # skip Audiveris AND re-export; reuse the
+#                                           # existing candidate ABC (e.g. one you hand-fixed)
+#                                           # and go straight to live compare + EasyABC
 #
 # Parked tunes live in notation_pipeline/verify_skip.txt (one name per line) and
 # are stepped over by auto-pick until you remove them (e.g. `vi` the file).
+#
+# QUEUE MODE: with --queue, auto-pick draws from a queue file (one canonical tune
+# name per line; '#' comments and blanks ignored) IN FILE ORDER instead of
+# worst-first health order. A tune drops out once its -verified.abc exists.
+# --loop re-runs the whole flow for the next queue tune after each one finishes;
+# tunes you DON'T promote are remembered for the session (a temp seen-list) so the
+# loop advances past them without permanently parking them in verify_skip.txt.
 #
 # Linux/Mint-bound (flatpak Audiveris, wmctrl, easyabc, firefox).
 
@@ -36,40 +50,100 @@ IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"    # tune_images/
 AUDIVERIS="flatpak run org.audiveris.audiveris"
 HEALTH_TSV="${PIPELINE_DIR}/health_scores.tsv"
 SKIP_FILE="${PIPELINE_DIR}/verify_skip.txt"
+DEFAULT_QUEUE="${PIPELINE_DIR}/verify_queue.txt"
+QUEUE=""                               # set by --queue / --queue-file
+SEEN_FILE="${VERIFY_SEEN_FILE:-}"      # session seen-list (loop mode), via env
 
 is_skipped() {  # $1=tune — true if parked in the skip list
     [[ -f "$SKIP_FILE" ]] && grep -qxF "$1" "$SKIP_FILE"
 }
 
-# Next tune to verify: worst-first (health_scores.tsv is sorted worst-first),
-# must have a clean.omr, not already verified, not parked. Prints the name, or
+is_seen() {  # $1=tune — true if already handled this loop session
+    [[ -n "${SEEN_FILE:-}" && -f "${SEEN_FILE:-}" ]] && grep -qxF "$1" "$SEEN_FILE"
+}
+
+eligible() {  # $1=tune — true if it has a clean.omr, isn't verified/skipped/seen
+    [[ -n "$1" ]] || return 1
+    [[ -f "${PIPELINE_DIR}/batch_output/${1}/clean.omr" ]] || return 1
+    [[ -f "${PIPELINE_DIR}/abc/${1}-verified.abc" ]] && return 1
+    is_skipped "$1" && return 1
+    is_seen "$1" && return 1
+    return 0
+}
+
+# Names from the queue file, in file order ('#' comments + blanks stripped).
+queue_names() {
+    [[ -n "$QUEUE" && -f "$QUEUE" ]] || return 1
+    local line
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        line="${line%$'\r'}"
+        [[ -z "$line" || "$line" == \#* ]] && continue
+        printf '%s\n' "$line"
+    done < "$QUEUE"
+}
+
+# Next tune to verify. With a queue: first eligible name in queue order. Without:
+# worst-first (health_scores.tsv is sorted worst-first). Prints the name, or
 # returns non-zero if none remain.
 pick_next_tune() {
-    [[ -f "$HEALTH_TSV" ]] || return 1
     local tune
+    if [[ -n "$QUEUE" ]]; then
+        while IFS= read -r tune; do
+            eligible "$tune" && { printf '%s\n' "$tune"; return 0; }
+        done < <(queue_names)
+        return 1
+    fi
+    [[ -f "$HEALTH_TSV" ]] || return 1
     while IFS=$'\t' read -r tune _; do
-        [[ -n "$tune" ]] || continue
-        [[ -f "${PIPELINE_DIR}/batch_output/${tune}/clean.omr" ]] || continue
-        [[ -f "${PIPELINE_DIR}/abc/${tune}-verified.abc" ]] && continue
-        is_skipped "$tune" && continue
-        printf '%s\n' "$tune"
-        return 0
+        eligible "$tune" && { printf '%s\n' "$tune"; return 0; }
     done < <(tail -n +2 "$HEALTH_TSV" | cut -f1)
     return 1
 }
 
-# ── Argument parsing: optional --skip, optional tune name ─────────────────────
+# ── Argument parsing: optional --skip/--queue/--loop/--list, optional tune ────
 DO_SKIP=0
+DO_LIST=0
+LOOP=0
 MVT=""
+NO_EXPORT=0
 ARGS=()
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --skip) DO_SKIP=1; shift ;;
-        --mvt)  MVT="${2:?--mvt needs a movement number}"; shift 2 ;;
-        *)      ARGS+=("$1"); shift ;;
+        --skip)       DO_SKIP=1; shift ;;
+        --queue)      QUEUE="$DEFAULT_QUEUE"; shift ;;
+        --queue-file) QUEUE="${2:?--queue-file needs a path}"; shift 2 ;;
+        --loop)       LOOP=1; shift ;;
+        --list)       DO_LIST=1; shift ;;
+        --mvt)        MVT="${2:?--mvt needs a movement number}"; shift 2 ;;
+        --no-export)  NO_EXPORT=1; shift ;;
+        *)            ARGS+=("$1"); shift ;;
     esac
 done
 set -- ${ARGS[@]+"${ARGS[@]}"}
+
+# --list / --loop default to the standard queue file when none was named.
+if [[ ( $DO_LIST -eq 1 || $LOOP -eq 1 ) && -z "$QUEUE" ]]; then
+    QUEUE="$DEFAULT_QUEUE"
+fi
+
+# --list: print the remaining eligible tunes (queue order, or worst-first) and exit.
+if [[ $DO_LIST -eq 1 ]]; then
+    src="${QUEUE:+queue: $QUEUE}"; echo "Remaining verify-eligible tunes (${src:-worst-first}):"
+    n=0
+    while IFS= read -r tune; do
+        if [[ -n "$QUEUE" ]]; then eligible "$tune" || continue
+        else IFS=$'\t' read -r tune _ <<<"$tune"; eligible "$tune" || continue; fi
+        n=$((n+1)); printf '  %2d. %s\n' "$n" "$tune"
+    done < <([[ -n "$QUEUE" ]] && queue_names || tail -n +2 "$HEALTH_TSV" | cut -f1)
+    echo "($n eligible)"
+    exit 0
+fi
+
+# Loop mode: create a per-session seen-list so un-promoted tunes don't re-appear.
+if [[ $LOOP -eq 1 && -z "${VERIFY_SEEN_FILE:-}" ]]; then
+    export VERIFY_SEEN_FILE="$(mktemp "${TMPDIR:-/tmp}/verify_seen.XXXXXX")"
+fi
+SEEN_FILE="${VERIFY_SEEN_FILE:-}"
 
 if [[ $DO_SKIP -eq 1 ]]; then
     # Park the named tune, or (no name) whatever auto-pick would have chosen.
@@ -86,10 +160,15 @@ if [[ $# -ge 1 ]]; then
     TUNE="$1"
 else
     TUNE="$(pick_next_tune)" || {
+        if [[ -n "$QUEUE" ]]; then
+            echo "Queue complete — no verify-eligible tunes left in $QUEUE."
+            [[ -n "$SEEN_FILE" && -f "$SEEN_FILE" ]] && rm -f "$SEEN_FILE"
+            exit 0
+        fi
         echo "No unverified tune with a clean.omr left to do." >&2
         exit 1
     }
-    echo "Auto-selected next tune (worst-first): $TUNE"
+    echo "Auto-selected next tune (${QUEUE:+queue order}${QUEUE:-worst-first}): $TUNE"
 fi
 
 CLEAN_OMR="${PIPELINE_DIR}/batch_output/${TUNE}/clean.omr"
@@ -103,7 +182,16 @@ COMPARE_PNG="/tmp/${SLUG}.compare.png"
 COMPARE_HTML="/tmp/${SLUG}.compare.html"
 
 # ── Precondition ──────────────────────────────────────────────────────────────
-if [[ ! -f "$CLEAN_OMR" ]]; then
+if [[ $NO_EXPORT -eq 1 ]]; then
+    # Reusing an existing candidate — no Audiveris/export, so clean.omr isn't
+    # needed, but the candidate ABC must already exist.
+    if [[ ! -f "$CAND_ABC" ]]; then
+        echo "No candidate ABC for '$TUNE' at:" >&2
+        echo "  $CAND_ABC" >&2
+        echo "--no-export reuses an existing candidate; run a normal verify pass first." >&2
+        exit 1
+    fi
+elif [[ ! -f "$CLEAN_OMR" ]]; then
     echo "No clean.omr for '$TUNE' at:" >&2
     echo "  $CLEAN_OMR" >&2
     echo "Run phase-1 OMR first:" >&2
@@ -119,7 +207,9 @@ build_compare() {  # (re)build the side-by-side compare PNG from the current ren
 # ── Step 1: Audiveris review ──────────────────────────────────────────────────
 # Skipped when --mvt N is given: the OMR was already corrected + saved on the
 # first pass, so re-picking a movement just re-exports — no need to redo the GUI.
-if [[ -z "$MVT" ]]; then
+if [[ $NO_EXPORT -eq 1 ]]; then
+    echo "--no-export given — skipping Audiveris; reusing existing candidate ABC."
+elif [[ -z "$MVT" ]]; then
     echo "Opening Audiveris on clean.omr (close the window when corrections are done)..."
     $AUDIVERIS "$CLEAN_OMR" >/dev/null 2>&1 &
     APID=$!
@@ -138,18 +228,23 @@ else
 fi
 
 # ── Step 2: Export ────────────────────────────────────────────────────────────
-echo "Exporting → candidate ABC..."
-if ! bash "${HERE}/export_tune.sh" "$TUNE" ${MVT:+--mvt "$MVT"}; then
-    echo "" >&2
-    echo "export_tune.sh did not finish." >&2
-    if [[ -z "$MVT" ]]; then
-        echo "If it reported a MOVEMENT SPLIT: inspect the per-movement ABCs it listed," >&2
-        echo "then re-run picking the movement (no need to redo Audiveris):" >&2
-        echo "  bash ${HERE}/$(basename "${BASH_SOURCE[0]}") \"$TUNE\" --mvt 1" >&2
-    else
-        echo "Resolve the error above, then re-run." >&2
+if [[ $NO_EXPORT -eq 1 ]]; then
+    echo "Skipping export — using existing candidate ABC:"
+    echo "  $CAND_ABC"
+else
+    echo "Exporting → candidate ABC..."
+    if ! bash "${HERE}/export_tune.sh" "$TUNE" ${MVT:+--mvt "$MVT"}; then
+        echo "" >&2
+        echo "export_tune.sh did not finish." >&2
+        if [[ -z "$MVT" ]]; then
+            echo "A movement split is merged automatically now; if a later movement is" >&2
+            echo "actually a stray fragment, force a single one (no need to redo Audiveris):" >&2
+            echo "  bash ${HERE}/$(basename "${BASH_SOURCE[0]}") \"$TUNE\" --mvt 1" >&2
+        else
+            echo "Resolve the error above, then re-run." >&2
+        fi
+        exit 2
     fi
-    exit 2
 fi
 
 # ── Step 3: Mechanical title fix (BEFORE EasyABC) ─────────────────────────────
@@ -227,4 +322,21 @@ else
     echo "  git add \"$CAND_ABC\" && bash ${HERE}/promote_tune.sh \"$TUNE\" \\"
     echo "    && git add \"${PIPELINE_DIR}/abc/${TUNE}-verified.abc\" \\"
     echo "    && git commit -m \"feat: verify ${TUNE}\""
+fi
+
+# ── Loop: advance to the next queue tune ──────────────────────────────────────
+if [[ $LOOP -eq 1 ]]; then
+    # Remember this tune for the session so the loop steps past it even if it
+    # wasn't promoted (promoted ones drop out via their -verified.abc anyway).
+    [[ -n "$SEEN_FILE" ]] && printf '%s\n' "$TUNE" >> "$SEEN_FILE"
+    if NEXT="$(pick_next_tune)"; then
+        echo ""
+        echo "── Next in queue: $NEXT ──"
+        exec "${HERE}/$(basename "${BASH_SOURCE[0]}")" \
+            ${QUEUE:+--queue-file "$QUEUE"} --loop
+    else
+        echo ""
+        echo "Queue complete — no more verify-eligible tunes."
+        [[ -n "$SEEN_FILE" && -f "$SEEN_FILE" ]] && rm -f "$SEEN_FILE"
+    fi
 fi

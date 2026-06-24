@@ -4,13 +4,16 @@
 #
 # Handles the movement-split case: when Audiveris splits a score into movements,
 # batch export writes clean.mvt1.mxl / clean.mvt2.mxl ... instead of clean.mxl.
-# In that case the top-level clean.mxl is STALE — this script refuses to use it,
-# lists the movement files, converts each to ABC for inspection, and stops so a
-# human can pick the right movement (mvt1 is usually the tune; later movements are
-# often alternates or stray fragments).
+# In that case the top-level clean.mxl is STALE — this script ignores it and, by
+# default, MERGES all movements (in numeric order) into one candidate. Audiveris
+# frequently splits a single tune across movements (e.g. the first pass of the A
+# part lands in mvt1, the rest in mvt2), so keeping only one silently drops real
+# music — the "big chunks missing" bug. Per-movement ABCs are still written for
+# inspection. Use --mvt N to force a single movement when a later one is genuinely
+# a stray fragment or alternate you don't want.
 #
 # Usage:
-#   bash export_tune.sh "Tune Name"            # normal: expects single clean.mxl
+#   bash export_tune.sh "Tune Name"            # single clean.mxl, or merge all movements
 #   bash export_tune.sh "Tune Name" --mvt 1    # force a specific movement as final
 #
 # Output: abc/<Tune>-candidate.abc  +  renders/<Tune>-candidate.render.png
@@ -47,8 +50,8 @@ open(os.environ['ABC_OUT'],'w').write(convert_xml2abc(file_to_convert=os.environ
     fi
 }
 
-# Clear old movement files so we only see this run's output.
-rm -f "$TDIR"/clean.mvt*.mxl
+# Clear old movement + merge files so we only see this run's output.
+rm -f "$TDIR"/clean.mvt*.mxl "$TDIR"/clean.merged.mxl
 
 echo "Exporting $TUNE ..."
 $AUDIVERIS -batch -export "$OMR" -output "$TDIR" 2>&1 \
@@ -62,6 +65,9 @@ FINAL_ABC="${PIPELINE_DIR}/abc/${TUNE}-candidate.abc"
 mkdir -p "${PIPELINE_DIR}/abc" "${PIPELINE_DIR}/renders"
 
 if [[ ${#MVTS[@]} -gt 0 ]]; then
+    # Sort movements numerically (mvt1, mvt2, ... mvt10) so the merge follows the
+    # score order rather than lexical glob order.
+    mapfile -t MVTS < <(printf '%s\n' "${MVTS[@]}" | sort -V)
     echo ""
     echo "⚠ MOVEMENT SPLIT — Audiveris wrote ${#MVTS[@]} movement file(s); top-level clean.mxl is STALE."
     for m in "${MVTS[@]}"; do
@@ -75,12 +81,15 @@ if [[ ${#MVTS[@]} -gt 0 ]]; then
         SRC="$TDIR/clean.mvt${FORCE_MVT}.mxl"
         [[ -f "$SRC" ]] || { echo "No movement $FORCE_MVT"; exit 1; }
         mxl2abc "$SRC" "$FINAL_ABC"
-        echo "→ final = mvt${FORCE_MVT}: $FINAL_ABC"
+        echo "→ final = mvt${FORCE_MVT} (forced): $FINAL_ABC"
     else
-        echo ""
-        echo "Inspect the per-movement ABCs above, then re-run with --mvt N to pick the tune."
-        echo "(mvt1 is usually the main tune.)"
-        exit 2
+        # Default: merge ALL movements, in order, into one candidate so a tune
+        # split across movements stays whole. Override with --mvt N when a later
+        # movement is genuinely a stray fragment or alternate you don't want.
+        MERGED="$TDIR/clean.merged.mxl"
+        "$VENV" "${HERE}/merge_movements.py" "$MERGED" "${MVTS[@]}"
+        mxl2abc "$MERGED" "$FINAL_ABC"
+        echo "→ final = merged ${#MVTS[@]} movements: $FINAL_ABC"
     fi
 else
     mxl2abc "$TDIR/clean.mxl" "$FINAL_ABC"
