@@ -45,6 +45,7 @@ HTML
 firefox "$COMPARE_HTML" >/dev/null 2>&1 &
 
 # Rebuild on every save (mtime poll — no inotify dependency).
+trap 'exit 0' INT TERM
 last=$(stat -c %Y "$CAND_ABC" 2>/dev/null || echo 0)
 while sleep 1; do
     now=$(stat -c %Y "$CAND_ABC" 2>/dev/null || echo 0)
