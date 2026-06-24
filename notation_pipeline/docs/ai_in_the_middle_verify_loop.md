@@ -138,13 +138,18 @@ without Claude having killed it):
 
 1. Stop the `live_compare.sh` watcher (kill the backgrounded PID).
 2. Rebuild the final compare once more so it reflects the last save.
-3. Run the promote script, then the guarded add/commit:
+3. Track the candidate, run the promote script, then the guarded add/commit:
 
 ```bash
-bash notation_pipeline/bin/promote_tune.sh "<Tune>" \
+git add "notation_pipeline/abc/<Tune>-candidate.abc" \
+  && bash notation_pipeline/bin/promote_tune.sh "<Tune>" \
   && git add "notation_pipeline/abc/<Tune>-verified.abc" \
   && git commit -m "feat: verify <Tune>"
 ```
+
+The leading `git add` of the candidate is required: `promote_tune.sh` does a
+`git mv`, which fails on an untracked file (new candidates are untracked until
+added). This mirrors the inline chain in `verify_tune.sh`.
 
 `promote_tune.sh` does a `git mv` of the candidate ABC to
 `-verified.abc`, re-renders the verified PNG, removes the now-stale candidate
