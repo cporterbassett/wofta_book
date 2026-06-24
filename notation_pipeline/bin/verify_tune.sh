@@ -138,6 +138,10 @@ fi
 
 # --list: print the remaining eligible tunes (queue order, or worst-first) and exit.
 if [[ $DO_LIST -eq 1 ]]; then
+    if [[ -z "$QUEUE" && ! -f "$HEALTH_TSV" ]]; then
+        echo "No health_scores.tsv at $HEALTH_TSV — run phase-1 scoring, or use --queue." >&2
+        exit 1
+    fi
     src="${QUEUE:+queue: $QUEUE}"; echo "Remaining verify-eligible tunes (${src:-worst-first}):"
     n=0
     while IFS= read -r tune; do
