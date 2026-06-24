@@ -177,9 +177,8 @@ RENDER="${PIPELINE_DIR}/renders/${TUNE}-candidate.render.png"
 SCAN="${IMAGES_DIR}/source_images/${TUNE}.png"
 
 # Safe slug for /tmp filenames (avoids spaces/apostrophes in file:// URLs).
-SLUG="$(printf '%s' "$TUNE" | tr -c 'A-Za-z0-9' '_')"
+SLUG="$(basename "$CAND_ABC" | tr -c 'A-Za-z0-9' '_')"
 COMPARE_PNG="/tmp/${SLUG}.compare.png"
-COMPARE_HTML="/tmp/${SLUG}.compare.html"
 
 # ── Precondition ──────────────────────────────────────────────────────────────
 if [[ $NO_EXPORT -eq 1 ]]; then
