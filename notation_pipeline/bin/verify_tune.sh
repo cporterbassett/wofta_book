@@ -264,38 +264,8 @@ open(f, 'w').write(txt)
 PY
 
 # ── Step 4: Live compare + EasyABC ────────────────────────────────────────────
-echo "Building initial compare..."
-build_compare || echo "  (compare build had a hiccup — continuing)"
-
-# Auto-refreshing page: the <img> reloads itself with a cache-buster so saves
-# show up without piling new Firefox tabs. img src is the basename (same dir).
-cat > "$COMPARE_HTML" <<HTML
-<!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>${TUNE} — compare</title>
-<style>body{margin:0;background:#222;text-align:center}
-img{display:inline-block;max-width:100%;height:auto}</style>
-</head><body>
-<img id="c" src="${SLUG}.compare.png" alt="compare">
-<script>
-setInterval(function(){
-  document.getElementById('c').src='${SLUG}.compare.png?t='+Date.now();
-}, 1500);
-</script></body></html>
-HTML
-firefox "$COMPARE_HTML" >/dev/null 2>&1 &
-
-# Background watcher: poll the candidate ABC's mtime (no inotify dependency) and
-# rebuild the compare on every save from EasyABC.
-(
-    last=$(stat -c %Y "$CAND_ABC" 2>/dev/null || echo 0)
-    while sleep 1; do
-        now=$(stat -c %Y "$CAND_ABC" 2>/dev/null || echo 0)
-        if [[ "$now" != "$last" ]]; then
-            last="$now"
-            build_compare
-        fi
-    done
-) &
+echo "Starting live compare watcher..."
+"${HERE}/live_compare.sh" "$CAND_ABC" "$RENDER" "$SCAN" &
 WATCHER=$!
 # Make sure the watcher dies with us no matter how we exit.
 trap 'kill "$WATCHER" 2>/dev/null' EXIT
