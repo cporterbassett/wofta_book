@@ -29,6 +29,9 @@
 #   bash verify_tune.sh --no-export "Tune"  # skip Audiveris AND re-export; reuse the
 #                                           # existing candidate ABC (e.g. one you hand-fixed)
 #                                           # and go straight to live compare + EasyABC
+#   bash verify_tune.sh --export-only "Tune"  # Audiveris + export, then STOP (no
+#                                             # title fix, no EasyABC). Seam for an
+#                                             # AI cleanup pass; resume with --no-export.
 #
 # Parked tunes live in notation_pipeline/verify_skip.txt (one name per line) and
 # are stepped over by auto-pick until you remove them (e.g. `vi` the file).
@@ -106,20 +109,27 @@ DO_LIST=0
 LOOP=0
 MVT=""
 NO_EXPORT=0
+EXPORT_ONLY=0
 ARGS=()
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --skip)       DO_SKIP=1; shift ;;
-        --queue)      QUEUE="$DEFAULT_QUEUE"; shift ;;
-        --queue-file) QUEUE="${2:?--queue-file needs a path}"; shift 2 ;;
-        --loop)       LOOP=1; shift ;;
-        --list)       DO_LIST=1; shift ;;
-        --mvt)        MVT="${2:?--mvt needs a movement number}"; shift 2 ;;
-        --no-export)  NO_EXPORT=1; shift ;;
-        *)            ARGS+=("$1"); shift ;;
+        --skip)        DO_SKIP=1; shift ;;
+        --queue)       QUEUE="$DEFAULT_QUEUE"; shift ;;
+        --queue-file)  QUEUE="${2:?--queue-file needs a path}"; shift 2 ;;
+        --loop)        LOOP=1; shift ;;
+        --list)        DO_LIST=1; shift ;;
+        --mvt)         MVT="${2:?--mvt needs a movement number}"; shift 2 ;;
+        --no-export)   NO_EXPORT=1; shift ;;
+        --export-only) EXPORT_ONLY=1; shift ;;
+        *)             ARGS+=("$1"); shift ;;
     esac
 done
 set -- ${ARGS[@]+"${ARGS[@]}"}
+
+if [[ $EXPORT_ONLY -eq 1 && $NO_EXPORT -eq 1 ]]; then
+    echo "--export-only and --no-export are opposites; pick one." >&2
+    exit 2
+fi
 
 # --list / --loop default to the standard queue file when none was named.
 if [[ ( $DO_LIST -eq 1 || $LOOP -eq 1 ) && -z "$QUEUE" ]]; then
@@ -244,6 +254,15 @@ else
         fi
         exit 2
     fi
+fi
+
+# ── --export-only: stop here. Claude's stage-2 cleanup owns the title fix,
+# chords, linebreaks, etc., then resumes review via the live compare + EasyABC.
+if [[ $EXPORT_ONLY -eq 1 ]]; then
+    echo ""
+    echo "--export-only done. Candidate ABC ready for AI cleanup:"
+    echo "  $CAND_ABC"
+    exit 0
 fi
 
 # ── Step 3: Mechanical title fix (BEFORE EasyABC) ─────────────────────────────
