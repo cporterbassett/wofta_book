@@ -1,0 +1,12 @@
+X:1
+T:Cumberland Gap
+C:Kentucky arr. Trinka
+L:1/16
+M:2/4
+I:linebreak $
+K:none
+V:1 treble nm="Voice" snm="Voice"
+V:1
+"C" E2D2 C4 |"C" EEGG"F" A4 |"C" G2E2 C4 |"F" A,A,CC"C" C4 |$"C" E2D2 C4 |"C" EEGG"F" A4 | %6
+"C" GGE2 C2C2 |"F" A,A,C2 C4 |$"C" EED2 C4 |"C" EEG2 A4- | A8- |"F" A4 (A2<c2-) | c4 G4- |$ %13
+ G4"C" A2G2 | E2C2"F" A,A,C2 |"C" C8 :| %16

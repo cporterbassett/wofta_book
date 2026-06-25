@@ -28,19 +28,34 @@ TMPABC="${STEM}.render.tmp.abc"
 # measure numbers at each line start; bold chord symbols and bold 1./2. volta numbers.
 # %%contbarnb 1 = count 1st/2nd endings as SEPARATE measures (matches the WOFTA
 # scans' numbering, e.g. line 3 of Jerusalem's Ridge starts at m10 not m9).
-printf '%%%%measurenb 0\n%%%%contbarnb 1\n%%%%gchordfont Helvetica-Bold 12\n%%%%repeatfont Helvetica-Bold 12\n' > "$TMPABC"
-cat "$ABC" >> "$TMPABC"
+render() {
+    local extra="$1"
+    {
+        printf '%s' "$extra"
+        printf '%%%%measurenb 0\n%%%%contbarnb 1\n%%%%gchordfont Helvetica-Bold 12\n%%%%repeatfont Helvetica-Bold 12\n'
+        cat "$ABC"
+    } > "$TMPABC"
+    abcm2ps -O "$PS" -s 1.0 -m 0.5cm "$TMPABC" 2>&1
+}
 
 # Render to PostScript first (abcm2ps PostScript output is the most faithful).
 # abcm2ps exits non-zero on cosmetic warnings (e.g. "Line too much shrunk" on
 # long/dense tunes) while still emitting a valid PS — don't let that abort the
 # script (and, downstream, the verify pipeline's commit). Only a MISSING PS is a
 # real failure. Mirrors the abcm2ps tolerance in make_pdf.py.
-abcm2ps \
-    -O "$PS" \
-    -s 1.0 \
-    -m 0.5cm \
-    "$TMPABC" || true
+#
+# abcm2ps's default page width is narrow enough that a dense line (lots of
+# 16th notes + chord symbols) can overflow by even 1pt, silently triggering an
+# UNWANTED extra auto-wrap that splits one intended staff line into two — which
+# then throws off line-by-line lyric alignment (each w: line attaches to the
+# music line above it). make_pdf.py already retries wider on this; mirror that
+# here so the standalone live-compare view matches the book's rendering.
+STDERR="$(render '' || true)"
+if grep -qi "overfull\|shrunk" <<<"$STDERR"; then
+    STDERR="$(render '%%pagewidth 1000pt
+' || true)"
+fi
+echo "$STDERR" >&2
 
 rm -f "$TMPABC"
 
