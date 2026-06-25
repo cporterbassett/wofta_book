@@ -9,12 +9,12 @@ K:A
 	exch 7 sub exch
 	2 copy moveto 0 26 rlineto stroke
 	2 copy moveto 4 0 rlineto stroke
-	2 copy 26 add moveto 4 0 rlineto stroke grestore } def
+	2 copy 26 add moveto 4 0 rlineto stroke pop pop pop grestore } def
 /rbrk {	gsave 1.6 setlinewidth 0 setlinecap
 	exch 22 add exch
 	2 copy moveto 0 26 rlineto stroke
 	2 copy moveto -4 0 rlineto stroke
-	2 copy 26 add moveto -4 0 rlineto stroke grestore } def
+	2 copy 26 add moveto -4 0 rlineto stroke pop pop pop grestore } def
 %%endps
 %%deco lbrk 2 lbrk 26 6 0
 %%deco rbrk 2 rbrk 26 0 12

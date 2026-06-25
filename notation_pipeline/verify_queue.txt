@@ -1,0 +1,25 @@
+# Sand and Sawdust 2026 — verify queue (verify_tune.sh --queue --loop)
+# One canonical tune name per line, in the order to verify. Lines starting with
+# '#' and blank lines are ignored. A tune drops out automatically once its
+# abc/<Tune>-verified.abc exists. Edit freely to reorder / add / remove.
+# See notation_pipeline/reports/sand_and_sawdust_2026.md for the full list.
+
+# --- 14 pre-existing OMR drafts ---
+Tombigbee Waltz
+Down in Little Egypt
+Red Apple Rag
+Snake River Reel
+Golden Ticket, The
+Me and My Fiddle
+Logger - Pays de Haut, The
+Whistling Rufus
+Camp Meeting on the Fourth of July
+Pat(T)'s Country
+Road House Ramble
+Bill Cheatham
+Granny Will Your Dog Bite
+
+# --- 3 sourced 2026-06-23 from WOTFAhandouts (rough OMR, song lead sheets) ---
+Roll the Old Chariot Along
+Sugar Moon
+Kansas City Kitty

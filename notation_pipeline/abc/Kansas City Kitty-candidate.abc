@@ -1,0 +1,21 @@
+X:1
+T:Kansas City Kitty
+L:1/4
+M:4/4
+I:linebreak $
+%%beginps
+% Label the spanning 2nd-ending bracket "final" instead of "2"; lift brackets to clear chords
+/repbra_orig /repbra load def
+/repbra { 14 add 5 index (2) eq { 6 -1 roll pop (final) 6 1 roll } if repbra_orig } bind def
+%%endps
+K:G
+V:1 treble
+V:1
+ "G6"D E G B |"C#o" (_B2 B) e/_e/ |"G6" d B G D |"E7" (E2 E) D |$
+"A7" ^C E G B |"D7" ^A B D E | "G6"G2 "G#o"z2 |"Am7"z2 "D7"z2| $
+  | "G6" D E G B |"C#o" (_B2 B) e/_e/ |"G6" d B G D |"E7" (E2 E) D |$
+ "A7"^C E G B |"D7" ^A B D E |"G6" G2 z2 |z4 |$
+"B7"B B c c |  B B c c |"E7" B2 e2 | z4 |$
+"A7" A A B B | A A B B |"D7" A2 d2 |z2 "D7(#5)" z2 ||$
+"G6" D E G B |"C#o" (_B2 B) e/_e/ |"G6"  d B G D F2 |"E7" (E2 E )D |$
+"A7" ^C E G B |"D7" ^A B D E |1"G" G2 "G#o"z2 |"Am7" z2 "D7"z2 :|2"G" G2 "G6"z2 |z4|]

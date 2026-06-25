@@ -1,0 +1,15 @@
+X:1
+T:Pat(T)'s Country
+C:Music by Roy Warhurst (Patti Kusturok repertoire)
+M:4/4
+L:1/8
+I:linebreak $
+%%contbarnb 1
+K:D
+.D2 .E2 |:"D" {E}F4- FDFA |"A7" G4- GF (3Adf |"D" a3 a (3f2 d2 B2 |"G" G4- GDED |"D" F2 A2- AFAd |$
+"D" B2 A2 FEDB, |"A7" A,3 B, C3 D | EFGA Bd (3B/d/B/A |"D" F4- FDFA |"A7" G4- GF (3Adf |$
+"D" a3 a (3f2 d2 B2 |"G" G4- GDED |"D" F2 A2- A2 (3DED |"A7" F2 E2 C2 A,2 |"D" D4 "G"D3E |$
+"G" D4 .C2.B,2 |A,3 B, C3 D | "A7" E3 F GABd |"D" f3 d "G"g(f f)e/d/ |"D" f4 f2 =f2 |$
+"E7" e4 d2 B2 |"E7" ^G2 E2 D2 B,2 |"A7" A,3 B, C3 D |"A7" EFGA Bd (3B/d/B/A  |$
+"D" F4- FDFA |"A7" G4- GF (3Adf |"D" a3 a (3f2 d2 B2 |"G" G4- GDED |"D" F2 A2- A2 (3DED |$
+"A7" F2 E2 C2 A,2 |[1"D" D4 "G"D3 E |"D" D4 D2 E :|[2"D" D4 "G"D3 E |"D" D8 |]
