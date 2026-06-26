@@ -43,7 +43,7 @@ def main():
     mp.build_book(entries, output=main_out, sepia=True, toc_alphabetical=True)
 
     print(f"\n=== Comparison PDF: {len(verified)} engraved tune(s), portrait packed ===")
-    mp.make_comparison_pdf(verified, scans, comp_out)
+    mp.make_comparison_pdf(verified, scans, comp_out, sepia=True)
 
     print("\nDone.")
 

@@ -20,7 +20,6 @@ import math
 import os
 import re
 import subprocess
-import sys
 import tempfile
 
 import img2pdf
@@ -37,10 +36,6 @@ GAP_PREFERRED = 28
 GAP_FALLBACK = 14
 PNG_DPI = 150
 
-# Sepia tint behind engraved (ABC-rendered) tunes, so the crisp vector
-# engravings read warm and are easy to tell apart from the scans. Affects ONLY
-# engraved tunes; scans are left untouched. Turn off with `SEPIA=0 ./make_pdf.sh`.
-SEPIA = os.environ.get("SEPIA", "1") != "0"
 SEPIA_RGB = (0.973, 0.937, 0.851)          # #f8efd9 — slight cream
 
 
@@ -532,31 +527,6 @@ def pack_pages(items, gap, usable_h):
     return pages
 
 
-def render_content_page(out, fonts, page_items, usable_w, gap):
-    """Composite packed tunes onto a new letter page. Returns the page object."""
-    page_obj = new_page(out, PAGE_W, PAGE_H, fonts)
-    content = b""
-    y = PAGE_H - MARGIN_TOP
-    for i, (fname, scaled_h, pdf_bytes) in enumerate(page_items):
-        with Pdf.open(io.BytesIO(pdf_bytes)) as src:
-            src_w = float(src.pages[0].mediabox[2])
-            xobj = out.copy_foreign(src.pages[0].as_form_xobject())
-        xobj_name = f"/Fm{i}"
-        page_obj.Resources.XObject[xobj_name] = xobj
-        scale = usable_w / src_w
-        tx = MARGIN_X
-        ty = y - scaled_h
-        if SEPIA and fname.endswith(".abc"):
-            r, g, b = SEPIA_RGB
-            content += (f"q {r:.4f} {g:.4f} {b:.4f} rg "
-                        f"{tx:.2f} {ty:.2f} {usable_w:.2f} {scaled_h:.2f} re f Q\n").encode()
-        content += (f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm "
-                    f"{xobj_name} Do Q\n").encode()
-        y = ty - gap
-    page_obj.Contents = out.make_stream(content)
-    return page_obj
-
-
 TOC_TITLE_H = 44
 TOC_LINE_H = 14
 TOC_FONT = 10
@@ -627,47 +597,6 @@ def _approx_w(text, size):
                0.78 if c in "mwMW" else 0.556 for c in text) * size
 
 
-def make_main_pdf(pairs, output):
-    """pairs: list of (tune_name, file_path) already in display order."""
-    usable_w = PAGE_W - 2 * MARGIN_X
-    usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
-    name_of = {path: name for name, path in pairs}
-
-    items = []
-    for i, (name, f) in enumerate(pairs, 1):
-        label = "ABC" if f.endswith(".abc") else "PNG"
-        print(f"  [{i}/{len(pairs)}] {label}: {name}")
-        pdf_bytes = abc_to_pdf_bytes(f) if f.endswith(".abc") else png_to_pdf_bytes(f)
-        w, h = get_pdf_size(pdf_bytes)
-        items.append((f, h * (usable_w / w), pdf_bytes))
-
-    pages = pack_pages(items, GAP_FALLBACK, usable_h)
-    _, _, _, _, n_toc_pages = toc_geometry(len(items))
-
-    print(f"\nPacking {len(items)} tunes onto {len(pages)} content pages "
-          f"(+{n_toc_pages} TOC page(s))...")
-    out = Pdf.new()
-    fonts = make_fonts(out)
-
-    tune_dest = {}   # tune name -> (printed_pageno, page_obj)
-    for ci, page_items in enumerate(pages, 1):
-        content_h = sum(h for _, h, _ in page_items)
-        gap = (GAP_PREFERRED
-               if content_h + (len(page_items) - 1) * GAP_PREFERRED <= usable_h
-               else GAP_FALLBACK)
-        page_obj = render_content_page(out, fonts, page_items, usable_w, gap)
-        printed = n_toc_pages + ci
-        for fname, _, _ in page_items:
-            tune_dest[name_of[fname]] = (printed, page_obj)
-
-    entries = [(name, tune_dest[name][0], tune_dest[name][1])
-               for name in sorted(tune_dest, key=lambda s: s.lower().replace("-", " "))]
-    build_toc_pages(out, fonts, entries, n_toc_pages)
-
-    print(f"Writing {output}...")
-    out.save(output)
-
-
 # --- PDF 2: portrait side-by-side comparison, packed -----------------------
 
 COMP_TITLE_H = 28      # space above each pair: tune name + panel captions
@@ -675,7 +604,7 @@ COMP_PANEL_GAP = 18    # horizontal gap between the scan + engraving columns
 COMP_BLOCK_GAP = 24    # vertical gap between consecutive tune rows
 
 
-def render_comparison_page(out, fonts, page_blocks, panel_w, left_x, right_x):
+def render_comparison_page(out, fonts, page_blocks, panel_w, left_x, right_x, sepia):
     """One portrait page of stacked tune rows: scan left, engraving right."""
     page_obj = new_page(out, PAGE_W, PAGE_H, fonts)
     content = b""
@@ -694,13 +623,13 @@ def render_comparison_page(out, fonts, page_blocks, panel_w, left_x, right_x):
             content += text_op("(no scan)", left_x, panel_bottom + panels_h / 2,
                                "/F1", 10)
         content += embed_form(out, page_obj, eng_bytes, f"/E{idx}", right_box,
-                              sepia=SEPIA)
+                              sepia=sepia)
         y = top - block_h - COMP_BLOCK_GAP
     page_obj.Contents = out.make_stream(content)
     return page_obj
 
 
-def make_comparison_pdf(verified, scans, output):
+def make_comparison_pdf(verified, scans, output, sepia=True):
     tunes = sorted(verified, key=lambda s: s.lower().replace("-", " "))
     usable_w = PAGE_W - 2 * MARGIN_X
     usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
@@ -749,7 +678,7 @@ def make_comparison_pdf(verified, scans, output):
     tune_dest = {}   # tune name -> (printed_pageno, page_obj)
     for ci, page_blocks in enumerate(pages, 1):
         page_obj = render_comparison_page(out, fonts, page_blocks,
-                                          panel_w, left_x, right_x)
+                                          panel_w, left_x, right_x, sepia)
         printed = n_toc_pages + ci
         for block in page_blocks:
             tune_dest[block[0]] = (printed, page_obj)
@@ -762,36 +691,3 @@ def make_comparison_pdf(verified, scans, output):
     out.save(output)
 
 
-# --- entry point -----------------------------------------------------------
-
-def main():
-    main_out = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
-    comp_out = os.path.splitext(main_out)[0] + "_comparison.pdf"
-
-    HERE = os.path.dirname(os.path.abspath(__file__))
-    SCAN_DIR = os.path.join(HERE, "source_images")
-    ABC_DIR = os.path.join(HERE, "notation_pipeline", "abc")
-
-    scans = {stem_of(p): p for p in glob.glob(os.path.join(SCAN_DIR, "*.png"))}
-    verified = {os.path.basename(p)[:-len("-verified.abc")]: p
-                for p in glob.glob(os.path.join(ABC_DIR, "*-verified.abc"))}
-
-    tunes = sorted(set(scans) | set(verified), key=lambda s: s.lower().replace("-", " "))
-    pairs = [(t, verified[t] if t in verified else scans[t]) for t in tunes]
-    if not pairs:
-        print("No tunes found.", file=sys.stderr)
-        sys.exit(1)
-
-    n_eng = sum(1 for _, f in pairs if f.endswith(".abc"))
-    print(f"=== Book PDF: {len(pairs)} tunes "
-          f"({n_eng} engraved, {len(pairs) - n_eng} scanned) ===")
-    make_main_pdf(pairs, main_out)
-
-    print(f"\n=== Comparison PDF: {len(verified)} engraved tune(s), portrait packed ===")
-    make_comparison_pdf(verified, scans, comp_out)
-
-    print("\nDone.")
-
-
-if __name__ == "__main__":
-    main()
