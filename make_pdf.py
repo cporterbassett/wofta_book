@@ -18,6 +18,7 @@ import glob
 import io
 import math
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -220,6 +221,295 @@ def embed_form(out, page_obj, pdf_bytes, name, box, sepia=False):
     content += (f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm "
                 f"{name} Do Q\n").encode()
     return content
+
+
+# --- material renderers (kinds) --------------------------------------------
+
+TEXT_W = 540
+TEXT_FONT_SIZE = 11
+TEXT_LINE_H = 14.5
+
+_CHORD_TOKEN_RE = re.compile(
+    r'^[A-G][#b]?(m|M|maj|min|aug|dim|sus[24]?|add)?[0-9]{0,2}$'
+)
+
+
+def _is_chord_line(line):
+    """True if the line is chord names, slashes, or a section marker."""
+    stripped = line.strip()
+    if not stripped:
+        return False
+    if (stripped.startswith('[') or stripped.startswith('(Chorus')
+            or stripped.startswith('Chorus:') or stripped.startswith('Intro:')):
+        return True
+    no_parens = re.sub(r'\([^)]*\)', '', stripped).strip()
+    tokens = no_parens.split()
+    return bool(tokens) and all(
+        _CHORD_TOKEN_RE.match(t) or t == '/' for t in tokens
+    )
+
+
+def make_text_pdf_bytes(title, key_note, body_lines,
+                        font_size=TEXT_FONT_SIZE, line_h=TEXT_LINE_H):
+    """Clean Courier page: title, optional key note, then chords/lyrics."""
+    n_header = 1 + (1 if key_note else 0) + 1
+    h = 24 + n_header * line_h + len(body_lines) * line_h + 16
+    pdf = Pdf.new()
+    reg = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica))
+    bold = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold")))
+    mono = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Courier))
+    page_obj = pdf.make_indirect(Dictionary(
+        Type=Name.Page,
+        MediaBox=Array([0, 0, TEXT_W, h]),
+        Resources=Dictionary(Font=Dictionary(F1=reg, F2=bold, F3=mono)),
+        Contents=pdf.make_stream(b""),
+    ))
+    pdf.pages.append(pikepdf.Page(page_obj))
+    y = h - 22
+    content = text_op(title, 16, y, "/F2", 17)
+    y -= line_h
+    if key_note:
+        content += text_op(key_note, 16, y, "/F1", 11)
+        y -= line_h
+    y -= line_h
+    for line in body_lines:
+        content += text_op(line, 16, y, "/F3", font_size)
+        y -= line_h
+    page_obj.Contents = pdf.make_stream(content)
+    buf = io.BytesIO()
+    pdf.save(buf)
+    return buf.getvalue()
+
+
+def make_text_pdf_bytes_2col(title, key_note, body_lines,
+                             font_size=11, line_h=14.5):
+    """Two-column layout with bold Courier for chord lines."""
+    mid = len(body_lines) // 2
+    blank_indices = [i for i, l in enumerate(body_lines) if not l.strip()]
+    split_at = min(blank_indices, key=lambda i: abs(i - mid), default=mid)
+    col1 = body_lines[:split_at]
+    col2 = body_lines[split_at + 1:]
+
+    col_lines = max(len(col1), len(col2))
+    n_header = 1 + (1 if key_note else 0) + 1
+    page_w = 612
+    margin_x = 18
+    col_gap = 18
+    col_w = (page_w - 2 * margin_x - col_gap) / 2
+    h = 24 + n_header * line_h + col_lines * line_h + 16
+
+    pdf = Pdf.new()
+    reg = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica))
+    bold_h = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold")))
+    mono = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Courier))
+    mono_bold = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Courier-Bold")))
+    page_obj = pdf.make_indirect(Dictionary(
+        Type=Name.Page,
+        MediaBox=Array([0, 0, page_w, h]),
+        Resources=Dictionary(Font=Dictionary(F1=reg, F2=bold_h, F3=mono, F4=mono_bold)),
+        Contents=pdf.make_stream(b""),
+    ))
+    pdf.pages.append(pikepdf.Page(page_obj))
+
+    y = h - 22
+    content = text_op(title, margin_x, y, "/F2", 17)
+    y -= line_h
+    if key_note:
+        content += text_op(key_note, margin_x, y, "/F1", 11)
+        y -= line_h
+    y -= line_h
+
+    col2_x = margin_x + col_w + col_gap
+    for col_lines_list, x in ((col1, margin_x), (col2, col2_x)):
+        cy = y
+        for line in col_lines_list:
+            font = "/F4" if _is_chord_line(line) else "/F3"
+            content += text_op(line, x, cy, font, font_size)
+            cy -= line_h
+
+    page_obj.Contents = pdf.make_stream(content)
+    buf = io.BytesIO()
+    pdf.save(buf)
+    return buf.getvalue()
+
+
+def crop_pdf_page(pdf_bytes, crop):
+    """Replace the first page's MediaBox with crop=(left, bottom, right, top)."""
+    l, b, r, t = crop
+    with Pdf.open(io.BytesIO(pdf_bytes)) as src:
+        src.pages[0].mediabox = Array([l, b, r, t])
+        buf = io.BytesIO()
+        src.save(buf)
+    return buf.getvalue()
+
+
+def split_pdf_pages(pdf_bytes, only=None):
+    """Return list of single-page pdf bytes; `only` = 0-based indices to keep."""
+    out = []
+    with Pdf.open(io.BytesIO(pdf_bytes)) as src:
+        indices = only if only is not None else range(len(src.pages))
+        for i in indices:
+            single = Pdf.new()
+            single.pages.append(src.pages[i])
+            buf = io.BytesIO()
+            single.save(buf)
+            out.append(buf.getvalue())
+    return out
+
+
+def odt_to_pdf_bytes(odt_path):
+    """Convert a LibreOffice ODT to PDF bytes using headless LibreOffice."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        subprocess.run(
+            ["libreoffice", "--headless", "--convert-to", "pdf",
+             "--outdir", tmpdir, odt_path],
+            check=True, capture_output=True,
+        )
+        stem = os.path.splitext(os.path.basename(odt_path))[0]
+        with open(os.path.join(tmpdir, stem + ".pdf"), "rb") as f:
+            return f.read()
+
+
+def _render_abc(path, options):
+    return [(abc_to_pdf_bytes(path), True)]
+
+
+def _render_png(path, options):
+    return [(png_to_pdf_bytes(path), False)]
+
+
+def _render_pdf(path, options):
+    with open(path, "rb") as f:
+        raw = f.read()
+    pages = split_pdf_pages(raw, only=options.get("pages"))
+    crop = options.get("crop")
+    if crop:
+        pages = [crop_pdf_page(p, crop) for p in pages]
+    return [(p, False) for p in pages]
+
+
+def _render_odt(path, options):
+    raw = odt_to_pdf_bytes(path)
+    pages = split_pdf_pages(raw, only=options.get("pages"))
+    crop = options.get("crop")
+    if crop:
+        pages = [crop_pdf_page(p, crop) for p in pages]
+    return [(p, False) for p in pages]
+
+
+def _render_text(path, options):
+    with open(path) as f:
+        body_lines = f.read().splitlines()
+    pdf_bytes = make_text_pdf_bytes(
+        options["display_name"], options.get("key_note"), body_lines,
+        options.get("font_size", TEXT_FONT_SIZE),
+        options.get("line_h", TEXT_LINE_H),
+    )
+    return [(pdf_bytes, False)]
+
+
+def _render_text_2col(path, options):
+    with open(path) as f:
+        body_lines = f.read().splitlines()
+    pdf_bytes = make_text_pdf_bytes_2col(
+        options["display_name"], options.get("key_note"), body_lines,
+        options.get("font_size", 11), options.get("line_h", 14.5),
+    )
+    return [(pdf_bytes, False)]
+
+
+RENDERERS = {
+    "abc": _render_abc,
+    "png": _render_png,
+    "pdf": _render_pdf,
+    "odt": _render_odt,
+    "text": _render_text,
+    "text_2col": _render_text_2col,
+}
+
+
+def render_book_page(out, fonts, page_items, usable_w, gap, sepia):
+    """Composite packed items onto one letter page. page_items entries are
+    (display_name, scaled_h, pdf_bytes, is_engraved). A sepia wash is drawn
+    behind an item only when sepia and the item is engraved."""
+    page_obj = new_page(out, PAGE_W, PAGE_H, fonts)
+    content = b""
+    y = PAGE_H - MARGIN_TOP
+    for i, (name, scaled_h, pdf_bytes, is_engraved) in enumerate(page_items):
+        with Pdf.open(io.BytesIO(pdf_bytes)) as src:
+            src_w = float(src.pages[0].mediabox[2])
+            xobj = out.copy_foreign(src.pages[0].as_form_xobject())
+        xobj_name = f"/Fm{i}"
+        page_obj.Resources.XObject[xobj_name] = xobj
+        scale = usable_w / src_w
+        tx = MARGIN_X
+        ty = y - scaled_h
+        if sepia and is_engraved:
+            r, g, b = SEPIA_RGB
+            content += (f"q {r:.4f} {g:.4f} {b:.4f} rg "
+                        f"{tx:.2f} {ty:.2f} {usable_w:.2f} {scaled_h:.2f} re f Q\n").encode()
+        content += (f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm "
+                    f"{xobj_name} Do Q\n").encode()
+        y = ty - gap
+    page_obj.Contents = out.make_stream(content)
+    return page_obj
+
+
+def build_book(entries, *, output, sepia=False, toc_alphabetical=False):
+    """Build a packed tune book from entries = (display_name, kind, path, options).
+    sepia washes engraved items; toc_alphabetical sorts the TOC (else set-list
+    order). Multi-page sources and duplicate names collapse to first occurrence
+    in the TOC."""
+    usable_w = PAGE_W - 2 * MARGIN_X
+    usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
+
+    items = []  # (display_name, scaled_h, pdf_bytes, is_engraved)
+    for i, (name, kind, path, options) in enumerate(entries, 1):
+        print(f"  [{i}/{len(entries)}] {kind}: {name}")
+        opts = dict(options or {})
+        opts["display_name"] = name
+        for pdf_bytes, is_engraved in RENDERERS[kind](path, opts):
+            w, h = get_pdf_size(pdf_bytes)
+            items.append((name, h * (usable_w / w), pdf_bytes, is_engraved))
+
+    pages_h = pack_pages([(n, h, b) for n, h, b, _ in items],
+                         GAP_FALLBACK, usable_h)
+    # pack_pages preserves order; re-attach is_engraved by walking items in lockstep.
+    flat = iter(items)
+    pages = [[next(flat) for _ in page] for page in pages_h]
+
+    _, _, _, _, n_toc_pages = toc_geometry(len(items))
+    print(f"\nPacking {len(items)} item(s) onto {len(pages)} content pages "
+          f"(+{n_toc_pages} TOC page(s))...")
+
+    out = Pdf.new()
+    fonts = make_fonts(out)
+
+    tune_dest = {}  # display_name -> (printed_pageno, page_obj), first occurrence
+    for ci, page_items in enumerate(pages, 1):
+        content_h = sum(h for _, h, _, _ in page_items)
+        gap = (GAP_PREFERRED
+               if content_h + (len(page_items) - 1) * GAP_PREFERRED <= usable_h
+               else GAP_FALLBACK)
+        page_obj = render_book_page(out, fonts, page_items, usable_w, gap, sepia)
+        printed = n_toc_pages + ci
+        for name, _, _, _ in page_items:
+            if name not in tune_dest:
+                tune_dest[name] = (printed, page_obj)
+
+    if toc_alphabetical:
+        order = sorted(tune_dest, key=lambda s: s.lower().replace("-", " "))
+    else:
+        order, seen = [], set()
+        for name, _, _, _ in items:
+            if name not in seen:
+                seen.add(name)
+                order.append(name)
+    entries_toc = [(name, tune_dest[name][0], tune_dest[name][1]) for name in order]
+    build_toc_pages(out, fonts, entries_toc, n_toc_pages)
+
+    print(f"Writing {output}...")
+    out.save(output)
 
 
 # --- PDF 1: full book with table of contents -------------------------------
