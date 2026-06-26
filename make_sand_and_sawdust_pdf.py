@@ -7,8 +7,8 @@ Sugar Moon) are collapsed to their first occurrence.
 
 For each tune, uses the best material on hand:
   - verified ABC  (engraved, sepia wash)       -- most tunes
-  - candidate ABC (engraved, sepia wash)       -- Sugar Moon, Roll the Old
-    Chariot Along, Kansas City Kitty, Pat(T)'s Country: not yet verified
+  - candidate ABC (engraved, sepia wash)       -- Sugar Moon, Kansas City
+    Kitty, Pat(T)'s Country: not yet verified
   - real ABC notation found at the source      -- Old Aunt Jenny (no chords
     in the source; instrumental)
   - a real chords/lyrics PDF already downloaded -- Red Red Robin (text-only
@@ -21,6 +21,7 @@ Run via ./make_sand_and_sawdust_pdf.sh (activates the venv).
 """
 import io
 import os
+import re
 import sys
 
 import pikepdf
@@ -42,6 +43,36 @@ TEXT_LINE_H = 14.5
 TEXT_FONT_OVERRIDES = {
     "Catfish John": (9, 11.5),
 }
+
+# Tunes rendered in 2-column layout with bold chord lines.
+TEXT_2COL = {"Roll in My Sweet Baby's Arms"}
+
+# Per-tune MediaBox crop (left, bottom, right, top) in points, applied before
+# scaling to usable_w.  Strips the source PDF's internal margins so the content
+# fills usable_w at 1:1 scale instead of being shrunk.
+# Gumtree Canoe HTML used margin: 0.4in 0.5in → 29pt top/bottom, 36pt sides.
+PDF_CROP = {
+    "Gum Tree Canoe": (36, 29, 576, 367),
+}
+
+_CHORD_TOKEN_RE = re.compile(
+    r'^[A-G][#b]?(m|M|maj|min|aug|dim|sus[24]?|add)?[0-9]{0,2}$'
+)
+
+
+def _is_chord_line(line):
+    """True if the line is chord names, slashes, or a section marker."""
+    stripped = line.strip()
+    if not stripped:
+        return False
+    if (stripped.startswith('[') or stripped.startswith('(Chorus')
+            or stripped.startswith('Chorus:') or stripped.startswith('Intro:')):
+        return True
+    no_parens = re.sub(r'\([^)]*\)', '', stripped).strip()
+    tokens = no_parens.split()
+    return bool(tokens) and all(
+        _CHORD_TOKEN_RE.match(t) or t == '/' for t in tokens
+    )
 
 
 def make_text_pdf_bytes(title, key_note, body_lines, font_size=TEXT_FONT_SIZE, line_h=TEXT_LINE_H):
@@ -74,6 +105,75 @@ def make_text_pdf_bytes(title, key_note, body_lines, font_size=TEXT_FONT_SIZE, l
     page_obj.Contents = pdf.make_stream(content)
     buf = io.BytesIO()
     pdf.save(buf)
+    return buf.getvalue()
+
+
+def make_text_pdf_bytes_2col(title, key_note, body_lines,
+                             font_size=11, line_h=14.5):
+    """Two-column layout with bold Courier for chord lines."""
+    # Split at the blank line nearest the midpoint.
+    mid = len(body_lines) // 2
+    blank_indices = [i for i, l in enumerate(body_lines) if not l.strip()]
+    split_at = min(blank_indices, key=lambda i: abs(i - mid), default=mid)
+    col1 = body_lines[:split_at]
+    col2 = body_lines[split_at + 1:]  # skip the blank line itself
+
+    col_lines = max(len(col1), len(col2))
+    n_header = 1 + (1 if key_note else 0) + 1
+    page_w = 612  # use full letter width for 2-col
+    margin_x = 18
+    col_gap = 18
+    col_w = (page_w - 2 * margin_x - col_gap) / 2
+    h = 24 + n_header * line_h + col_lines * line_h + 16
+
+    pdf = pikepdf.Pdf.new()
+    reg = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1,
+                                       BaseFont=Name.Helvetica))
+    bold_h = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1,
+                                          BaseFont=Name("/Helvetica-Bold")))
+    mono = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1,
+                                        BaseFont=Name.Courier))
+    mono_bold = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1,
+                                             BaseFont=Name("/Courier-Bold")))
+    page_obj = pdf.make_indirect(Dictionary(
+        Type=Name.Page,
+        MediaBox=Array([0, 0, page_w, h]),
+        Resources=Dictionary(Font=Dictionary(F1=reg, F2=bold_h,
+                                             F3=mono, F4=mono_bold)),
+        Contents=pdf.make_stream(b""),
+    ))
+    pdf.pages.append(pikepdf.Page(page_obj))
+
+    y = h - 22
+    content = mp.text_op(title, margin_x, y, "/F2", 17)
+    y -= line_h
+    if key_note:
+        content += mp.text_op(key_note, margin_x, y, "/F1", 11)
+        y -= line_h
+    y -= line_h
+
+    col2_x = margin_x + col_w + col_gap
+    for col_lines_list, x in ((col1, margin_x), (col2, col2_x)):
+        cy = y
+        for line in col_lines_list:
+            font = "/F4" if _is_chord_line(line) else "/F3"
+            content += mp.text_op(line, x, cy, font, font_size)
+            cy -= line_h
+
+    page_obj.Contents = pdf.make_stream(content)
+    buf = io.BytesIO()
+    pdf.save(buf)
+    return buf.getvalue()
+
+
+def crop_pdf_page(pdf_bytes, crop):
+    """Return pdf_bytes with the first page's MediaBox replaced by `crop`
+    (left, bottom, right, top in points)."""
+    l, b, r, t = crop
+    with pikepdf.open(io.BytesIO(pdf_bytes)) as src:
+        src.pages[0].mediabox = Array([l, b, r, t])
+        buf = io.BytesIO()
+        src.save(buf)
     return buf.getvalue()
 
 
@@ -115,17 +215,17 @@ ENTRIES = [
     # ("Gum Tree Canoe", "text", os.path.join(REF_DIR, "Gum Tree Canoe - lyrics chords.txt"),
     #  "Key: G, transposed up from source key of D (paired with Tombigbee Waltz on the "
     #  "sheet, listed there as \"Guntree Canoe\")"),  # kept for future use
-    ("Gum Tree Canoe", "pdf", os.path.join(REF_DIR, "Gumtree Canoe_G.pdf"), None),
+    ("Gum Tree Canoe", "pdf", os.path.join(REF_DIR, "Gumtree Canoe_G.pdf"), [0]),
     ("Tombigbee Waltz", "abc", os.path.join(ABC_DIR, "Tombigbee Waltz-verified.abc"), None),
-    ("Red Red Robin", "text", os.path.join(REF_DIR, "Red Red Robin - lyrics chords.txt"), "Key: C"),
-    ("Roll in My Sweet Baby's Arms", "pdf", os.path.join(REF_DIR, "Roll in My Sweet Babies Arms chart.pdf"), None),
+    ("Red Red Robin", "pdf", os.path.join(REF_DIR, "red red robin.pdf"), None),
+    ("Roll in My Sweet Baby's Arms", "text", os.path.join(REF_DIR, "Roll in My Sweet Babys Arms - lyrics chords.txt"), "Key: G"),
     ("Down in Little Egypt", "abc", os.path.join(ABC_DIR, "Down in Little Egypt-verified.abc"), None),
     ("Rose in the Mountain", "abc", os.path.join(ABC_DIR, "Rose in the Mountain-verified.abc"), None),
     ("Rose in the Mountain", "pdf", os.path.join(REF_DIR, "Rose in the Mountain.pdf"), None),
-    ("Sugar Moon", "abc", os.path.join(ABC_DIR, "Sugar Moon-candidate.abc"), None),
+    ("Sugar Moon", "pdf", os.path.join(REF_DIR, "Sugar Moon.pdf"), None),
     ("Drunken Sailor", "text", os.path.join(REF_DIR, "Drunken Sailor - lyrics chords.txt"),
      "Key: em (transposed up from source key of Dm)"),
-    ("Roll the Old Chariot Along", "abc", os.path.join(ABC_DIR, "Roll the Old Chariot Along-candidate.abc"), None),
+    ("Roll the Old Chariot Along", "pdf", os.path.join(REF_DIR, "Roll the Old Chariot Along.pdf"), None),
     ("Red Apple Rag", "abc", os.path.join(ABC_DIR, "Red Apple Rag-verified.abc"), None),
     ("Snake River Reel", "abc", os.path.join(ABC_DIR, "Snake River Reel-verified.abc"), None),
     ("Kansas City Kitty", "abc", os.path.join(ABC_DIR, "Kansas City Kitty-candidate.abc"), None),
@@ -136,11 +236,7 @@ ENTRIES = [
     ("Dill Pickles Rag", "abc", os.path.join(ABC_DIR, "Dill Pickles Rag-verified.abc"), None),
     ("Golden Slippers", "abc", os.path.join(ABC_DIR, "Golden Slippers-verified.abc"), None),
     ("Red Wing", "abc", os.path.join(ABC_DIR, "Red Wing-verified.abc"), None),
-    ("Along the Navaho Trail", "text", os.path.join(REF_DIR, "Along the Navajo Trail - lyrics chords.txt"),
-     "Key: D (transposed up from source key of G)"),
     ("Along the Navaho Trail", "pdf", os.path.join(REF_DIR, "Along the Navajo Trail chart.pdf"), None),
-    ("Catfish John", "text", os.path.join(REF_DIR, "Catfish John - lyrics chords.txt"),
-     "Key: E (transposed up from source key of D)"),
     ("Catfish John", "pdf", os.path.join(REF_DIR, "Catfish John chart.pdf"), None),
     ("Logger - Pays de Haut, The", "abc", os.path.join(ABC_DIR, "Logger - Pays de Haut, The-verified.abc"), None),
     ("Roscoe", "abc", os.path.join(ABC_DIR, "Roscoe-verified.abc"), None),
@@ -148,19 +244,14 @@ ENTRIES = [
     ("Whistling Rufus", "abc", os.path.join(ABC_DIR, "Whistling Rufus-verified.abc"), None),
     ("Cumberland Gap", "abc", os.path.join(REF_DIR, "Cumberland Gap (lyrics version).abc"), None),
     ("Camp Meeting on the Fourth of July", "abc", os.path.join(ABC_DIR, "Camp Meeting on the Fourth of July-verified.abc"), None),
-    ("America the Beautiful", "pdf", os.path.join(REF_DIR, "America the Beautiful Alt.pdf"), None),
     ("America the Beautiful", "pdf", os.path.join(REF_DIR, "America the Beautiful.pdf"), None),
-    ("You're A Grand Old Flag / Yankee Doodle Dandy", "text",
-     os.path.join(REF_DIR, "Grand Old Flag Yankee Doodle - chords.txt"),
-     "Key: C (transposed up from source key of G)"),
     ("You're A Grand Old Flag / Yankee Doodle Dandy", "pdf",
-     os.path.join(REF_DIR, "You're a Grand Old Flag Yankee Doodle Boy.pdf"), None),
+     os.path.join(REF_DIR, "GrandOldFlagMedley.pdf"), None),
     ("Jefferson and Liberty", "abc", os.path.join(ABC_DIR, "Jefferson and Liberty-verified.abc"), None),
     ("Pat(T)'s Country", "abc", os.path.join(ABC_DIR, "Pat(T)'s Country-candidate.abc"), None),
     ("Road House Ramble", "abc", os.path.join(ABC_DIR, "Road House Ramble-verified.abc"), None),
     # --- boxed "A tunes?" on the sheet ---
-    ("Uncle Pen", "text", os.path.join(REF_DIR, "Uncle Pen - lyrics chords.txt"),
-     "Key: A (no capo)"),
+    ("Uncle Pen", "pdf", os.path.join(REF_DIR, "Uncle Pen A.pdf"), None),
     ("Uncle Pen", "pdf", os.path.join(REF_DIR, "Uncle Pen chart.pdf"), None),
     ("Red Haired Boy", "abc", os.path.join(ABC_DIR, "Red Haired Boy-verified.abc"), None),
     ("Salt Spring", "abc", os.path.join(ABC_DIR, "Salt Spring-verified.abc"), None),
@@ -214,13 +305,18 @@ def build(output):
             with open(path, "rb") as f:
                 raw = f.read()
             for page_bytes in split_pdf_pages(raw, only=extra):
+                if name in PDF_CROP:
+                    page_bytes = crop_pdf_page(page_bytes, PDF_CROP[name])
                 w, h = mp.get_pdf_size(page_bytes)
                 items.append((name, h * (usable_w / w), page_bytes, False))
         elif kind == "text":
             with open(path) as f:
                 body_lines = f.read().splitlines()
-            font_size, line_h = TEXT_FONT_OVERRIDES.get(name, (TEXT_FONT_SIZE, TEXT_LINE_H))
-            pdf_bytes = make_text_pdf_bytes(name, extra, body_lines, font_size, line_h)
+            if name in TEXT_2COL:
+                pdf_bytes = make_text_pdf_bytes_2col(name, extra, body_lines)
+            else:
+                font_size, line_h = TEXT_FONT_OVERRIDES.get(name, (TEXT_FONT_SIZE, TEXT_LINE_H))
+                pdf_bytes = make_text_pdf_bytes(name, extra, body_lines, font_size, line_h)
             w, h = mp.get_pdf_size(pdf_bytes)
             items.append((name, h * (usable_w / w), pdf_bytes, False))
         else:
