@@ -39,11 +39,6 @@ PNG_DPI = 150
 SEPIA_RGB = (0.973, 0.937, 0.851)          # #f8efd9 — slight cream
 
 
-def sort_key(path):
-    stem = os.path.splitext(os.path.basename(path))[0]
-    return stem.lower().replace("-", " ")
-
-
 def stem_of(path):
     return os.path.splitext(os.path.basename(path))[0]
 
