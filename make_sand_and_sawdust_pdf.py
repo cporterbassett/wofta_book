@@ -8,7 +8,7 @@ Sugar Moon) are collapsed to their first occurrence.
 For each tune, uses the best material on hand:
   - verified ABC  (engraved, sepia wash)       -- most tunes
   - candidate ABC (engraved, sepia wash)       -- Sugar Moon, Kansas City
-    Kitty, Pat(T)'s Country: not yet verified
+    Kitty: not yet verified
   - real ABC notation found at the source      -- Old Aunt Jenny (no chords
     in the source; instrumental)
   - a real chords/lyrics PDF already downloaded -- Red Red Robin (text-only
@@ -22,7 +22,9 @@ Run via ./make_sand_and_sawdust_pdf.sh (activates the venv).
 import io
 import os
 import re
+import subprocess
 import sys
+import tempfile
 
 import pikepdf
 from pikepdf import Array, Dictionary, Name
@@ -33,6 +35,7 @@ import make_pdf as mp  # reuse engraving/packing/TOC machinery
 HERE = os.path.dirname(os.path.abspath(__file__))
 ABC_DIR = os.path.join(HERE, "notation_pipeline", "abc")
 REF_DIR = os.path.join(HERE, "notation_pipeline", "reference_sources")
+ODT_DIR = HERE  # LibreOffice source files live in the project root
 
 TEXT_W = 540
 TEXT_FONT_SIZE = 11
@@ -50,9 +53,7 @@ TEXT_2COL = {"Roll in My Sweet Baby's Arms"}
 # Per-tune MediaBox crop (left, bottom, right, top) in points, applied before
 # scaling to usable_w.  Strips the source PDF's internal margins so the content
 # fills usable_w at 1:1 scale instead of being shrunk.
-# Gumtree Canoe HTML used margin: 0.4in 0.5in → 29pt top/bottom, 36pt sides.
 PDF_CROP = {
-    "Gum Tree Canoe": (36, 29, 576, 367),
 }
 
 _CHORD_TOKEN_RE = re.compile(
@@ -196,6 +197,8 @@ def split_pdf_pages(pdf_bytes, only=None):
 #   kind: "abc"  -> path is an .abc file (engraved, sepia)
 #         "pdf"  -> path is a real source pdf; extra (if given) is the list
 #                   of 0-based page indices to keep, else all pages
+#         "odt"  -> path is a LibreOffice ODT; converted to PDF at build time;
+#                   extra (if given) is the list of 0-based page indices to keep
 #         "text" -> path is a clean chords/lyrics .txt file; extra is the
 #                   key note shown under the title (or None)
 ENTRIES = [
@@ -215,20 +218,20 @@ ENTRIES = [
     # ("Gum Tree Canoe", "text", os.path.join(REF_DIR, "Gum Tree Canoe - lyrics chords.txt"),
     #  "Key: G, transposed up from source key of D (paired with Tombigbee Waltz on the "
     #  "sheet, listed there as \"Guntree Canoe\")"),  # kept for future use
-    ("Gum Tree Canoe", "pdf", os.path.join(REF_DIR, "Gumtree Canoe_G.pdf"), [0]),
+    ("Gum Tree Canoe", "odt", os.path.join(REF_DIR, "Gumtree Canoe_G.odt"), [0]),
     ("Tombigbee Waltz", "abc", os.path.join(ABC_DIR, "Tombigbee Waltz-verified.abc"), None),
-    ("Red Red Robin", "pdf", os.path.join(REF_DIR, "red red robin.pdf"), None),
+    ("Red Red Robin", "odt", os.path.join(ODT_DIR, "red red robin.odt"), None),
     ("Roll in My Sweet Baby's Arms", "text", os.path.join(REF_DIR, "Roll in My Sweet Babys Arms - lyrics chords.txt"), "Key: G"),
     ("Down in Little Egypt", "abc", os.path.join(ABC_DIR, "Down in Little Egypt-verified.abc"), None),
     ("Rose in the Mountain", "abc", os.path.join(ABC_DIR, "Rose in the Mountain-verified.abc"), None),
     ("Rose in the Mountain", "pdf", os.path.join(REF_DIR, "Rose in the Mountain.pdf"), None),
     ("Sugar Moon", "pdf", os.path.join(REF_DIR, "Sugar Moon.pdf"), None),
-    ("Drunken Sailor", "text", os.path.join(REF_DIR, "Drunken Sailor - lyrics chords.txt"),
-     "Key: em (transposed up from source key of Dm)"),
+    ("Drunken Sailor", "odt", os.path.join(ODT_DIR, "drunken sailor.odt"), None),
     ("Roll the Old Chariot Along", "pdf", os.path.join(REF_DIR, "Roll the Old Chariot Along.pdf"), None),
     ("Red Apple Rag", "abc", os.path.join(ABC_DIR, "Red Apple Rag-verified.abc"), None),
     ("Snake River Reel", "abc", os.path.join(ABC_DIR, "Snake River Reel-verified.abc"), None),
-    ("Kansas City Kitty", "abc", os.path.join(ABC_DIR, "Kansas City Kitty-candidate.abc"), None),
+    ("Kansas City Kitty", "png", os.path.join(HERE, "source_images", "Kansas City Kitty-p1.png"), None),
+    ("Kansas City Kitty", "png", os.path.join(HERE, "source_images", "Kansas City Kitty-p2.png"), None),
     ("Golden Ticket, The", "abc", os.path.join(ABC_DIR, "Golden Ticket, The-verified.abc"), None),
     ("Me and My Fiddle", "abc", os.path.join(ABC_DIR, "Me and My Fiddle-verified.abc"), None),
     ("Big Scioty", "abc", os.path.join(ABC_DIR, "Big Scioty-verified.abc"), None),
@@ -245,14 +248,14 @@ ENTRIES = [
     ("Cumberland Gap", "abc", os.path.join(REF_DIR, "Cumberland Gap (lyrics version).abc"), None),
     ("Camp Meeting on the Fourth of July", "abc", os.path.join(ABC_DIR, "Camp Meeting on the Fourth of July-verified.abc"), None),
     ("America the Beautiful", "pdf", os.path.join(REF_DIR, "America the Beautiful.pdf"), None),
-    ("You're A Grand Old Flag / Yankee Doodle Dandy", "pdf",
-     os.path.join(REF_DIR, "GrandOldFlagMedley.pdf"), None),
+    ("You're A Grand Old Flag / Yankee Doodle Dandy", "odt",
+     os.path.join(ODT_DIR, "GrandOldFlagMedley.odt"), None),
     ("Jefferson and Liberty", "abc", os.path.join(ABC_DIR, "Jefferson and Liberty-verified.abc"), None),
-    ("Pat(T)'s Country", "abc", os.path.join(ABC_DIR, "Pat(T)'s Country-candidate.abc"), None),
+    ("Pat(T)'s Country", "abc", os.path.join(ABC_DIR, "Pat(T)'s Country-verified.abc"), None),
     ("Road House Ramble", "abc", os.path.join(ABC_DIR, "Road House Ramble-verified.abc"), None),
     # --- boxed "A tunes?" on the sheet ---
-    ("Uncle Pen", "pdf", os.path.join(REF_DIR, "Uncle Pen A.pdf"), None),
-    ("Uncle Pen", "pdf", os.path.join(REF_DIR, "Uncle Pen chart.pdf"), None),
+    ("Uncle Pen", "odt", os.path.join(REF_DIR, "Uncle Pen A.odt"), None),
+    ("Uncle Pen", "odt", os.path.join(ODT_DIR, "Uncle Pen.odt"), None),
     ("Red Haired Boy", "abc", os.path.join(ABC_DIR, "Red Haired Boy-verified.abc"), None),
     ("Salt Spring", "abc", os.path.join(ABC_DIR, "Salt Spring-verified.abc"), None),
     ("Bill Cheatham", "abc", os.path.join(ABC_DIR, "Bill Cheatham-verified.abc"), None),
@@ -288,6 +291,20 @@ def render_content_page(out, fonts, page_items, usable_w, gap):
     return page_obj
 
 
+def odt_to_pdf_bytes(odt_path):
+    """Convert a LibreOffice ODT to PDF bytes using headless LibreOffice."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        subprocess.run(
+            ["libreoffice", "--headless", "--convert-to", "pdf",
+             "--outdir", tmpdir, odt_path],
+            check=True, capture_output=True,
+        )
+        stem = os.path.splitext(os.path.basename(odt_path))[0]
+        pdf_path = os.path.join(tmpdir, stem + ".pdf")
+        with open(pdf_path, "rb") as f:
+            return f.read()
+
+
 def build(output):
     mp.SEPIA = False  # this book shows engraved tunes plain, not sepia-washed
     usable_w = mp.PAGE_W - 2 * mp.MARGIN_X
@@ -301,14 +318,21 @@ def build(output):
             pdf_bytes = mp.abc_to_pdf_bytes(path)
             w, h = mp.get_pdf_size(pdf_bytes)
             items.append((name, h * (usable_w / w), pdf_bytes, True))
-        elif kind == "pdf":
-            with open(path, "rb") as f:
-                raw = f.read()
+        elif kind in ("pdf", "odt"):
+            if kind == "odt":
+                raw = odt_to_pdf_bytes(path)
+            else:
+                with open(path, "rb") as f:
+                    raw = f.read()
             for page_bytes in split_pdf_pages(raw, only=extra):
                 if name in PDF_CROP:
                     page_bytes = crop_pdf_page(page_bytes, PDF_CROP[name])
                 w, h = mp.get_pdf_size(page_bytes)
                 items.append((name, h * (usable_w / w), page_bytes, False))
+        elif kind == "png":
+            pdf_bytes = mp.png_to_pdf_bytes(path)
+            w, h = mp.get_pdf_size(pdf_bytes)
+            items.append((name, h * (usable_w / w), pdf_bytes, False))
         elif kind == "text":
             with open(path) as f:
                 body_lines = f.read().splitlines()

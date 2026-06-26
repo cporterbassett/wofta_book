@@ -1,38 +1,37 @@
-You're A Grand Old Flag / Yankee Doodle Boy
-George Cohan 1906/1905
+George M. Cohan, 1906/1905
+Simplified chords (fewer changes per line), transposed to key of C.
+Hold each chord through all the words shown above it.
 
 You're A Grand Old Flag
-2 quick strums/chord unless noted.
 
-G7       C      F C G7            C       G7 C
+C
 You're a grand old flag, you're a high-flyin' flag;
-G7      C G7 C        F          G7 // // //
+G7
 And forev-er in peace may you wave.
-Dm7         G7 Dm7 G7// // C E7 Am// //
+G7      Dm7    G7         C  G7
 You're the em-blem of, the land I love;
-    D7// //      Am7// //      G7// // //
+C        D7         G7
 The home of the free and the brave;
 
-G7    C     F       C G7 C         G7          C
+C
 Every heart beats true under red, white, and blue,
-G7            A7// // // //    Dm// // /~
+A7                       Dm
 Where there's never a boast or brag.
-G7         C// // // //       G7// // //
+G7        C    G7
 But should auld acquaintance be forgot,
-G7        D7// //       F    G7 C// // // ~ ~
+D7   G7    C    A7
 Keep your eye on the grand old flag.         (end here second time thru)
 
 
 Yankee Doodle Boy
-8 quick strums/chord unless noted.
 
-C                    D7    G7                       C
+C                    D7              G7      C
 I'm a Yankee Doodle dandy; Yan-kee Doodle-do-or-die.
-  A7                    Dm// A7// Dm// // D7                      G7
+A7                                Dm           D7      G7
 A dear old nephew of my Un - cle Sam, born on the 4th of Ju-ly;
-C                    D7           G7                         C
+C                D7                  G7        C
 Got a Yankee Doodle sweetheart; she's my Yankee Doodle gal.
-C/      G7/    C/      G7/     C/    G7/ C// Gm//
+C       G7     C  G7    C       G7     C  G7
 Yankee Doodle went to London just to ride a po - ny
-D7// //     G7// //        C// // //
+D7      G7      C
 I am - that Yankee Doodle boy! Tight back to "You're A Grand Old Flag".

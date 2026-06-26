@@ -189,6 +189,7 @@ CLEAN_OMR="${PIPELINE_DIR}/batch_output/${TUNE}/clean.omr"
 CAND_ABC="${PIPELINE_DIR}/abc/${TUNE}-candidate.abc"
 RENDER="${PIPELINE_DIR}/renders/${TUNE}-candidate.render.png"
 SCAN="${IMAGES_DIR}/source_images/${TUNE}.png"
+[[ ! -f "$SCAN" ]] && SCAN="${IMAGES_DIR}/source_images/verified/${TUNE}.png"
 
 # Safe slug for /tmp filenames (avoids spaces/apostrophes in file:// URLs).
 SLUG="$(basename "$CAND_ABC" | tr -c 'A-Za-z0-9' '_')"
