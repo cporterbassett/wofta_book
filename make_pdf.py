@@ -478,7 +478,8 @@ def build_book(entries, *, output, sepia=False, toc_alphabetical=False):
     flat = iter(items)
     pages = [[next(flat) for _ in page] for page in pages_h]
 
-    _, _, _, _, n_toc_pages = toc_geometry(len(items))
+    n_unique_names = len({name for name, _, _, _ in items})
+    _, _, _, _, n_toc_pages = toc_geometry(n_unique_names)
     print(f"\nPacking {len(items)} item(s) onto {len(pages)} content pages "
           f"(+{n_toc_pages} TOC page(s))...")
 
