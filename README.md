@@ -9,7 +9,7 @@ its raw scan and is replaced by a clean engraving once it's been transcribed and
 ```
 raw scans ──▶ source_images/ ──▶ notation_pipeline (OMR + GUI cleanup) ──▶ abc/*-verified.abc
                    │                                                              │
-                   └──────────────────────── make_pdf.py ─────────────────────────┘
+                   └─────────────────────── make_wofta.py ────────────────────────┘
                                     (verified engraving per tune, else the scan)
 ```
 
@@ -44,7 +44,9 @@ vector if it exists, else the original scan):
 | `source_images/` | The clean source scans, one `<Tune>.png` per tune (the canonical tune list). |
 | `notation_pipeline/` | The OMR → ABC transcription pipeline. Has its own README. |
 | `image_prep/` | Tools that extract/clean raw images *before* `source_images/` (PDF cutters, ABC→PNG proof). |
-| `make_pdf.py` / `make_pdf.sh` | Builds `WOFTA_tunes.pdf` from scans + verified ABCs. |
+| `make_pdf.py` | Shared PDF engine (renderer registry + `build_book` + comparison). Imported by the three book scripts; not run directly. |
+| `make_wofta.py` / `make_pdf.sh` | Builds `WOFTA_tunes.pdf` (+ `_comparison.pdf`) from scans + verified ABCs, via the `make_pdf.py` engine. |
+| `make_sand_and_sawdust_pdf.py` / `make_tin_whistle_pdf.py` | The other two books — thin `build_book` configs on the same engine. |
 | `docs/` | Project docs (see below). |
 | `staff_reinforcement/` | Experimental scan material (staff-line reinforcement). |
 
