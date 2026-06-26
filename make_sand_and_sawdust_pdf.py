@@ -34,16 +34,22 @@ ABC_DIR = os.path.join(HERE, "notation_pipeline", "abc")
 REF_DIR = os.path.join(HERE, "notation_pipeline", "reference_sources")
 
 TEXT_W = 540
-TEXT_FONT_SIZE = 9.5
-TEXT_LINE_H = 12.5
+TEXT_FONT_SIZE = 11
+TEXT_LINE_H = 14.5
+
+# Per-tune override (font_size, line_h) for "text" entries that are too long
+# to fit at the default size without the bottom getting cut off.
+TEXT_FONT_OVERRIDES = {
+    "Catfish John": (9, 11.5),
+}
 
 
-def make_text_pdf_bytes(title, key_note, body_lines):
+def make_text_pdf_bytes(title, key_note, body_lines, font_size=TEXT_FONT_SIZE, line_h=TEXT_LINE_H):
     """A clean Courier monospace page: title, optional key note, then the
     chords/lyrics exactly as extracted (chord lines stay aligned over the
     lyric line below them)."""
     n_header = 1 + (1 if key_note else 0) + 1  # title + key + blank
-    h = 24 + n_header * TEXT_LINE_H + len(body_lines) * TEXT_LINE_H + 16
+    h = 24 + n_header * line_h + len(body_lines) * line_h + 16
     pdf = pikepdf.Pdf.new()
     reg = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica))
     bold = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold")))
@@ -56,15 +62,15 @@ def make_text_pdf_bytes(title, key_note, body_lines):
     ))
     pdf.pages.append(pikepdf.Page(page_obj))
     y = h - 22
-    content = mp.text_op(title, 16, y, "/F2", 14)
-    y -= TEXT_LINE_H
+    content = mp.text_op(title, 16, y, "/F2", 17)
+    y -= line_h
     if key_note:
-        content += mp.text_op(key_note, 16, y, "/F1", 9)
-        y -= TEXT_LINE_H
-    y -= TEXT_LINE_H
+        content += mp.text_op(key_note, 16, y, "/F1", 11)
+        y -= line_h
+    y -= line_h
     for line in body_lines:
-        content += mp.text_op(line, 16, y, "/F3", TEXT_FONT_SIZE)
-        y -= TEXT_LINE_H
+        content += mp.text_op(line, 16, y, "/F3", font_size)
+        y -= line_h
     page_obj.Contents = pdf.make_stream(content)
     buf = io.BytesIO()
     pdf.save(buf)
@@ -96,22 +102,26 @@ ENTRIES = [
     ("Arkansas Traveler", "abc", os.path.join(ABC_DIR, "Arkansas Traveler-verified.abc"), None),
     ("Blackberry Blossom", "abc", os.path.join(ABC_DIR, "Blackberry Blossom-verified.abc"), None),
     ("Year of Jubilo", "abc", os.path.join(ABC_DIR, "Year of Jubilo-verified.abc"), None),
-    ("Faded Love", "text", os.path.join(REF_DIR, "Faded Love - lyrics chords.txt"),
-     "Key: D (transposed up from source key of G)"),
+    # ("Faded Love", "text", os.path.join(REF_DIR, "Faded Love - lyrics chords.txt"),
+    #  "Key: D (transposed up from source key of G)"),  # kept for future use
+    ("Faded Love", "pdf", os.path.join(REF_DIR, "Faded Love D & A.pdf"), None),
     ("Flop Eared Mule", "abc", os.path.join(ABC_DIR, "Flop Eared Mule-verified.abc"), None),
-    ("Back Home Again in Indiana", "text", os.path.join(REF_DIR, "Back Home Again in Indiana - lyrics chords.txt"),
-     "Key: G"),
+    # ("Back Home Again in Indiana", "text", os.path.join(REF_DIR, "Back Home Again in Indiana - lyrics chords.txt"),
+    #  "Key: G"),  # kept for future use
+    ("Back Home Again in Indiana", "pdf", os.path.join(REF_DIR, "Back Home Again in Indiana.pdf"), None),
     ("Manitoba Golden Boy", "abc", os.path.join(ABC_DIR, "Manitoba Golden Boy-verified.abc"), None),
     ("Sleeping Giant Two-Step", "abc", os.path.join(ABC_DIR, "Sleeping Giant Two-Step-verified.abc"), None),
-    ("Old Aunt Jenny (Nightcap On)", "abc", os.path.join(REF_DIR, "Old Aunt Jenny.abc"), None),
-    ("Gum Tree Canoe", "text", os.path.join(REF_DIR, "Gum Tree Canoe - lyrics chords.txt"),
-     "Key: G (paired with Tombigbee Waltz on the sheet, listed there as \"Guntree Canoe\")"),
+    ("Old Aunt Jenny (Nightcap On)", "abc", os.path.join(ABC_DIR, "Old Aunt Jenny with Her Nightcap on-verified.abc"), None),
+    # ("Gum Tree Canoe", "text", os.path.join(REF_DIR, "Gum Tree Canoe - lyrics chords.txt"),
+    #  "Key: G, transposed up from source key of D (paired with Tombigbee Waltz on the "
+    #  "sheet, listed there as \"Guntree Canoe\")"),  # kept for future use
+    ("Gum Tree Canoe", "pdf", os.path.join(REF_DIR, "Gumtree Canoe_G.pdf"), None),
     ("Tombigbee Waltz", "abc", os.path.join(ABC_DIR, "Tombigbee Waltz-verified.abc"), None),
     ("Red Red Robin", "text", os.path.join(REF_DIR, "Red Red Robin - lyrics chords.txt"), "Key: C"),
-    ("Roll in My Sweet Baby's Arms", "text", os.path.join(REF_DIR, "Roll in My Sweet Babys Arms - lyrics chords.txt"),
-     "Key: G (capo 2)"),
+    ("Roll in My Sweet Baby's Arms", "pdf", os.path.join(REF_DIR, "Roll in My Sweet Babies Arms chart.pdf"), None),
     ("Down in Little Egypt", "abc", os.path.join(ABC_DIR, "Down in Little Egypt-verified.abc"), None),
     ("Rose in the Mountain", "abc", os.path.join(ABC_DIR, "Rose in the Mountain-verified.abc"), None),
+    ("Rose in the Mountain", "pdf", os.path.join(REF_DIR, "Rose in the Mountain.pdf"), None),
     ("Sugar Moon", "abc", os.path.join(ABC_DIR, "Sugar Moon-candidate.abc"), None),
     ("Drunken Sailor", "text", os.path.join(REF_DIR, "Drunken Sailor - lyrics chords.txt"),
      "Key: em (transposed up from source key of Dm)"),
@@ -128,8 +138,10 @@ ENTRIES = [
     ("Red Wing", "abc", os.path.join(ABC_DIR, "Red Wing-verified.abc"), None),
     ("Along the Navaho Trail", "text", os.path.join(REF_DIR, "Along the Navajo Trail - lyrics chords.txt"),
      "Key: D (transposed up from source key of G)"),
+    ("Along the Navaho Trail", "pdf", os.path.join(REF_DIR, "Along the Navajo Trail chart.pdf"), None),
     ("Catfish John", "text", os.path.join(REF_DIR, "Catfish John - lyrics chords.txt"),
      "Key: E (transposed up from source key of D)"),
+    ("Catfish John", "pdf", os.path.join(REF_DIR, "Catfish John chart.pdf"), None),
     ("Logger - Pays de Haut, The", "abc", os.path.join(ABC_DIR, "Logger - Pays de Haut, The-verified.abc"), None),
     ("Roscoe", "abc", os.path.join(ABC_DIR, "Roscoe-verified.abc"), None),
     ("Summertime", "abc", os.path.join(ABC_DIR, "Summertime-verified.abc"), None),
@@ -137,15 +149,19 @@ ENTRIES = [
     ("Cumberland Gap", "abc", os.path.join(REF_DIR, "Cumberland Gap (lyrics version).abc"), None),
     ("Camp Meeting on the Fourth of July", "abc", os.path.join(ABC_DIR, "Camp Meeting on the Fourth of July-verified.abc"), None),
     ("America the Beautiful", "pdf", os.path.join(REF_DIR, "America the Beautiful Alt.pdf"), None),
+    ("America the Beautiful", "pdf", os.path.join(REF_DIR, "America the Beautiful.pdf"), None),
     ("You're A Grand Old Flag / Yankee Doodle Dandy", "text",
      os.path.join(REF_DIR, "Grand Old Flag Yankee Doodle - chords.txt"),
      "Key: C (transposed up from source key of G)"),
+    ("You're A Grand Old Flag / Yankee Doodle Dandy", "pdf",
+     os.path.join(REF_DIR, "You're a Grand Old Flag Yankee Doodle Boy.pdf"), None),
     ("Jefferson and Liberty", "abc", os.path.join(ABC_DIR, "Jefferson and Liberty-verified.abc"), None),
     ("Pat(T)'s Country", "abc", os.path.join(ABC_DIR, "Pat(T)'s Country-candidate.abc"), None),
     ("Road House Ramble", "abc", os.path.join(ABC_DIR, "Road House Ramble-verified.abc"), None),
     # --- boxed "A tunes?" on the sheet ---
     ("Uncle Pen", "text", os.path.join(REF_DIR, "Uncle Pen - lyrics chords.txt"),
      "Key: A (no capo)"),
+    ("Uncle Pen", "pdf", os.path.join(REF_DIR, "Uncle Pen chart.pdf"), None),
     ("Red Haired Boy", "abc", os.path.join(ABC_DIR, "Red Haired Boy-verified.abc"), None),
     ("Salt Spring", "abc", os.path.join(ABC_DIR, "Salt Spring-verified.abc"), None),
     ("Bill Cheatham", "abc", os.path.join(ABC_DIR, "Bill Cheatham-verified.abc"), None),
@@ -203,7 +219,8 @@ def build(output):
         elif kind == "text":
             with open(path) as f:
                 body_lines = f.read().splitlines()
-            pdf_bytes = make_text_pdf_bytes(name, extra, body_lines)
+            font_size, line_h = TEXT_FONT_OVERRIDES.get(name, (TEXT_FONT_SIZE, TEXT_LINE_H))
+            pdf_bytes = make_text_pdf_bytes(name, extra, body_lines, font_size, line_h)
             w, h = mp.get_pdf_size(pdf_bytes)
             items.append((name, h * (usable_w / w), pdf_bytes, False))
         else:
