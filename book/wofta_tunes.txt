@@ -14,7 +14,7 @@
 #   Sugar Moon, Summertime.
 #
 # Known duplicates still listed, pending reconciliation (see TODO.md):
-#   seneca-square-dance 2, star-above-the-garter2.
+#   star-above-the-garter2.
 # Lines starting with # and blank lines are ignored.
 
 A & E Waltz
@@ -243,7 +243,6 @@ Sandy Boys
 Sandy River Belles
 Sarah Armstrong
 Seneca Square Dance
-seneca-square-dance 2
 Set Americain
 Shenandoah Falls
 Ships are Sailing

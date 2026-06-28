@@ -8,12 +8,6 @@ single tune in a future session. When a stray is removed, also delete its key
 from `book/wofta_tunes.txt` (the build will otherwise fail, since every listed
 key must match a file).
 
-- **Seneca Square Dance** — canonical is already verified; remove the stray.
-  - Canonical (verified): `sources/scans/verified/Seneca Square Dance.png` +
-    `abc/Seneca Square Dance-verified.abc`
-  - Stray: `sources/scans/seneca-square-dance 2.png` +
-    `abc/seneca-square-dance 2-draft.abc`
-
 - **Star Above the Garter** — consolidate the stray into the canonical entry.
   - Canonical: `sources/scans/Star Above the Garter, The.png` +
     `abc/Star Above the Garter, The-draft.abc`
