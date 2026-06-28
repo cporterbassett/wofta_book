@@ -164,9 +164,11 @@ def get_pdf_size(pdf_bytes):
 def make_fonts(out):
     """Return (regular, bold) indirect Helvetica font objects for `out`."""
     reg = out.make_indirect(Dictionary(
-        Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica))
+        Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica,
+        Encoding=Name.WinAnsiEncoding))
     bold = out.make_indirect(Dictionary(
-        Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold")))
+        Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold"),
+        Encoding=Name.WinAnsiEncoding))
     return reg, bold
 
 
@@ -245,9 +247,9 @@ def make_text_pdf_bytes(title, key_note, body_lines,
     n_header = 1 + (1 if key_note else 0) + 1
     h = 24 + n_header * line_h + len(body_lines) * line_h + 16
     pdf = Pdf.new()
-    reg = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica))
-    bold = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold")))
-    mono = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Courier))
+    reg = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica, Encoding=Name.WinAnsiEncoding))
+    bold = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold"), Encoding=Name.WinAnsiEncoding))
+    mono = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Courier, Encoding=Name.WinAnsiEncoding))
     page_obj = pdf.make_indirect(Dictionary(
         Type=Name.Page,
         MediaBox=Array([0, 0, TEXT_W, h]),
@@ -289,10 +291,10 @@ def make_text_pdf_bytes_2col(title, key_note, body_lines,
     h = 24 + n_header * line_h + col_lines * line_h + 16
 
     pdf = Pdf.new()
-    reg = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica))
-    bold_h = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold")))
-    mono = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Courier))
-    mono_bold = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Courier-Bold")))
+    reg = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Helvetica, Encoding=Name.WinAnsiEncoding))
+    bold_h = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Helvetica-Bold"), Encoding=Name.WinAnsiEncoding))
+    mono = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name.Courier, Encoding=Name.WinAnsiEncoding))
+    mono_bold = pdf.make_indirect(Dictionary(Type=Name.Font, Subtype=Name.Type1, BaseFont=Name("/Courier-Bold"), Encoding=Name.WinAnsiEncoding))
     page_obj = pdf.make_indirect(Dictionary(
         Type=Name.Page,
         MediaBox=Array([0, 0, page_w, h]),
@@ -551,8 +553,7 @@ def build_toc_pages(out, fonts, entries, n_toc_pages, n_cols=2, toc_title="Conte
     Builds the TOC pages, inserts them at the front of the document."""
     col_w, top_y, lines_per_col, entries_per_page, _ = toc_geometry(len(entries), n_cols)
     col_x = [TOC_MARGIN_X + i * (col_w + TOC_COL_GAP) for i in range(n_cols)]
-    num_w = 18  # reserved right strip for the page number (~17pt for 3 digits)
-    name_max_w = col_w - num_w - 3
+    toc_num_gap = 6  # small gap between the (truncated) title and its page number
 
     toc_page_objs = []
     for p in range(n_toc_pages):
@@ -566,16 +567,24 @@ def build_toc_pages(out, fonts, entries, n_toc_pages, n_cols=2, toc_title="Conte
             row = j % lines_per_col
             x = col_x[col]
             y = top_y - row * TOC_LINE_H
-            # Truncate long names to keep the page-number column clear.
+            # Truncate long names so the title clears this entry's own page
+            # number (right-aligned) by a small fixed gap. Sizing the limit to
+            # the actual number width — not a fixed 3-digit strip — keeps the
+            # gap tight for common 2-digit numbers.
+            num = str(pageno)
+            name_max_w = col_w - _approx_w(num, TOC_FONT) - toc_num_gap
             disp = name
             while len(disp) > 1 and _approx_w(disp, TOC_FONT) > name_max_w:
                 disp = disp[:-1]
             if disp != name:
+                # Drop one more char for the ellipsis, then re-check it fits.
+                disp = disp[:-1]
+                while len(disp) > 1 and _approx_w(disp + "...", TOC_FONT) > name_max_w:
+                    disp = disp[:-1]
                 # ASCII "..." not "…": text_op encodes latin-1, so U+2026
                 # would become a literal "?" in the PDF.
-                disp = disp[:-1] + "..."
+                disp = disp + "..."
             content += text_op(disp, x, y, "/F1", TOC_FONT)
-            num = str(pageno)
             nx = x + col_w - _approx_w(num, TOC_FONT)
             content += text_op(num, nx, y, "/F1", TOC_FONT)
             # Clickable jump to the tune's page.
@@ -603,10 +612,31 @@ def _toc_n_cols(n_entries):
     return 2 if n_pages_2col <= 1 else 3
 
 
-# Approximate Helvetica advance widths (per 1pt em) for the common ASCII range.
+# Helvetica advance widths (per em, from the standard AFM metrics) for the
+# common ASCII range. Using the real per-glyph widths — not a flat average —
+# matters for TOC truncation: titles with several spaces/narrow letters were
+# being width-overestimated and so truncated far too early.
+_HELV_W = {
+    " ": 278, "!": 278, '"': 355, "#": 556, "$": 556, "%": 889, "&": 667,
+    "'": 191, "(": 333, ")": 333, "*": 389, "+": 584, ",": 278, "-": 333,
+    ".": 278, "/": 278, "0": 556, "1": 556, "2": 556, "3": 556, "4": 556,
+    "5": 556, "6": 556, "7": 556, "8": 556, "9": 556, ":": 278, ";": 278,
+    "<": 584, "=": 584, ">": 584, "?": 556, "@": 1015,
+    "A": 667, "B": 667, "C": 722, "D": 722, "E": 667, "F": 611, "G": 778,
+    "H": 722, "I": 278, "J": 500, "K": 667, "L": 556, "M": 833, "N": 722,
+    "O": 778, "P": 667, "Q": 778, "R": 722, "S": 667, "T": 611, "U": 722,
+    "V": 667, "W": 944, "X": 667, "Y": 667, "Z": 611,
+    "[": 278, "\\": 278, "]": 278, "^": 469, "_": 556, "`": 333,
+    "a": 556, "b": 556, "c": 500, "d": 556, "e": 556, "f": 278, "g": 556,
+    "h": 556, "i": 222, "j": 222, "k": 500, "l": 222, "m": 833, "n": 556,
+    "o": 556, "p": 556, "q": 556, "r": 333, "s": 500, "t": 278, "u": 556,
+    "v": 500, "w": 722, "x": 500, "y": 500, "z": 500,
+    "{": 334, "|": 260, "}": 334, "~": 584,
+}
+
+
 def _approx_w(text, size):
-    return sum(0.50 if c in "iIl.,;:'|!" else
-               0.78 if c in "mwMW" else 0.556 for c in text) * size
+    return sum(_HELV_W.get(c, 556) for c in text) / 1000.0 * size
 
 
 # --- PDF 2: portrait side-by-side comparison, packed -----------------------
