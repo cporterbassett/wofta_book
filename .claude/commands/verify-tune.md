@@ -1,6 +1,6 @@
 ---
 description: AI-in-the-loop per-tune verify — Audiveris → Claude cleanup → EasyABC → promote. Mirrors verify_tune.sh.
-argument-hint: ["Tune Name" | --queue | --queue --loop | --list | --skip ["Tune"]]
+argument-hint: ["Tune Name" | --queue | --queue --loop | --list | --skip ["Tune"] | --mvt N]
 ---
 
 You are running the **AI-in-the-loop per-tune verify** for the WOFTA tune-images
@@ -15,9 +15,20 @@ Arguments (passed through as `$ARGUMENTS`): `[ "Tune Name" | --queue | --queue -
 
 - `--list` (optionally with `--queue`): run `bash bin/verify_tune.sh $ARGUMENTS`,
   show the output, and STOP. Do not start a verify pass.
-- `--skip` (optionally with a tune name): run `bash bin/verify_tune.sh $ARGUMENTS`
-  to park the tune, then continue to auto-pick the next tune for a full pass
-  (below), unless the user only wanted to skip.
+- `--skip` (optionally with a tune name): park the tune yourself (do NOT call
+  `bin/verify_tune.sh --skip`), then continue to the normal per-tune AI flow for
+  the NEXT tune:
+  1. Determine the tune to park:
+     - If a tune name was given alongside `--skip`, park that name.
+     - Otherwise park the auto-pick = the first tune name from the `--list` output:
+       run `bash bin/verify_tune.sh <--queue/--queue-file args if present> --list`
+       and take the tune name from the first numbered line (format: `  1. Tune Name`).
+  2. Append that name to `verify_skip.txt` at the repo root if not already present:
+     ```
+     grep -qxF "<Tune>" verify_skip.txt 2>/dev/null || printf '%s\n' "<Tune>" >> verify_skip.txt
+     ```
+  3. Proceed to Stage 1 `--export-only` with any `--queue`/`--queue-file` args and
+     NO tune name — auto-pick will now skip the parked tune and select the next one.
 
 ## The per-tune flow (3 stages)
 
@@ -104,18 +115,15 @@ If it errors, fix the ABC until it renders.
 Build a one-time highlighted snapshot so Porter sees the flagged bars up front,
 WITHOUT polluting `CAND`:
 1. Copy `CAND` to `scratch/<Tune>.review.abc`.
-2. Prepend `%%measurenb 1` as the first line of the copy (overrides the render
-   default so every bar is numbered).
-3. At each flagged bar, insert an annotation just before that measure's first note:
-   `"^!"` immediately followed by a flag glyph, e.g. `"^⚑"`. (You know each
-   suspect bar's location in the ABC text from Stage 2 — place it directly; no
-   counting needed.)
-4. Render the snapshot and build a compare image:
+2. At each flagged bar, insert the annotation token `"^⚑"` (placed above the bar)
+   just before that measure's first note. (You know each suspect bar's location in
+   the ABC text from Stage 2 — place it directly; no counting needed.)
+3. Render the snapshot and build a compare image:
    ```
    RENDER_MEASURENB=1 bash bin/render_abc.sh "scratch/<Tune>.review.abc" "scratch/<Tune>.review.png"
    bash bin/make_compare.sh "<SCAN>" "scratch/<Tune>.review.png" "scratch/<Tune>.review.compare.png"
    ```
-5. Show `scratch/<Tune>.review.compare.png` and print a **Stage 2 report**: what
+4. Show `scratch/<Tune>.review.compare.png` and print a **Stage 2 report**: what
    you fixed, and the flag-only findings by measure number. Then delete the temp:
    `rm -f scratch/<Tune>.review.abc`.
 
@@ -157,7 +165,29 @@ authored/co-authored the commit.
 
 ## Loop
 
-If `$ARGUMENTS` contained `--loop`: after the promote gate, re-run the whole
-per-tune flow for the next tune. Get the next tune by re-running Stage 1's
-`--export-only` with the same `--queue`/`--queue-file` args (it auto-picks). Stop
-when it reports the queue is complete or no eligible tune remains.
+If `$ARGUMENTS` contained `--loop`:
+
+**Setup — once, before the first tune's Stage 1:** create a session seen-file and
+export it so every `--export-only` call inherits it:
+```
+export VERIFY_SEEN_FILE="$(mktemp "${TMPDIR:-/tmp}/verify_seen.XXXXXX")"
+```
+Keep that same `$VERIFY_SEEN_FILE` path for every Stage 1 `--export-only` call in
+the loop. `verify_tune.sh`'s `eligible()` function reads this env var and skips
+tunes already listed in it, so un-promoted tunes are not re-picked endlessly.
+
+**After each tune's promote gate** (whether promoted or declined), append the tune
+name to the seen-file before re-running Stage 1 for the next tune:
+```
+printf '%s\n' "<Tune>" >> "$VERIFY_SEEN_FILE"
+```
+
+**Next tune:** re-run Stage 1 `--export-only` with the same `--queue`/`--queue-file`
+args (no tune name) — it auto-picks the next eligible, unseen tune.
+
+**When the queue is complete** (Stage 1 reports "Queue complete" / no eligible tune
+remains), clean up:
+```
+rm -f "$VERIFY_SEEN_FILE"
+```
+Then stop.
