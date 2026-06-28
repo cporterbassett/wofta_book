@@ -32,7 +32,7 @@ render() {
     local extra="$1"
     {
         printf '%s' "$extra"
-        printf '%%%%measurenb 0\n%%%%contbarnb 1\n%%%%gchordfont Helvetica-Bold 12\n%%%%repeatfont Helvetica-Bold 12\n'
+        printf '%%%%measurenb %s\n%%%%contbarnb 1\n%%%%gchordfont Helvetica-Bold 12\n%%%%repeatfont Helvetica-Bold 12\n' "${RENDER_MEASURENB:-0}"
         cat "$ABC"
     } > "$TMPABC"
     abcm2ps -O "$PS" -s 1.0 -m 0.5cm "$TMPABC" 2>&1
