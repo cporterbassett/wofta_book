@@ -127,3 +127,40 @@ def test_measure_duration_tuplet_compound_differs():
     # (5 uses q=2 in simple meter but q=3 in compound -> different totals
     assert lint_abc.measure_duration("(5ABcde", U8, False) == Fraction(1, 4)
     assert lint_abc.measure_duration("(5ABcde", U8, True) == Fraction(3, 8)
+
+
+def test_key_accidentals():
+    assert lint_abc.key_accidentals("G") == {"F": "#"}
+    assert lint_abc.key_accidentals("D") == {"F": "#", "C": "#"}
+    assert lint_abc.key_accidentals("F") == {"B": "b"}
+    assert lint_abc.key_accidentals("Em") == {"F": "#"}        # E minor == 1 sharp
+    assert lint_abc.key_accidentals("Ador") == {"F": "#"}  # A dorian == 1 sharp (notes of G major)
+    assert lint_abc.key_accidentals("C") == {}
+
+
+def test_accidental_redundant_vs_key():
+    km = lint_abc.key_accidentals("G")
+    issues = lint_abc.check_accidentals("", "G2 ^f2 e2", km)   # F already sharp in G
+    assert len(issues) == 1 and "redundant" in issues[0].message.lower()
+
+
+def test_accidental_natural_then_sharp_is_ok():
+    km = lint_abc.key_accidentals("G")
+    assert lint_abc.check_accidentals("", "=f2 ^f2", km) == []  # natural cancels, ^f restores
+
+
+def test_accidental_out_of_key_not_flagged():
+    km = lint_abc.key_accidentals("G")
+    assert lint_abc.check_accidentals("", "^g2 a2", km) == []   # G# not in key -> legit
+
+
+def test_accidental_repeated_in_measure():
+    km = lint_abc.key_accidentals("C")
+    issues = lint_abc.check_accidentals("", "^c2 ^c2", km)      # 2nd ^c redundant
+    assert len(issues) == 1
+
+
+def test_accidental_resets_each_measure():
+    km = lint_abc.key_accidentals("C")
+    # ^c in m1, ^c in m2 -> each is the first in its measure, neither repeated
+    assert lint_abc.check_accidentals("", "^c2 d2 | ^c2 d2", km) == []

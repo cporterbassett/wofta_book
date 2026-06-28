@@ -231,3 +231,80 @@ def check_beats(voice, body, unit, barlen, compound):
             issues.append(Issue('beats', voice, idx + 1,
                 f'measure {idx + 1} has {dur}, expected {barlen}', m))
     return issues
+
+
+# ── Accidentals ───────────────────────────────────────────────────────────────
+
+_SHARP_ORDER = ['F', 'C', 'G', 'D', 'A', 'E', 'B']
+_FLAT_ORDER  = ['B', 'E', 'A', 'D', 'G', 'C', 'F']
+_FIFTHS = {'C': 0, 'G': 1, 'D': 2, 'A': 3, 'E': 4, 'B': 5, 'F#': 6, 'C#': 7,
+           'F': -1, 'Bb': -2, 'Eb': -3, 'Ab': -4, 'Db': -5, 'Gb': -6, 'Cb': -7}
+
+
+def _mode_offset(mode):
+    m = mode.strip().lower()
+    if m.startswith('maj') or m.startswith('ion') or m == '':
+        return 0
+    if m.startswith('dor'):
+        return -2
+    if m.startswith('phr'):
+        return -4
+    if m.startswith('lyd'):
+        return 1
+    if m.startswith('mix'):
+        return -1
+    if m.startswith('loc'):
+        return -5
+    if m.startswith('aeo') or m.startswith('min') or m.startswith('m'):
+        return -3
+    return 0
+
+
+def key_accidentals(key):
+    """Map each altered letter to '#' or 'b' for the key signature of K:<key>."""
+    km = re.match(r"\s*([A-Ga-g][#b]?)\s*(.*)", key or '')
+    if not km:
+        return {}
+    tonic = km.group(1)[0].upper() + km.group(1)[1:]
+    fifths = _FIFTHS.get(tonic)
+    if fifths is None:
+        return {}
+    fifths += _mode_offset(km.group(2))
+    out = {}
+    if fifths > 0:
+        for letter in _SHARP_ORDER[:fifths]:
+            out[letter] = '#'
+    elif fifths < 0:
+        for letter in _FLAT_ORDER[:-fifths]:
+            out[letter] = 'b'
+    return out
+
+
+_ACC_SYM = {'^': '#', '^^': '##', '_': 'b', '__': 'bb', '=': '='}
+_ACCNOTE = re.compile(r"([_^=]{1,2})([A-Ga-g])([,']*)")
+
+
+def _octave(letter, marks):
+    o = 0 if letter.isupper() else 1
+    return o + marks.count("'") - marks.count(",")
+
+
+def check_accidentals(voice, body, key_map):
+    """Flag accidentals that match the key sig (with no prior cancel) or repeat in-measure."""
+    issues = []
+    for idx, measure in enumerate(split_measures(body)):
+        seen = {}   # (LETTER, octave) -> symbol
+        for mt in _ACCNOTE.finditer(measure):
+            acc, raw_letter, marks = mt.group(1), mt.group(2), mt.group(3)
+            letter = raw_letter.upper()
+            pitch = (letter, _octave(raw_letter, marks))
+            sym = _ACC_SYM.get(acc, acc)
+            if seen.get(pitch) == sym:
+                issues.append(Issue('accidental', voice, idx + 1,
+                    f'redundant repeated {acc}{raw_letter} in measure {idx + 1}', measure))
+            elif pitch not in seen and key_map.get(letter) == sym:
+                issues.append(Issue('accidental', voice, idx + 1,
+                    f'redundant {acc}{raw_letter} ({letter} already {sym} in key) '
+                    f'in measure {idx + 1}', measure))
+            seen[pitch] = sym
+    return issues
