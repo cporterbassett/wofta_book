@@ -1,0 +1,301 @@
+# sources/pdfs manifest
+
+Imported from ../2026 on 2026-06-27.
+
+## Top level
+- A&E Waltz VWilliams [TT].pdf
+- All the Way to Galaway.pdf
+- Along the Navajo Trail chart.pdf
+- Amelia [WB1].pdf
+- America the Beautiful Alt.pdf
+- America the Beautiful.pdf
+- Angeline the Baker [FFB].pdf
+- ARKANSAS TRAVELER [KDEd].pdf
+- ASHOKAN FAREWELL [KDEd].pdf
+- Back Home Again in Indiana.pdf
+- Barlow Knife [TT].pdf
+- Batchelder's Reel [NEFR].pdf
+- Big Con.pdf
+- BIG JOHN MCNEIL [KDEd].pdf
+- BIG SCIOTY [KDEd].pdf
+- BILL CHEATHAM [KDEd].pdf
+- Billy in the Lowground [FFB].pdf
+- Blackberry Blossom.pdf
+- Boggy Road to Texas [WOTFA].pdf
+- BONAPARTE CROSSING THE RHINE [KDEd].pdf
+- BONAPARTE'S RETREAT AJabbour [KDEd].pdf
+- Booth Shot Lincoln.pdf
+- Border Collie.pdf
+- Bottom of the Punchbowl [PC1].pdf
+- Bouchards Hornpipe [PC1].pdf
+- Boys of Blue Hill.pdf
+- Buckshot FEngstrom [TT].pdf
+- Bull Moose.pdf
+- Calliope House [PC1].pdf
+- Cambell's Farewell to Red Gap.pdf
+- Catfish John chart.pdf
+- Cat in the Hopper.pdf
+- Cat on a Leash.pdf
+- Centralia Waltz [WOTFA].pdf
+- Cherokee Shuffle.pdf
+- Chicken Reel - Score.pdf
+- Chicken Under The Washtub.pdf
+- Chinese Breakdown VWilliams [WOTFA].pdf
+- Cindy SPrausnitz [TT].pdf
+- CLUCK OLD HEN [KDEd].pdf
+- COLEMAN'S MARCH [KDed].pdf
+- COLERAINE [KDEd].pdf
+- COLORED ARISTOCRACY [KDEd].pdf
+- Cooley's Reel.pdf
+- Demented Dog.pdf
+- Devils Dream [NEFR].pdf
+- Dill Pickles Rag [TT].pdf
+- Dorsett Four Hand Reel [IN].pdf
+- Down in Little Egypt.pdf
+- Drowsy Maggie.pdf
+- Drunken Cat.pdf
+- drunken sailor.pdf
+- East Tennessee Blues .pdf
+- Eighth of January [FFB].pdf
+- Elmer's Waltz [WOTFA].pdf
+- Elzic's Farewell [MMaki].pdf
+- Evit Gabriel [PC1].pdf
+- Faded Love D & A.pdf
+- Farewell to Whiskey [NEFR].pdf
+- Farewell Trion.pdf
+- Five Steps Down.pdf
+- FLOP EARED MULE [KDEd].pdf
+- Flowers of Edinburgh.pdf
+- Fly Around My Pretty Little Miss [PC1].pdf
+- Foresters Hornpipe.pdf
+- Forked Deer [PC1].pdf
+- Franks Reel with repeats - Score.pdf
+- Galopede [NEFR].pdf
+- Gaspe Reel.pdf
+- Gils Schottische [EFT3].pdf
+- Girl I Left Behind Me [IN].pdf
+- Give the Fiddler a Dram [TT].pdf
+- Golden Slippers [IN].pdf
+- GrandOldFlagMedley.pdf
+- Grand Old Flag Yankee Doodle.pdf
+- Granny Will Your Dog Bite.pdf
+- Grasshopper Sittin on a Sweet Potato Vine [PC1].pdf
+- Grizzley Bear.pdf
+- Growling Old Man and Woman [NEFR].pdf
+- Gumtree Canoe_G.pdf
+- Hey Polka [IN].pdf
+- HOLLOW POPLAR [KDEd].pdf
+- Hommage a Edmond Parizeau [PC1].pdf
+- Honest John [WOTFA].pdf
+- Hundred Pipers [NEFR].pdf
+- ICE ON THE ROAD [KDEd].pdf
+- Indian Ate A Wookchuck - Score.pdf
+- Indian Point.pdf
+- J.B. Milne.pdf
+- JEFFERSON AND LIBERTY [KDEd].pdf
+- JENNY LIND POLKA.pdf
+- Jerusalem's Ridge melody .pdf
+- Jimmy Allen [NEFR].pdf
+- Jim the Fiddle Maker.pdf
+- Johnny, Johnny, Don't Get Drunk [PC1].pdf
+- John Riley the Shepherd.pdf
+- Josepin's Waltz.pdf
+- Julia Delaney [PC1].pdf
+- JUne Apple.pdf
+- Kerry Mill's Barn Dance [KDEd].pdf
+- Kesh Jig [PC1].pdf
+- KITCHEN GIRL [KDEd].pdf
+- Kittens On Catnip.pdf
+- Kitty McGee [PC1].pdf
+- La Bastringue.pdf
+- La Belle Gaspesie.pdf
+- Liberty [TT].pdf
+- LITTLE BURNT POTATO [KDEd].pdf
+- LITTLE DONALD IN THE PIGPEN [KDEd].pdf
+- Liza Jane [PC1].pdf
+- Logger - The [Pays de Haut NEFR].pdf
+- Lonesome Moonlight Waltz.pdf
+- Maggie Browns Favorite [NEFR].pdf
+- MAGGOTS IN THE SHEEPHIDE [KDEd].pdf
+- Mairis Wedding [NEFR].pdf
+- Manitoba Golden Boy [WOTFA].pdf
+- MapleSugar.pdf
+- March of St. Timothy [PC1].pdf
+- MASON'S APRON [KDEd].pdf
+- Meeting of the Waters [NEFR].pdf
+- Merry Blacksmith.pdf
+- Midnight on the Water [WB1].pdf
+- MISSISSIPPI SAWYER [KDEd].pdf
+- Miss Murray of Lintrose [PC2].pdf
+- Miss Thompsons [PC2].pdf
+- Moon and Seven Stars.pdf
+- Morpeth Rant [NEFR].pdf
+- Mouth of the Tobique [PC1].pdf
+- Muckin' O' Geordies Byre [NEFR].pdf
+- My Darling Asleep [TT].pdf
+- NAIL THAT CATFISH TO THE TREE [KDEd].pdf
+- Needle Case [TT].pdf
+- New Five Cent Piece [TT].pdf
+- New Rigged Ship [NEFR].pdf
+- NIXON'S FAREWELL [KDEd].pdf
+- Off She Goes [NEFR].pdf
+- Off  to California [FFB].pdf
+- Old Grey Cat [PC1].pdf
+- Old John Tate-Land Of Lincoln [WOTFA].pdf
+- Old Mother Flanagan [PC1].pdf
+- Old Yeller Dog Come Trottin' Through the Meetinghhouse.pdf
+- Ookpik Waltz [WOTFA].pdf
+- Over the Waterfall [MD].pdf
+- Paddy on the Handcar [RIW].pdf
+- Pat's Country.pdf
+- Pat(T)'s Country - Kusturok arrangement.pdf
+- Peacock Rag copy.pdf
+- Peek a boo Waltz.pdf
+- Petronella [NEFR].pdf
+- PIG ANKLE RAG [KDEd].pdf
+- Pink Eye Lament [].pdf
+- Possum up a Gumstump [PC1].pdf
+- Pretty Little Dog.pdf
+- PUNCHEON FLOOR [KDed].pdf
+- Quarry Cross.pdf
+- QUINCE DILLON'S HIGH D TUNE [KDed].pdf
+- Rachel [TT].pdf
+- Ragtime Annie [TT].pdf
+- Rakes of Mallow [NEFR].pdf
+- Red Bird.pdf
+- RED HAIRED BOY [KDEd].pdf
+- red red robin.pdf
+- Red Red Robin.pdf
+- RED WING [KDEd].pdf
+- Rickets Hornpipe [NEFR].pdf
+- Riding On a Load of Hay.pdf
+- Rights of Man.pdf
+- Road to Batoche, The [WOTFA].pdf
+- Road to Boston [NEFR].pdf
+- Road to Lisdoonvarna [PC3].pdf
+- Rock the Cradle, Joe [PC1].pdf
+- Roll in My Sweet Babies Arms chart.pdf
+- Roll the Old Chariot Along.pdf
+- Rose in the Mountain.pdf
+- Roses in Winter.pdf
+- Rose Tree [NEFR].pdf
+- Round the Horn [PC1].pdf
+- Sadie at the Back Door.pdf
+- Sailor's Hornpipe.pdf
+- Sally Ann Johnson [PC1].pdf
+- SALLY IN THE GARDEN [KDEd].pdf
+- SALLY PUT A BUG ON ME [KDEd].pdf
+- SALLY'S GOT MUD BETWEEN HER TOES [KDEd].pdf
+- Salt Creek.pdf
+- Salt Spring.pdf
+- SAM AND ELZIE [KDEd].pdf
+- SANDY BOYS [KDEd].pdf
+- Sandy River Belles [PC1].pdf
+- Sarah Armstrong [TT].pdf
+- Seneca Square Dance.pdf
+- Set American [PC2].pdf
+- Shenandoah Falls [PC1].pdf
+- Ships are Sailing [NEFR].pdf
+- Shoes and Stockings.pdf
+- SHOVE THAT PIG'S FOOT [KDEd].pdf
+- Sierra Swing [EFT2].pdf
+- Skippin' Cat.pdf
+- SLEEPING GIANT TWO-STEP [KDEd].pdf
+- Smash the Windows [NEFR].pdf
+- SOLDIERS JOY [KDEd].pdf
+- SOUTH [KDEd].pdf
+- Southwind .pdf
+- Spotted Dog.pdf
+- Spotted Pony [TT].pdf
+- ST. ANNE'S REEL [KDEd].pdf
+- Star Above the Garter.pdf
+- Star of the County Down 4-4 [IN].pdf
+- Staten Island Hornpipe [NEFR].pdf
+- Sugar Moon.pdf
+- Swallowtail Jig [NEFR].pdf
+- Swedish Twostep [EFTB1].pdf
+- Sweet Journeys.pdf
+- Swinging on a Gate [NEFR].pdf
+- swing your partner.pdf
+- Temperance Reel aka Teetotalers [NEFR].pdf
+- TENNESSEE WALTZ [KDEd].pdf
+- TEXAS [KDEd].pdf
+- The Gale.pdf
+- The Sailor's Wife.pdf
+- Tombigbee Waltz.pdf
+- Too Young to Marry [PC1].pdf
+- Top of Cork Road.pdf
+- Turkey in the Straw [WOTFA].pdf
+- Uncle Pen A.pdf
+- Uncle Pen chart.pdf
+- Under the Double Eagle.pdf
+- Walking In My Sleeep.pdf
+- Waynesboro .pdf
+- West Fork Gals 2024.pdf
+- Westphalia Waltz [TT].pdf
+- WHISKEY BEFORE BREAKFAST [KDEd].pdf
+- Wild Horses at Stoney Point.pdf
+- Winder Slide 23.pdf
+- Year of Jubilo [IN].pdf
+- You Married My Daughter, and yet You Didn't [PC2].pdf
+- You're a Grand Old Flag Yankee Doodle Boy.pdf
+
+## add-ons-2026
+- Acorn Hill Breakdown.pdf
+- Black Jack Grove.pdf
+- Blueberry Jig D.pdf
+- Camp Meeting on the Fourth of July D.pdf
+- CHINQUAPIN [KDEd].pdf
+- Clearwater Stomp fixed .pdf
+- Clinch Mountain Backstep - Score.pdf
+- Cock o’ the North A.pdf
+- Crested Hens Em.pdf
+- Cricket on a Hearth FEngstrom [TT].pdf
+- Crooked Stovepipefixed.pdf
+- Dogs in the Dishes D .pdf
+- Ebenezer.pdf
+- Far Away  bm:G.pdf
+- Far From Home PC.pdf
+- Fisher's Hornpipe SW.pdf
+- FLORIDA BLUES [KDEd].pdf
+- Frosty Morning 26.pdf
+- Gypsy Waltz.pdf
+- Harvest Home.pdf
+- Haste to the Wedding 2.pdf
+- Hector the Hero finale - Score.pdf
+- Lamplighter’s Hornpipe A.pdf
+- Laura Susan [IN].pdf
+- Lost Indian fixed.pdf
+- MacArthur Road.pdf
+- Magpie fixed.pdf
+- Me and My Fiddle fixed.pdf
+- Miller’s Reel A.pdf
+- Miss McCloud's Reel redone - Score.pdf
+- Monkey in the Dogcart 2 - Score.pdf
+- MOONLIGHT fixed.pdf
+- Morrison's Jig fixed.pdf
+- None of Your Business.pdf
+- Old Joe Clark fix - Score.pdf
+- Porter's Reel fixed.pdf
+- Red Apple Rag * - Score.pdf
+- Red River Cart Polka copy.pdf
+- Road House Ramble fixed .pdf
+- Romeo’s Last Chance D.pdf
+- Roscoe  G.pdf
+- Ross’s Reel #4 fixed.pdf
+- Sally Ann 2.pdf
+- Salmon tails Up the Water fixed.pdf
+- Silver Spear.pdf
+- Snake River Reel D.pdf
+- South Missouri D.pdf
+- Squirrel Hunters - Score.pdf
+- Starry Night For A Ramble fixed.pdf
+- Stone’s Rag fixed.pdf
+- Texas Gales C.pdf
+- The Cuckoo's Nest D.pdf
+- THe Golden Ticket.pdf
+- The Mackadavie 2.pdf
+- Waverly Two-Step fixed.pdf
+- whistling rufus G.pdf
+- WIND THAT SHAKES THE BARLEY fixed.pdf
+- Woodchoppers Reel fixed.pdf

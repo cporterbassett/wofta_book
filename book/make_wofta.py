@@ -16,9 +16,9 @@ def main():
     main_out = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
     comp_out = os.path.splitext(main_out)[0] + "_comparison.pdf"
 
-    here = os.path.dirname(os.path.abspath(__file__))
-    scan_dir = os.path.join(here, "source_images")
-    abc_dir = os.path.join(here, "notation_pipeline", "abc")
+    here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    scan_dir = os.path.join(here, "sources", "scans")
+    abc_dir = os.path.join(here, "abc")
 
     scans = {mp.stem_of(p): p for p in glob.glob(os.path.join(scan_dir, "*.png"))}
     verified = {os.path.basename(p)[:-len("-verified.abc")]: p

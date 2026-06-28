@@ -6,9 +6,9 @@ import sys
 
 import make_pdf as mp
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-ABC_DIR = os.path.join(HERE, "notation_pipeline", "abc")
-IMG_DIR = os.path.join(HERE, "source_images")
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ABC_DIR = os.path.join(HERE, "abc")
+IMG_DIR = os.path.join(HERE, "sources", "scans")
 
 # (display name, kind, path, options)
 ENTRIES = [
