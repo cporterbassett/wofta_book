@@ -113,3 +113,34 @@ def parse_tune_blocks(text):
                 cur.voice_order.append('1')
         cur.voices[voice] = (cur.voices[voice] + ' ' + body).strip()
     return blocks
+
+
+# ── Meter ─────────────────────────────────────────────────────────────────────
+
+def meter_to_barlen(meter):
+    """One bar's length as a Fraction of a whole note. None if no usable meter."""
+    m = (meter or '').strip()
+    if not m or m.lower() in ('none', 'free'):
+        return None
+    if m in ('C', 'c', 'C|', 'c|'):     # common (4/4) and cut (2/2) both == 1 whole
+        return Fraction(1)
+    mm = re.match(r'(\d+)\s*/\s*(\d+)', m)
+    if mm:
+        return Fraction(int(mm.group(1)), int(mm.group(2)))
+    return None
+
+
+def is_compound(meter):
+    """True for 6/8, 9/8, 12/8 ... (numerator a multiple of 3 and > 3)."""
+    mm = re.match(r'(\d+)\s*/\s*(\d+)', (meter or '').strip())
+    if not mm:
+        return False
+    num = int(mm.group(1))
+    return num % 3 == 0 and num > 3
+
+
+def check_time_signature(block, barlen):
+    """ERROR if this block has no usable meter and none was inherited."""
+    if barlen is None:
+        return [Issue('meter', '', None, 'no time signature (M:) present')]
+    return []

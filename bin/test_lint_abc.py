@@ -53,3 +53,28 @@ def test_clean_body_line_strips_decorations_keeps_accidentals():
     out = lint_abc.clean_body_line(line)
     assert '"' not in out and '!' not in out and '{' not in out and '$' not in out
     assert '^f2' in out
+
+
+def test_meter_to_barlen():
+    assert lint_abc.meter_to_barlen("4/4") == Fraction(1)
+    assert lint_abc.meter_to_barlen("6/8") == Fraction(3, 4)
+    assert lint_abc.meter_to_barlen("2/2") == Fraction(1)
+    assert lint_abc.meter_to_barlen("C") == Fraction(1)
+    assert lint_abc.meter_to_barlen("C|") == Fraction(1)
+    assert lint_abc.meter_to_barlen("none") is None
+    assert lint_abc.meter_to_barlen("") is None
+
+
+def test_is_compound():
+    assert lint_abc.is_compound("6/8") is True
+    assert lint_abc.is_compound("9/8") is True
+    assert lint_abc.is_compound("4/4") is False
+    assert lint_abc.is_compound("3/4") is False     # 3 is not > 3
+    assert lint_abc.is_compound("C") is False
+
+
+def test_check_time_signature():
+    b = lint_abc.TuneBlock(meter="")
+    assert len(lint_abc.check_time_signature(b, None)) == 1
+    # When a barlen was supplied (real or inherited), no missing-meter error:
+    assert lint_abc.check_time_signature(b, Fraction(1)) == []
