@@ -550,7 +550,7 @@ def build_toc_pages(out, fonts, entries, n_toc_pages, n_cols=2, toc_title="Conte
     Builds the TOC pages, inserts them at the front of the document."""
     col_w, top_y, lines_per_col, entries_per_page, _ = toc_geometry(len(entries), n_cols)
     col_x = [MARGIN_X + i * (col_w + TOC_COL_GAP) for i in range(n_cols)]
-    num_w = 34  # reserved right strip for the page number
+    num_w = 18  # reserved right strip for the page number (~17pt for 3 digits)
     name_max_w = col_w - num_w - 6
 
     toc_page_objs = []
@@ -570,7 +570,9 @@ def build_toc_pages(out, fonts, entries, n_toc_pages, n_cols=2, toc_title="Conte
             while len(disp) > 1 and _approx_w(disp, TOC_FONT) > name_max_w:
                 disp = disp[:-1]
             if disp != name:
-                disp = disp[:-1] + "…"
+                # ASCII "..." not "…": text_op encodes latin-1, so U+2026
+                # would become a literal "?" in the PDF.
+                disp = disp[:-1] + "..."
             content += text_op(disp, x, y, "/F1", TOC_FONT)
             num = str(pageno)
             nx = x + col_w - _approx_w(num, TOC_FONT)
