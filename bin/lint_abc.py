@@ -144,3 +144,89 @@ def check_time_signature(block, barlen):
     if barlen is None:
         return [Issue('meter', '', None, 'no time signature (M:) present')]
     return []
+
+
+# ── Beat counting ─────────────────────────────────────────────────────────────
+
+# (p notes in the time of q. (simple_q, compound_q); r (affected count) defaults to p.
+_TUPLET_Q = {2: (3, 3), 3: (2, 2), 4: (3, 3), 5: (2, 3),
+             6: (2, 2), 7: (2, 3), 8: (3, 3), 9: (2, 3)}
+
+_PITCH = re.compile(r"[_^=]{0,2}[A-Ga-gz][,']*")
+_DURSUFFIX = re.compile(r"(?:\d+)?(?:/+)?(?:\d+)?")
+
+
+def _suffix_dur(text, pos, unit):
+    """Read a duration suffix at text[pos:]; return (Fraction-of-whole, new_pos)."""
+    m = _DURSUFFIX.match(text, pos)
+    s = m.group(0)
+    return _parse_dur(s) * unit, m.end()
+
+
+def measure_duration(measure, unit, compound):
+    """Total sounded duration of a measure, as a Fraction of a whole note.
+
+    Chords count once; tuplets scale the affected notes; broken rhythm and ties
+    are duration-neutral; slurs/spaces are ignored.
+    """
+    total = Fraction(0)
+    i, n = 0, len(measure)
+    tuplet_remaining = 0
+    tuplet_ratio = Fraction(1)
+    while i < n:
+        c = measure[i]
+        if c == '(' and i + 1 < n and measure[i + 1].isdigit():
+            tm = re.match(r'\((\d+)(?::(\d*))?(?::(\d*))?', measure[i:])
+            p = int(tm.group(1))
+            q = int(tm.group(2)) if tm.group(2) else None
+            r = int(tm.group(3)) if tm.group(3) else None
+            if q is None:
+                qs, qc = _TUPLET_Q.get(p, (2, 3))
+                q = qc if compound else qs
+            tuplet_remaining = r if r is not None else p
+            tuplet_ratio = Fraction(q, p)
+            i += tm.end()
+            continue
+        if c == '[':                       # chord
+            j = measure.find(']', i)
+            if j == -1:
+                break
+            dval, after = _suffix_dur(measure, j + 1, unit)
+            if measure[j + 1:after] == '':  # no suffix after ] -> use first inner note
+                inner = _PITCH.match(measure, i + 1)
+                if inner:
+                    dval, _ = _suffix_dur(measure, inner.end(), unit)
+            if tuplet_remaining > 0:
+                dval *= tuplet_ratio
+                tuplet_remaining -= 1
+            total += dval
+            i = after
+            continue
+        pm = _PITCH.match(measure, i)
+        if pm:
+            dval, after = _suffix_dur(measure, pm.end(), unit)
+            if tuplet_remaining > 0:
+                dval *= tuplet_ratio
+                tuplet_remaining -= 1
+            total += dval
+            i = after
+            continue
+        i += 1                              # spaces, slurs (), > < - etc.
+    return total
+
+
+def check_beats(voice, body, unit, barlen, compound):
+    """Interior measures must equal barlen; first/last may be short (pickup)."""
+    issues = []
+    measures = split_measures(body)
+    last = len(measures) - 1
+    for idx, m in enumerate(measures):
+        dur = measure_duration(m, unit, compound)
+        if idx == 0 or idx == last:
+            if dur > barlen:
+                issues.append(Issue('beats', voice, idx + 1,
+                    f'measure {idx + 1} has {dur} (> bar {barlen}); too long for a pickup', m))
+        elif dur != barlen:
+            issues.append(Issue('beats', voice, idx + 1,
+                f'measure {idx + 1} has {dur}, expected {barlen}', m))
+    return issues

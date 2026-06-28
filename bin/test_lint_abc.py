@@ -78,3 +78,41 @@ def test_check_time_signature():
     assert len(lint_abc.check_time_signature(b, None)) == 1
     # When a barlen was supplied (real or inherited), no missing-meter error:
     assert lint_abc.check_time_signature(b, Fraction(1)) == []
+
+
+U8 = Fraction(1, 8)
+
+
+def test_measure_duration_simple():
+    # 8 eighth-notes in 4/4 == 1 whole note
+    assert lint_abc.measure_duration("G2 A2 B2 c2", U8, False) == Fraction(1)
+    assert lint_abc.measure_duration("d4 d4", U8, False) == Fraction(1)
+
+
+def test_measure_duration_chord_counts_once():
+    # [EA]2 [ce]2 [ce]2 [Ae][Be]  in L:1/16 -> (2+2+2+1+1)/16 = 8/16 = 1/2
+    assert lint_abc.measure_duration("[EA]2[ce]2 [ce]2[Ae][Be]", Fraction(1, 16), False) == Fraction(1, 2)
+
+
+def test_measure_duration_triplet():
+    # (3abc in L:1/8 simple meter: 3 eighths in time of 2 -> 2/8 = 1/4
+    assert lint_abc.measure_duration("(3abc", U8, False) == Fraction(1, 4)
+
+
+def test_measure_duration_broken_rhythm_unchanged():
+    # a>b == a3/2 + b1/2 ; same total as a b
+    assert lint_abc.measure_duration("a>b", U8, False) == lint_abc.measure_duration("a b", U8, False)
+
+
+def test_check_beats_flags_interior_only():
+    # measure 2 (interior) is short -> 1 issue; pickup edges ignored
+    body = "dB | A2 B2 | A2 B2 d3 A | A3"   # m1 short(edge ok), m2 short(FAIL), m3 full, m4 short(edge ok)
+    issues = lint_abc.check_beats("", body, U8, Fraction(1), False)
+    assert len(issues) == 1
+    assert issues[0].measure == 2
+
+
+def test_check_beats_too_long_pickup_flagged():
+    body = "A2 B2 d3 A2 | A2 B2 d3 A"    # m1 edge but 9/8 > 8/8 -> FAIL
+    issues = lint_abc.check_beats("", body, U8, Fraction(1), False)
+    assert any(i.measure == 1 for i in issues)
