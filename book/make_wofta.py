@@ -20,7 +20,12 @@ def main():
     scan_dir = os.path.join(here, "sources", "scans")
     abc_dir = os.path.join(here, "abc")
 
-    scans = {mp.stem_of(p): p for p in glob.glob(os.path.join(scan_dir, "*.png"))}
+    # Top-level scans are the unverified tunes; verified tunes' scans live in
+    # scans/verified/. Include both so the comparison PDF can show every
+    # engraved tune beside its original scan (top-level wins on the rare overlap).
+    scan_paths = (glob.glob(os.path.join(scan_dir, "verified", "*.png"))
+                  + glob.glob(os.path.join(scan_dir, "*.png")))
+    scans = {mp.stem_of(p): p for p in scan_paths}
     verified = {os.path.basename(p)[:-len("-verified.abc")]: p
                 for p in glob.glob(os.path.join(abc_dir, "*-verified.abc"))}
 
