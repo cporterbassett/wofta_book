@@ -21,7 +21,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
-IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
+IMAGES_DIR="${PIPELINE_DIR}"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
 AUDIVERIS="flatpak run org.audiveris.audiveris"
 
@@ -29,7 +29,7 @@ TUNE="${1:?usage: export_tune.sh \"Tune Name\" [--mvt N]}"
 FORCE_MVT=""
 if [[ "${2:-}" == "--mvt" ]]; then FORCE_MVT="${3:?--mvt needs a number}"; fi
 
-TDIR="${PIPELINE_DIR}/batch_output/${TUNE}"
+TDIR="${PIPELINE_DIR}/scratch/batch_output/${TUNE}"
 OMR="${TDIR}/clean.omr"
 [[ -f "$OMR" ]] || { echo "No clean.omr for '$TUNE' at $OMR"; exit 1; }
 
@@ -62,7 +62,7 @@ MVTS=("$TDIR"/clean.mvt*.mxl)
 shopt -u nullglob
 
 FINAL_ABC="${PIPELINE_DIR}/abc/${TUNE}-candidate.abc"
-mkdir -p "${PIPELINE_DIR}/abc" "${PIPELINE_DIR}/renders"
+mkdir -p "${PIPELINE_DIR}/abc" "${PIPELINE_DIR}/scratch/renders"
 
 if [[ ${#MVTS[@]} -gt 0 ]]; then
     # Sort movements numerically (mvt1, mvt2, ... mvt10) so the merge follows the
@@ -102,7 +102,7 @@ if [[ -f "$DRAFT_ABC" ]]; then
     "$VENV" "${HERE}/normalize_linebreaks.py" "$FINAL_ABC" "$DRAFT_ABC"
 fi
 
-RENDER="${PIPELINE_DIR}/renders/${TUNE}-candidate.render.png"
+RENDER="${PIPELINE_DIR}/scratch/renders/${TUNE}-candidate.render.png"
 bash "${HERE}/render_abc.sh" "$FINAL_ABC" "$RENDER" 2>&1 | tail -1
 
 KEY=$(grep -m1 '^K:' "$FINAL_ABC" | sed 's/^K://;s/ //g')

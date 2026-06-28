@@ -12,7 +12,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
-IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
+IMAGES_DIR="${PIPELINE_DIR}"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
 
 TUNE="${1:?usage: promote_tune.sh \"Tune Name\"}"
@@ -35,11 +35,11 @@ fi
 git -C "$IMAGES_DIR" mv -f "$CAND" "$VERIFIED"
 echo "Promoted: ${TUNE} -> -verified.abc"
 
-RENDER="${PIPELINE_DIR}/renders/${TUNE}-verified.render.png"
+RENDER="${PIPELINE_DIR}/scratch/renders/${TUNE}-verified.render.png"
 bash "${HERE}/render_abc.sh" "$VERIFIED" "$RENDER" 2>&1 | tail -1
 # clean up the now-stale candidate render if present
-rm -f "${PIPELINE_DIR}/renders/${TUNE}-candidate.render.png" \
-      "${PIPELINE_DIR}/renders/${TUNE}-candidate.trim.png"
+rm -f "${PIPELINE_DIR}/scratch/renders/${TUNE}-candidate.render.png" \
+      "${PIPELINE_DIR}/scratch/renders/${TUNE}-candidate.trim.png"
 
 "$VENV" "${HERE}/validate_abc.py" "$TUNE" || true
 echo "Run build_tracking_sheet.py and build_report.sh to refresh the ledger/report."

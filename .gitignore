@@ -3,8 +3,6 @@
 # Regenerable scratch & generated output
 scratch/
 output/
-notation_pipeline/batch_output/
-notation_pipeline/renders/
 
 # OMR intermediates (in case any land outside scratch/)
 *.cropped.png

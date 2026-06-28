@@ -18,8 +18,8 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
-IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
-BATCH_DIR="${PIPELINE_DIR}/batch_output"
+IMAGES_DIR="${PIPELINE_DIR}"
+BATCH_DIR="${PIPELINE_DIR}/scratch/batch_output"
 HEALTH_TSV="${PIPELINE_DIR}/health_scores.tsv"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
 AUDIVERIS="flatpak run org.audiveris.audiveris"
@@ -47,7 +47,7 @@ else
     # alphabetically so nothing is dropped.
     mapfile -t HAVE_OMR < <(
         find "$BATCH_DIR" -maxdepth 2 -name "clean.omr" \
-            | sed 's|.*/batch_output/||; s|/clean.omr||' \
+            | sed 's|.*/scratch/batch_output/||; s|/clean.omr||' \
             | sort
     )
     declare -A HAS_OMR=()
