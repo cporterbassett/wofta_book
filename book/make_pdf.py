@@ -532,11 +532,12 @@ def pack_pages(items, gap, usable_h):
 TOC_TITLE_H = 44
 TOC_LINE_H = 14
 TOC_FONT = 10
-TOC_COL_GAP = 24
+TOC_COL_GAP = 12      # gap between columns (tighter than tune-page margins)
+TOC_MARGIN_X = 24     # narrower side margin on the TOC page to widen columns
 
 
 def toc_geometry(n_entries, n_cols=2):
-    usable_w = PAGE_W - 2 * MARGIN_X
+    usable_w = PAGE_W - 2 * TOC_MARGIN_X
     col_w = (usable_w - (n_cols - 1) * TOC_COL_GAP) / n_cols
     top_y = PAGE_H - MARGIN_TOP - TOC_TITLE_H
     lines_per_col = int((top_y - MARGIN_BOTTOM) / TOC_LINE_H)
@@ -549,15 +550,15 @@ def build_toc_pages(out, fonts, entries, n_toc_pages, n_cols=2, toc_title="Conte
     """entries: list of (name, printed_pageno, dest_page_obj) in display order.
     Builds the TOC pages, inserts them at the front of the document."""
     col_w, top_y, lines_per_col, entries_per_page, _ = toc_geometry(len(entries), n_cols)
-    col_x = [MARGIN_X + i * (col_w + TOC_COL_GAP) for i in range(n_cols)]
+    col_x = [TOC_MARGIN_X + i * (col_w + TOC_COL_GAP) for i in range(n_cols)]
     num_w = 18  # reserved right strip for the page number (~17pt for 3 digits)
-    name_max_w = col_w - num_w - 6
+    name_max_w = col_w - num_w - 3
 
     toc_page_objs = []
     for p in range(n_toc_pages):
         page_obj = new_page(out, PAGE_W, PAGE_H, fonts)
         title_text = toc_title if p == 0 else ""
-        content = text_op(title_text, MARGIN_X, PAGE_H - MARGIN_TOP - 22, "/F2", 20)
+        content = text_op(title_text, TOC_MARGIN_X, PAGE_H - MARGIN_TOP - 22, "/F2", 20)
         annots = []
         chunk = entries[p * entries_per_page:(p + 1) * entries_per_page]
         for j, (name, pageno, dest) in enumerate(chunk):
