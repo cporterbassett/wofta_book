@@ -1,20 +1,25 @@
 .venv/
 
-# LilyPond intermediate files
+# Regenerable scratch & generated output
+scratch/
+output/
+notation_pipeline/batch_output/
+notation_pipeline/renders/
+
+# OMR intermediates (in case any land outside scratch/)
+*.cropped.png
+
+# LilyPond / engraving intermediates
 *.ly
 *.midi
 *.eps
-*.pdf
 *.svg
 
-# Intermediate PNGs generated from ABC files
-*.cropped.png
+# Generated book PDFs at repo root only (sources/pdfs/ stays tracked)
+/*.pdf
 
-# Generated renders (reproducible from ABC files)
-notation_pipeline/renders/
-
-# Python bytecode cache
+# Python bytecode
 __pycache__/
 
-# Editor/runtime crash logs
+# Editor / runtime crash logs
 neovide_backtraces.log
