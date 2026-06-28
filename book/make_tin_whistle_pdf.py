@@ -12,10 +12,17 @@ IMG_DIR = os.path.join(HERE, "sources", "scans")
 
 # (display name, kind, path, options)
 ENTRIES = [
-    ("Red Haired Boy", "abc", os.path.join(ABC_DIR, "Red Haired Boy-verified.abc"), {}),
     ("Far Away", "png", os.path.join(IMG_DIR, "Far Away.png"), {}),
+    ("Road to Lisdoonvarna", "abc", os.path.join(ABC_DIR, "Road to Lisdoonvarna, The-verified.abc"), {}),
+    ("Red Haired Boy", "abc", os.path.join(ABC_DIR, "Red Haired Boy-verified.abc"), {}),
+    ("Year of Jubilo", "abc", os.path.join(ABC_DIR, "Year of Jubilo-verified.abc"), {}),
+    ("Staten Island Hornpipe", "png", os.path.join(IMG_DIR, "Staten Island Hornpipe.png"), {}),
+    ("Starry Night for a Ramble", "abc", os.path.join(ABC_DIR, "Starry Night for a Ramble-verified.abc"), {}),
     ("Little Donald in the Pigpen", "png", os.path.join(IMG_DIR, "Little Donald in the Pigpen.png"), {}),
     ("Eighth of January", "abc", os.path.join(ABC_DIR, "Eighth of January-verified.abc"), {}),
+    ("Wind That Shakes the Barley", "abc", os.path.join(ABC_DIR, "Wind That Shakes the Barley-verified.abc"), {}),
+    ("West Fork Gals", "abc", os.path.join(ABC_DIR, "West Fork Gals-verified.abc"), {}),
+    ("Tennessee Waltz", "abc", os.path.join(ABC_DIR, "Tennessee Waltz-verified.abc"), {}),
     ("Hey Polka", "abc", os.path.join(ABC_DIR, "Hey Polka-verified.abc"), {}),
     ("Arkansas Traveler", "abc", os.path.join(ABC_DIR, "Arkansas Traveler-verified.abc"), {}),
     ("Chinese Breakdown", "abc", os.path.join(ABC_DIR, "Chinese Breakdown-verified.abc"), {}),
@@ -25,7 +32,6 @@ ENTRIES = [
     ("The Boys of Blue Hill", "abc", os.path.join(ABC_DIR, "Boys of Blue Hill, The-verified.abc"), {}),
     ("Drowsy Maggie", "abc", os.path.join(ABC_DIR, "Drowsy Maggie-verified.abc"), {}),
     ("Kesh Jig", "abc", os.path.join(ABC_DIR, "Kesh Jig-verified.abc"), {}),
-    ("Road to Lisdoonvarna", "abc", os.path.join(ABC_DIR, "Road to Lisdoonvarna, The-verified.abc"), {}),
     ("Red Wing", "abc", os.path.join(ABC_DIR, "Red Wing-verified.abc"), {}),
 ]
 
