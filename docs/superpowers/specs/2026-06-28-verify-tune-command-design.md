@@ -1,4 +1,4 @@
-# `/verify-tune-ai` slash command — design
+# `/verify-tune` slash command — design
 
 **Date:** 2026-06-28
 **Status:** approved (pending spec review)
@@ -17,19 +17,19 @@ Claude cleanup pass between Audiveris export and EasyABC review.
 
 ## Delivery
 
-A project-local slash command at `.claude/commands/verify-tune-ai.md` (travels
+A project-local slash command at `.claude/commands/verify-tune.md` (travels
 with the repo; `.claude/` is not gitignored). Invoked inside a Claude Code
 session. No changes to any bash script — the command is pure orchestration over
 the existing pipeline scripts.
 
 ## Interface (mirrors `verify_tune.sh`)
 
-- `/verify-tune-ai` — auto-pick the next tune (worst-first via `health_scores.tsv`).
-- `/verify-tune-ai "Tune Name"` — a specific tune.
-- `/verify-tune-ai --queue` / `--queue --loop` — draw from `verify_queue.txt` in
+- `/verify-tune` — auto-pick the next tune (worst-first via `health_scores.tsv`).
+- `/verify-tune "Tune Name"` — a specific tune.
+- `/verify-tune --queue` / `--queue --loop` — draw from `verify_queue.txt` in
   file order; `--loop` walks the whole queue.
-- `/verify-tune-ai --list` — print remaining eligible tunes and stop (no GUI).
-- `/verify-tune-ai --skip ["Tune"]` — park a tune in `verify_skip.txt`, advance.
+- `/verify-tune --list` — print remaining eligible tunes and stop (no GUI).
+- `/verify-tune --skip ["Tune"]` — park a tune in `verify_skip.txt`, advance.
 
 Tune selection is delegated to `verify_tune.sh` (its `eligible` / `pick_next_tune`
 logic), so eligibility and ordering stay identical to the manual loop.
@@ -104,6 +104,9 @@ owns in EasyABC)**
   visible in the scan.
 - Tie-vs-slur ambiguity where both endpoints share a pitch.
 
+Every flag-only finding is reported **by measure number**, and those measure
+numbers drive the review-render marking in Stage 3 (below).
+
 **Out of scope for Stage 2:** correcting notes that are simply misread vs. the
 scan (Porter does that in EasyABC). Only the export artifacts above touch pitch.
 
@@ -117,9 +120,14 @@ Stage 3.
 Not a blind shell-out to `--no-export` (its `read -p "Promote?"` gate can't
 receive Porter's answer through a non-interactive Bash call). Claude drives it:
 
-- Start `bash bin/live_compare.sh <candidate.abc> <render.png> <scan.png>` in the
-  background (auto-refreshing side-by-side compare in Firefox; rebuilds on every
-  save).
+- **Marked review render.** The compare PNG is built from a *review render* that
+  (a) numbers every measure (`%%measurenb 1`) so the chat report's "measure N"
+  references map onto the picture, and (b) highlights the measures Claude flagged
+  in Stage 2 (e.g. a colored bar/annotation). This marking is **render-only**:
+  injected into a temp copy of the ABC, never into `<Tune>-candidate.abc` or the
+  promoted `<Tune>-verified.abc`, so the book output stays clean.
+- Start the live-compare watcher in the background pointed at that review render
+  (auto-refreshing side-by-side compare in Firefox; rebuilds on every save).
 - Launch `easyabc <candidate.abc>` (foreground GUI; the Bash call blocks until
   Porter closes it).
 - **Mid-review edits:** EasyABC does not reload externally-edited files. If Porter
@@ -137,9 +145,19 @@ In `--loop` mode Claude repeats the 3 stages, getting each next tune from
 
 ## What changes in code
 
-Only a new file: `.claude/commands/verify-tune-ai.md`. No changes to
-`verify_tune.sh`, `export_tune.sh`, `live_compare.sh`, `promote_tune.sh`,
-`render_abc.sh`, `make_compare.sh`.
+1. New file: `.claude/commands/verify-tune.md` (the command itself).
+2. A **review-render** path for the marked compare (bar numbers + highlighted
+   suspect measures). To keep `<Tune>-candidate.abc` / `<Tune>-verified.abc` clean,
+   the marking is injected into a temp copy of the ABC before rendering — e.g. a
+   small `bin/render_review.sh` wrapper (or a `--review`/`--mark "N,M"` flag on
+   `render_abc.sh`) that prepends `%%measurenb 1`, applies the highlight to the
+   given measure numbers, then defers to `render_abc.sh`. The Stage-3 watcher uses
+   this review render for the compare PNG. (Exact abcm2ps highlight mechanism is an
+   implementation detail for the plan.)
+
+No changes to `export_tune.sh`, `promote_tune.sh`, `make_compare.sh`, or the
+`verify_tune.sh` flags (the command calls `--export-only` and the existing
+helpers). `live_compare.sh` may need a small tweak to render via the review path.
 
 ## Out of scope
 
