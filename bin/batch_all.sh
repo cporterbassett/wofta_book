@@ -13,11 +13,11 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
-IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
-# Corpus lives in source_images/ (moved there in 775e68bd); fall back to repo root.
-SCAN_DIR="${IMAGES_DIR}/source_images"
+IMAGES_DIR="${PIPELINE_DIR}"
+# Corpus lives in sources/scans/ after repo reorg.
+SCAN_DIR="${IMAGES_DIR}/sources/scans"
 [[ -d "$SCAN_DIR" ]] || SCAN_DIR="$IMAGES_DIR"
-BATCH_DIR="${PIPELINE_DIR}/batch_output"
+BATCH_DIR="${PIPELINE_DIR}/scratch/batch_output"
 SCRIPT="${HERE}/batch_tune.sh"
 LOG="${BATCH_DIR}/batch_all.log"
 DRY_RUN=0

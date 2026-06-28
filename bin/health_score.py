@@ -44,8 +44,8 @@ import zipfile
 import glob
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(SCRIPT_DIR)          # notation_pipeline/ (parent of bin/)
-BATCH_DIR = os.path.join(ROOT, "batch_output")
+ROOT = os.path.dirname(SCRIPT_DIR)          # repo root (parent of bin/)
+BATCH_DIR = os.path.join(ROOT, "scratch", "batch_output")
 
 TSV_HEADER = "\t".join([
     "tune_name", "health_score", "key_status", "key_ok", "time_ok",

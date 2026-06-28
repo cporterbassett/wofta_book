@@ -13,10 +13,10 @@ mkdir -p reports
 
 OUT="reports/finalized_report.html"
 # img src paths are relative to reports/ (one level under PIPELINE_DIR):
-ORIG_DIR="../../source_images"   # scans, from reports/ (for <img src>)
-RENDER_DIR="../renders"          # renders, from reports/ (for <img src>)
+ORIG_DIR="../sources/scans"      # scans, from reports/ (for <img src>)
+RENDER_DIR="../scratch/renders"  # renders, from reports/ (for <img src>)
 # absolute scan dir for the -f existence test (CWD here is PIPELINE_DIR, not reports/):
-SCAN_ABS_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)/source_images"
+SCAN_ABS_DIR="${PIPELINE_DIR}/sources/scans"
 
 shopt -s nullglob
 FINALS=(abc/*-verified.abc abc/*-candidate.abc)
@@ -66,8 +66,8 @@ for abc in "${FINALS[@]}"; do
   anchor="$(echo "$tune" | tr -c 'A-Za-z0-9' '-')"
   orig="${ORIG_DIR}/${tune}.png"                               # relative, for <img src>
   orig_abs="${SCAN_ABS_DIR}/${tune}.png"                       # absolute, for -f test
-  render="${PIPELINE_DIR}/renders/${tune}-${tier}.render.png"   # absolute, for -f test + convert input
-  trim="${PIPELINE_DIR}/renders/${tune}-${tier}.trim.png"       # absolute, for convert output
+  render="${PIPELINE_DIR}/scratch/renders/${tune}-${tier}.render.png"   # absolute, for -f test + convert input
+  trim="${PIPELINE_DIR}/scratch/renders/${tune}-${tier}.trim.png"       # absolute, for convert output
   rel_trim="${RENDER_DIR}/${tune}-${tier}.trim.png"             # relative, for <img src>
 
   # Trim whitespace off the render for a tight comparison (fall back to render).

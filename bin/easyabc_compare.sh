@@ -12,11 +12,11 @@ set -uo pipefail
 
 TUNE="${1:?Usage: easyabc_compare.sh \"Tune Name\"}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "${HERE}/.." && pwd)"            # notation_pipeline/
-IMAGES="$(cd "${ROOT}/.." && pwd)"          # tune_images/
+ROOT="$(cd "${HERE}/.." && pwd)"            # repo root (tune_images/)
+IMAGES="${ROOT}"                            # tune_images/ — same as ROOT after reorg
 ABC="${ROOT}/abc/${TUNE}-candidate.abc"
-REN="${ROOT}/renders/${TUNE}-candidate.render.png"
-SRC="${IMAGES}/source_images/${TUNE}.png"
+REN="${ROOT}/scratch/renders/${TUNE}-candidate.render.png"
+SRC="${IMAGES}/sources/scans/${TUNE}.png"
 CMP="/tmp/${TUNE} - compare.png"
 
 easyabc "$ABC"                              # foreground — blocks until the window closes

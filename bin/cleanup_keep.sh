@@ -101,7 +101,7 @@ KEEP=(
   "Meeting of the Waters"
   "Ookpik Waltz"
   "Sailor's Hornpipe"
-  "Sally Ann"                                           # NOT "Sally Ann Johnson" (separate tune in source_images/)
+  "Sally Ann"                                           # NOT "Sally Ann Johnson" (separate tune in sources/scans/)
   "Sandy Boys"
   "Shoes and Stockings"
   "Ships are Sailing"

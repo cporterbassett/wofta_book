@@ -13,7 +13,7 @@ set -euo pipefail
 SRC="$1"; REN="$2"; OUT="$3"
 W=950
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PY="$(cd "${HERE}/../.." && pwd)/.venv/bin/python3"
+PY="$(cd "${HERE}/.." && pwd)/.venv/bin/python3"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 # Drop a stray bottom-of-page copyright/credit so it doesn't bloat the trim box

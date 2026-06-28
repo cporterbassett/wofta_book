@@ -22,7 +22,7 @@
 #   bash verify_tune.sh "Tune Name"     # a specific tune
 #   bash verify_tune.sh --skip          # park the current auto-pick, run the next
 #   bash verify_tune.sh --skip "Tune"   # park a named tune, run the next
-#   bash verify_tune.sh --queue         # auto-pick from notation_pipeline/verify_queue.txt (in order)
+#   bash verify_tune.sh --queue         # auto-pick from verify_queue.txt (in order)
 #   bash verify_tune.sh --queue-file F  # auto-pick from a custom queue file
 #   bash verify_tune.sh --queue --loop  # walk the whole queue, one tune after another
 #   bash verify_tune.sh --queue --list  # print the remaining eligible tunes and exit (no GUI)
@@ -33,7 +33,7 @@
 #                                             # title fix, no EasyABC). Seam for an
 #                                             # AI cleanup pass; resume with --no-export.
 #
-# Parked tunes live in notation_pipeline/verify_skip.txt (one name per line) and
+# Parked tunes live in verify_skip.txt (one name per line) and
 # are stepped over by auto-pick until you remove them (e.g. `vi` the file).
 #
 # QUEUE MODE: with --queue, auto-pick draws from a queue file (one canonical tune
@@ -48,8 +48,8 @@
 set -uo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"          # notation_pipeline/
-IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"    # tune_images/
+PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"          # repo root (tune_images/)
+IMAGES_DIR="${PIPELINE_DIR}"                      # tune_images/ — same as PIPELINE_DIR after reorg
 AUDIVERIS="flatpak run org.audiveris.audiveris"
 HEALTH_TSV="${PIPELINE_DIR}/health_scores.tsv"
 SKIP_FILE="${PIPELINE_DIR}/verify_skip.txt"
@@ -67,7 +67,7 @@ is_seen() {  # $1=tune — true if already handled this loop session
 
 eligible() {  # $1=tune — true if it has a clean.omr, isn't verified/skipped/seen
     [[ -n "$1" ]] || return 1
-    [[ -f "${PIPELINE_DIR}/batch_output/${1}/clean.omr" ]] || return 1
+    [[ -f "${PIPELINE_DIR}/scratch/batch_output/${1}/clean.omr" ]] || return 1
     [[ -f "${PIPELINE_DIR}/abc/${1}-verified.abc" ]] && return 1
     is_skipped "$1" && return 1
     is_seen "$1" && return 1
@@ -185,11 +185,11 @@ else
     echo "Auto-selected next tune (${QUEUE:+queue order}${QUEUE:-worst-first}): $TUNE"
 fi
 
-CLEAN_OMR="${PIPELINE_DIR}/batch_output/${TUNE}/clean.omr"
+CLEAN_OMR="${PIPELINE_DIR}/scratch/batch_output/${TUNE}/clean.omr"
 CAND_ABC="${PIPELINE_DIR}/abc/${TUNE}-candidate.abc"
-RENDER="${PIPELINE_DIR}/renders/${TUNE}-candidate.render.png"
-SCAN="${IMAGES_DIR}/source_images/${TUNE}.png"
-[[ ! -f "$SCAN" ]] && SCAN="${IMAGES_DIR}/source_images/verified/${TUNE}.png"
+RENDER="${PIPELINE_DIR}/scratch/renders/${TUNE}-candidate.render.png"
+SCAN="${IMAGES_DIR}/sources/scans/${TUNE}.png"
+[[ ! -f "$SCAN" ]] && SCAN="${IMAGES_DIR}/sources/scans/verified/${TUNE}.png"
 
 # Safe slug for /tmp filenames (avoids spaces/apostrophes in file:// URLs).
 SLUG="$(basename "$CAND_ABC" | tr -c 'A-Za-z0-9' '_')"

@@ -28,7 +28,7 @@ import glob
 # ── Path setup ────────────────────────────────────────────────────────────────
 
 HERE = os.path.dirname(os.path.abspath(__file__))   # bin/ — for sibling imports
-ROOT = os.path.dirname(HERE)                         # notation_pipeline/ — for data
+ROOT = os.path.dirname(HERE)                         # repo root — for data
 ABC_DIR = os.path.join(ROOT, 'abc')
 HEALTH_TSV = os.path.join(ROOT, 'health_scores.tsv')
 

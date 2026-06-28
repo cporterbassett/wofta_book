@@ -3,13 +3,13 @@
 # Preprocess (1.5× Lanczos + unsharp) → Audiveris batch → clean_omr.py →
 # clean_mxl.py → abc_xml_converter → draft ABC.
 #
-# Output goes to:   notation_pipeline/batch_output/<Tune Name>/
+# Output goes to:   scratch/batch_output/<Tune Name>/
 #   preprocessed.png   upscaled image fed to Audiveris
 #   preprocessed.omr   raw Audiveris OMR file
 #   preprocessed.mxl   raw Audiveris MXL
 #   clean.omr          cleaned .omr (phase 2 checkpoint — skip if present)
 #   clean.mxl          cleaned MXL
-# Draft ABC:         notation_pipeline/abc/<Tune Name>-draft.abc
+# Draft ABC:         abc/<Tune Name>-draft.abc
 #
 # Usage (from anywhere):
 #   bash batch_tune.sh "Tune Name"
@@ -27,13 +27,12 @@ fi
 TUNE="$1"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"
-IMAGES_DIR="$(cd "${PIPELINE_DIR}/.." && pwd)"
-# Corpus lives in source_images/ (moved there in 775e68bd); fall back to the
-# legacy repo-root layout for backward compatibility.
-SRC="${IMAGES_DIR}/source_images/${TUNE}.png"
+IMAGES_DIR="${PIPELINE_DIR}"
+# Corpus lives in sources/scans/ after repo reorg.
+SRC="${IMAGES_DIR}/sources/scans/${TUNE}.png"
 [[ -f "$SRC" ]] || SRC="${IMAGES_DIR}/${TUNE}.png"
 VENV="${IMAGES_DIR}/.venv/bin/python3"
-OUTDIR="${PIPELINE_DIR}/batch_output/${TUNE}"
+OUTDIR="${PIPELINE_DIR}/scratch/batch_output/${TUNE}"
 OUT_ABC="${PIPELINE_DIR}/abc/${TUNE}-draft.abc"
 SCALE="${SCALE:-150}"
 
@@ -48,7 +47,7 @@ if [[ -f "${OUTDIR}/clean.omr" ]]; then
     exit 0
 fi
 
-mkdir -p "${OUTDIR}" "${PIPELINE_DIR}/abc"
+mkdir -p "${OUTDIR}" "${PIPELINE_DIR}/abc" "${PIPELINE_DIR}/scratch/batch_output"
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Tune : $TUNE"
