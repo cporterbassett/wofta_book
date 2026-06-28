@@ -116,3 +116,14 @@ def test_check_beats_too_long_pickup_flagged():
     body = "A2 B2 d3 A2 | A2 B2 d3 A"    # m1 edge but 9/8 > 8/8 -> FAIL
     issues = lint_abc.check_beats("", body, U8, Fraction(1), False)
     assert any(i.measure == 1 for i in issues)
+
+
+def test_measure_duration_skips_volta_bracket_residue():
+    # clean_body_line leaves a stray '[' from volta annotations; must not zero the bar
+    assert lint_abc.measure_duration("[ A3 B A2 dB", U8, False) == Fraction(1)
+
+
+def test_measure_duration_tuplet_compound_differs():
+    # (5 uses q=2 in simple meter but q=3 in compound -> different totals
+    assert lint_abc.measure_duration("(5ABcde", U8, False) == Fraction(1, 4)
+    assert lint_abc.measure_duration("(5ABcde", U8, True) == Fraction(3, 8)

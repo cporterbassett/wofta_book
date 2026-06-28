@@ -152,7 +152,7 @@ def check_time_signature(block, barlen):
 _TUPLET_Q = {2: (3, 3), 3: (2, 2), 4: (3, 3), 5: (2, 3),
              6: (2, 2), 7: (2, 3), 8: (3, 3), 9: (2, 3)}
 
-_PITCH = re.compile(r"[_^=]{0,2}[A-Ga-gz][,']*")
+_PITCH = re.compile(r"[_^=]{0,2}[A-Ga-gxz][,']*")
 _DURSUFFIX = re.compile(r"(?:\d+)?(?:/+)?(?:\d+)?")
 
 
@@ -187,10 +187,11 @@ def measure_duration(measure, unit, compound):
             tuplet_ratio = Fraction(q, p)
             i += tm.end()
             continue
-        if c == '[':                       # chord
+        if c == '[':                       # chord (real chords open with a note/accidental)
             j = measure.find(']', i)
-            if j == -1:
-                break
+            if i + 1 >= n or measure[i + 1] not in "_^=ABCDEFGabcdefg" or j == -1:
+                i += 1                      # stray '[' (e.g. volta annotation residue) — skip
+                continue
             dval, after = _suffix_dur(measure, j + 1, unit)
             if measure[j + 1:after] == '':  # no suffix after ] -> use first inner note
                 inner = _PITCH.match(measure, i + 1)
