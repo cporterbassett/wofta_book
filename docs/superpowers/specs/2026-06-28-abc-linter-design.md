@@ -8,12 +8,16 @@
 
 A standalone command-line tool that scans **verified** ABC files for musical-notation
 correctness issues that the existing metadata-focused `bin/validate_abc.py` does not catch.
-It complements (does not replace) `validate_abc.py`:
+It complements (does not replace) `validate_abc.py`. The two answer different questions:
 
-- `validate_abc.py` — metadata/structure: key present, meter present, chords entered,
-  title entered, truncation.
-- `lint_abc.py` (this tool) — notation correctness: time signature, beats per measure,
-  redundant accidentals, repeat matching.
+- `validate_abc.py` — **fidelity:** does the transcription match the original source?
+  This is fundamentally a human judgment (eyeballing the engraved ABC against the scan);
+  `validate_abc.py` supports that workflow with metadata/structure checks (key, meter,
+  chords, title, truncation).
+- `lint_abc.py` (this tool) — **objective correctness:** is the notation internally valid,
+  regardless of the source? Catches mistakes the human missed: time signature, beats per
+  measure, redundant accidentals, repeat matching. It never references the original scan or
+  draft — it only checks that the ABC stands on its own.
 
 ## Scope
 
