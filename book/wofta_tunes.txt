@@ -14,7 +14,7 @@
 #   Sugar Moon, Summertime.
 #
 # Known duplicates still listed, pending reconciliation (see TODO.md):
-#   Morrison's Jig 2, seneca-square-dance 2, star-above-the-garter2.
+#   seneca-square-dance 2, star-above-the-garter2.
 # Lines starting with # and blank lines are ignored.
 
 A & E Waltz
@@ -171,7 +171,6 @@ Moon and Seven Stars, The
 Moonlight
 Morpeth Rant
 Morrison's Jig
-Morrison's Jig 2
 Mouth of the Tobique
 Muckin' o' Geordie's Byre
 My Cape Breton Home

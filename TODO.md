@@ -8,11 +8,6 @@ single tune in a future session. When a stray is removed, also delete its key
 from `book/wofta_tunes.txt` (the build will otherwise fail, since every listed
 key must match a file).
 
-- **Morrison's Jig** — one tune, two scans to reconcile.
-  - Canonical: `sources/scans/Morrison's Jig.png` + `abc/Morrison's Jig-draft.abc`
-  - Stray: `sources/scans/Morrison's Jig 2.png` + `abc/Morrison's Jig 2-draft.abc`
-  - Also available: `sources/pdfs/add-ons-2026/Morrison's Jig fixed.pdf`
-
 - **Seneca Square Dance** — canonical is already verified; remove the stray.
   - Canonical (verified): `sources/scans/verified/Seneca Square Dance.png` +
     `abc/Seneca Square Dance-verified.abc`
