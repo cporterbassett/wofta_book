@@ -1,0 +1,301 @@
+# WOFTA Chapter 5 2026 — authoritative tune list (one membership key per line).
+#
+# A "key" is the exact file stem make_wofta.py computes: for a scan it is the
+# basename without .png; for a verified ABC it is <name> from <name>-verified.abc.
+# Only tunes whose key appears here are included in the WOFTA book. Files on disk
+# whose key is NOT listed are silently ignored. Every key here MUST match a file
+# (a top-level sources/scans/*.png or an abc/*-verified.abc); a key with no file
+# makes the build fail.
+#
+# Derivation (2026-06-28): the prior file-globbed roster minus 8 tunes that came
+# in for the Sand & Sawdust 2026 set (git history diff, cutoff 2026-06-23):
+#   Cumberland Gap, Kansas City Kitty, Old Aunt Jenny with Her Nightcap on,
+#   Red Red Robin, Roll the Old Chariot Along, Rose in the Mountain,
+#   Sugar Moon, Summertime.
+#
+# Known duplicates still listed, pending reconciliation (see TODO.md):
+#   Morrison's Jig 2, seneca-square-dance 2, star-above-the-garter2.
+# Lines starting with # and blank lines are ignored.
+
+A & E Waltz
+Acorn Hill Breakdown
+All the Way to Galway
+Amelia
+Angeline the Baker
+Arkansas Traveler
+Ashokan Farewell
+Barlow Knife
+Batchelder's Reel
+Big Con
+Big John McNeil
+Big Scioty
+Bill Cheatham
+Billy in the Lowground
+Black Jack Grove
+Blackberry Blossom
+Blueberry Jig
+Boggy Road to Texas, The
+Bonaparte Crossing the Rhine
+Bonaparte's Retreat
+Booth Shot Lincoln
+Border Collie
+Bottom of the Punchbowl, The
+Bouchard's Hornpipe
+Boys of Blue Hill, The
+Buckshot
+Bull Moose
+Calliope House
+Camp Meeting on the Fourth of July
+Campbell's Farewell to Red Gap
+Cat in the Hopper
+Cat on a Leash
+Centralia Waltz
+Cherokee Shuffle
+Chicken Reel
+Chicken Under the Washtub
+Chinese Breakdown
+Chinquapin
+Cindy
+Clearwater Stomp
+Clinch Mountain Backstep
+Cluck Old Hen
+Cock o' the North
+Coleman's March
+Coleraine
+Colored Aristocracy
+Cooley's Reel
+Crested Hens
+Cricket On a Hearth
+Crooked Stovepipe
+Cuckoo's Nest, The
+Demented Dog, The
+Devil's Dream
+Dill Pickles Rag
+Dogs in the Dishes
+Dorset Four Hand Reel
+Down in Little Egypt
+Drowsy Maggie
+Drunken Cat
+East Tennessee Blues
+Ebenezer
+Eighth of January
+Elmer's Waltz
+Elzic's Farewell
+Evit Gabriel
+Far Away
+Far From Home
+Farewell to Whiskey
+Farewell Trion
+Fisher's Hornpipe
+Five Steps Down
+Flop Eared Mule
+Florida Blues
+Flowers of Edinburgh
+Fly Around My Pretty Little Miss
+Forester's Hornpipe
+Forked Deer
+Frank's Reel
+Frosty Morning
+Gale, The
+Galopede
+Gaspe Reel
+Gil's Schottische
+Girl I Left Behind Me, The
+Give the Fiddler a Dram
+Golden Slippers
+Golden Ticket, The
+Granny Will Your Dog Bite
+Grasshopper Sittin' on a Sweet Potato Vine
+Grizzly Bear
+Growling Old Man and Woman
+Gypsy Waltz
+Harvest Home
+Haste to the Wedding
+Hector the Hero
+Hey Polka
+Hollow Poplar
+Hommage à Edmond Parizeau
+Honest John
+Hundred Pipers
+Ice on the Road
+Indian Ate A WoodChuck
+Indian Point
+J. B. Milne
+Jefferson and Liberty
+Jenny Lind Polka
+Jerusalem's Ridge
+Jim, the Fiddle Maker
+Jimmy Allen
+John Riley, the Shepherd
+Johnny, Johnny, Don't Get Drunk
+Josefin's Dopvals
+Julia Delaney
+June Apple
+Kerry Mills' Barn Dance
+Kesh Jig
+Kitchen Girl
+Kittens on Catnip (new)
+Kitty McGee
+La Bastringue
+La Belle Gaspésie
+Lamplighter's Hornpipe
+Laura Susan
+Liberty
+Little Burnt Potato
+Little Donald in the Pigpen
+Liza Jane
+Logger - Pays de Haut, The
+Lonesome Moonlight Waltz
+Lost Indian
+MacArthur Road
+Mackadavie, The
+Maggie Brown's Favorite
+Maggots in the Sheephide
+Magpie
+Mairi's Wedding
+Manitoba Golden Boy
+Maple Sugar
+March of St. Timothy
+Mason's Apron
+Me and My Fiddle
+Meeting of the Waters
+Merry Blacksmith - Paddy On the Railroad, The
+Midnight on the Water
+Miller's Reel
+Miss McCloud's Reel
+Miss Murray of Lintrose
+Miss Thompson's
+Mississippi Sawyer
+Monkey in the Dogcart
+Moon and Seven Stars, The
+Moonlight
+Morpeth Rant
+Morrison's Jig
+Morrison's Jig 2
+Mouth of the Tobique
+Muckin' o' Geordie's Byre
+My Cape Breton Home
+My Darling Asleep
+Nail That Catfish to the Tree
+Nancy's Waltz
+Needle Case
+New Five Cent Piece
+New Rigged Ship
+Nixon's Farewell
+None of Your Business
+Off She Goes
+Off to California
+Old Grey Cat
+Old Joe Clark
+Old John Tate - Land of Lincoln
+Old Mother Flanagan
+Old Yeller Dog Come Trottin' Through the Meetinghouse (new)
+Ookpik Waltz
+Over the Waterfall
+Paddy on the Handcar
+Pat(T)'s Country
+Peacock Rag
+Peekaboo Waltz
+Petronella
+Pig Ankle Rag
+Pink Eye Lament
+Porter's Reel
+Possum Up a Gum Stump
+Pretty Little Dog
+Puncheon Floor, The
+Quarry Cross, The
+Quince Dillon's High D Tune
+Rachel
+Ragtime Annie
+Rakes of Mallow
+Red Apple Rag
+Red Bird
+Red Haired Boy
+Red River Cart Polka
+Red Wing
+Rickett's Hornpipe
+Riding on a Load of Hay
+Rights of Man
+Road House Ramble
+Road to Batoche, The
+Road to Boston
+Road to Lisdoonvarna, The
+Rock the Cradle, Joe
+Romeo's Last Chance
+Roscoe
+Rose Tree
+Roses in Winter
+Ross's Reel #4
+Round the Horn
+Sacramento Rag
+Sadie at the Back Door
+Sailor's Hornpipe
+Sailor's Wife, The
+Sally Ann
+Sally Ann Johnson
+Sally in the Garden
+Sally Put a Bug on Me
+Sally's Got Mud Between Her Toes
+Salmon Tails Up the Water
+Salt Creek
+Salt Spring
+Sam and Elzie
+Sandy Boys
+Sandy River Belles
+Sarah Armstrong
+Seneca Square Dance
+seneca-square-dance 2
+Set Americain
+Shenandoah Falls
+Ships are Sailing
+Shoes and Stockings
+Shove That Pig's Foot a Little Further in the Fire
+Sierra Swing
+Silver Spear
+Skippin' Cat
+Sleeping Giant Two-Step
+Smash the Windows
+Snake River Reel
+Soldier's Joy
+South
+South Missouri
+Southwind
+Spotted Dog
+Spotted Pony
+Squirrel Hunters
+St. Anne's Reel
+Star Above the Garter, The
+star-above-the-garter2
+Star of the County Down (in 4-4)
+Starry Night for a Ramble
+Staten Island Hornpipe
+Stone's Rag
+Sullivan's Hollow
+Swallowtail Jig
+Swedish Twostep
+Sweet Journeys
+Swing Your Partner
+Swinging on a Gate
+Temperance Reel
+Tennessee Waltz
+Texas
+Texas Gales
+Tombigbee Waltz
+Too Young to Marry
+Top of Cork Road
+Turkey in the Straw
+Under the Double Eagle
+Walking in My Sleep
+Waverly Two-Step
+Waynesboro
+West Fork Gals
+Westphalia Waltz (new)
+Westphalia Waltz (old)
+Whiskey Before Breakfast
+Whistling Rufus
+Wild Horses at Stony Point
+Wind That Shakes the Barley
+Winder Slide
+Woodchopper's Reel
+Year of Jubilo
+You Married My Daughter but yet You Didn't

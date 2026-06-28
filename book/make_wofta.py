@@ -11,6 +11,17 @@ import sys
 
 import make_pdf as mp
 
+# Authoritative roster: only tunes whose membership key appears here go in the
+# book. See book/wofta_tunes.txt for the format and how the list was derived.
+LIST_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                         "wofta_tunes.txt")
+
+
+def load_allowlist(path):
+    with open(path) as f:
+        return {line.strip() for line in f
+                if line.strip() and not line.startswith("#")}
+
 
 def main():
     main_out = sys.argv[1] if len(sys.argv) > 1 else "WOFTA_tunes.pdf"
@@ -29,7 +40,22 @@ def main():
     verified = {os.path.basename(p)[:-len("-verified.abc")]: p
                 for p in glob.glob(os.path.join(abc_dir, "*-verified.abc"))}
 
-    tunes = sorted(set(scans) | set(verified),
+    allow = load_allowlist(LIST_PATH)
+
+    # Validate the roster against disk: every listed key must match a current
+    # file (a top-level scan stem or a verified-ABC stem). A key with no file
+    # means the list has drifted out of sync — fail loudly.
+    on_disk = set(scans) | set(verified)
+    missing = sorted(allow - on_disk)
+    if missing:
+        print("ERROR: wofta_tunes.txt lists tunes with no matching file:",
+              file=sys.stderr)
+        for k in missing:
+            print(f"  {k}", file=sys.stderr)
+        sys.exit(1)
+
+    # Keep only listed tunes; files on disk that aren't listed are ignored.
+    tunes = sorted((t for t in on_disk if t in allow),
                    key=lambda s: s.lower().replace("-", " "))
     if not tunes:
         print("No tunes found.", file=sys.stderr)
@@ -48,8 +74,10 @@ def main():
     mp.build_book(entries, output=main_out, sepia=True, toc_alphabetical=True,
                   toc_title="WOFTA Chapter 5 2026 Book")
 
-    print(f"\n=== Comparison PDF: {len(verified)} engraved tune(s), portrait packed ===")
-    mp.make_comparison_pdf(verified, scans, comp_out, sepia=True)
+    # Comparison PDF: only engraved tunes that are on the roster.
+    verified_listed = {t: p for t, p in verified.items() if t in allow}
+    print(f"\n=== Comparison PDF: {len(verified_listed)} engraved tune(s), portrait packed ===")
+    mp.make_comparison_pdf(verified_listed, scans, comp_out, sepia=True)
 
     print("\nDone.")
 
