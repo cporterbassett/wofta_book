@@ -1,0 +1,13 @@
+X:1
+T:Chicken Under the Washtub
+C:Vivian Williams
+L:1/8
+M:C|
+I:linebreak $
+K:D
+V:1 treble
+V:1
+ ((3ABc |"D" d2) ed fded | (a{=f}^f3) d2 ((3ABc| d) ed fded |"A" c2 A4 ((3ABc |$
+ "D"d2) ed fded|"G" (a{=f}^f3) d2 dB |"A" ABAG FDEG |"D" F2 D4 :|$
+ |:(D2 |"D" D)EDB, "C"=CDCB, |"D" A,B,DF EDB,=C | DEDB,  "C"=CEDC |"G" B,G,2 A,G,2 (D2|$
+ "D"D)EDB, "C"=CDCB,| "D" A,B,DF EDFG | ABAG  "A" FDEG|"D" FD2 ED2 :|
