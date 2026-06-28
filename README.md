@@ -35,9 +35,10 @@ bin/build_tracking_sheet.py # refresh tracking.md ledger
 **3. Assemble the books** → `output/` (per tune: `-verified` engraving as crisp
 vector if it exists, else the original scan):
 ```bash
-./make_pdf.sh                                   # WOFTA_tunes.pdf (+ _comparison.pdf)
-.venv/bin/python3 book/make_tin_whistle_pdf.py "output/Tin Whistle.pdf"
-.venv/bin/python3 book/make_sand_and_sawdust_pdf.py "output/Sand and Sawdust 2026.pdf"
+bin/build_wofta.sh             # WOFTA_tunes.pdf (+ _comparison.pdf), opens both
+bin/build_tin_whistle.sh       # Tin Whistle.pdf
+bin/build_sand_and_sawdust.sh  # Sand and Sawdust 2026.pdf
+bin/build_books.sh             # all three at once (no auto-open)
 ```
 
 ## Directory map
