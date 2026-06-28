@@ -12,9 +12,6 @@
 #   Cumberland Gap, Kansas City Kitty, Old Aunt Jenny with Her Nightcap on,
 #   Red Red Robin, Roll the Old Chariot Along, Rose in the Mountain,
 #   Sugar Moon, Summertime.
-#
-# Known duplicates still listed, pending reconciliation (see TODO.md):
-#   star-above-the-garter2.
 # Lines starting with # and blank lines are ignored.
 
 A & E Waltz
@@ -263,7 +260,6 @@ Spotted Pony
 Squirrel Hunters
 St. Anne's Reel
 Star Above the Garter, The
-star-above-the-garter2
 Star of the County Down (in 4-4)
 Starry Night for a Ramble
 Staten Island Hornpipe

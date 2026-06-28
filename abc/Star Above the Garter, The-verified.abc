@@ -1,0 +1,12 @@
+X:1
+T:Star Above the Garter, The
+L:1/8
+M:6/8
+I:linebreak $
+K:G
+V:1 treble nm="Voice" snm="Voice"
+V:1
+ Bc|"G"d2 B BAG |"D" A3 ABA |"C" G2 E c2 B |"D" BAG ABc |$ 
+"G"d2 B BAG |"D" A3 ABA |"C" GFE cGE |1"D" DED D :|2"D" DED D3 |$ 
+ |:"D"d2 e fga | gfe d2 B |"C" G2 B c2 B |"G" BAG "D"A3 |$ 
+"D"d2 e fga | gfe d2 B |"C" GAB cGE |1 "D"DED D3 :|2 "D"DED D | ]%16
