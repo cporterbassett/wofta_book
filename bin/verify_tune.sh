@@ -187,22 +187,36 @@ fi
 
 CLEAN_OMR="${PIPELINE_DIR}/scratch/batch_output/${TUNE}/clean.omr"
 CAND_ABC="${PIPELINE_DIR}/abc/${TUNE}-candidate.abc"
-RENDER="${PIPELINE_DIR}/scratch/renders/${TUNE}-candidate.render.png"
+VERIFIED_ABC="${PIPELINE_DIR}/abc/${TUNE}-verified.abc"
 SCAN="${IMAGES_DIR}/sources/scans/${TUNE}.png"
 [[ ! -f "$SCAN" ]] && SCAN="${IMAGES_DIR}/sources/scans/verified/${TUNE}.png"
 
+# Which ABC does this session actually edit?
+#   - --no-export on an ALREADY-VERIFIED tune (no candidate present): edit the
+#     -verified.abc IN PLACE. No candidate is created or left lying around, so a
+#     re-edit can never again silently fail to reach the book.
+#   - everything else (a fresh Audiveris export, or a still-unverified draft):
+#     the -candidate.abc, promoted to verified on sign-off.
+if [[ $NO_EXPORT -eq 1 && -f "$VERIFIED_ABC" && ! -f "$CAND_ABC" ]]; then
+    EDIT_ABC="$VERIFIED_ABC"; EDITING_VERIFIED=1
+    RENDER="${PIPELINE_DIR}/scratch/renders/${TUNE}-verified.render.png"
+else
+    EDIT_ABC="$CAND_ABC"; EDITING_VERIFIED=0
+    RENDER="${PIPELINE_DIR}/scratch/renders/${TUNE}-candidate.render.png"
+fi
+
 # Safe slug for /tmp filenames (avoids spaces/apostrophes in file:// URLs).
-SLUG="$(basename "$CAND_ABC" | tr -c 'A-Za-z0-9' '_')"
+SLUG="$(basename "$EDIT_ABC" | tr -c 'A-Za-z0-9' '_')"
 COMPARE_PNG="/tmp/${SLUG}.compare.png"
 
 # ── Precondition ──────────────────────────────────────────────────────────────
 if [[ $NO_EXPORT -eq 1 ]]; then
-    # Reusing an existing candidate — no Audiveris/export, so clean.omr isn't
-    # needed, but the candidate ABC must already exist.
-    if [[ ! -f "$CAND_ABC" ]]; then
-        echo "No candidate ABC for '$TUNE' at:" >&2
-        echo "  $CAND_ABC" >&2
-        echo "--no-export reuses an existing candidate; run a normal verify pass first." >&2
+    # Reusing existing ABC — no Audiveris/export, so clean.omr isn't needed, but
+    # the file to edit (verified if present, else candidate) must already exist.
+    if [[ ! -f "$EDIT_ABC" ]]; then
+        echo "No verified or candidate ABC for '$TUNE' at:" >&2
+        echo "  $EDIT_ABC" >&2
+        echo "--no-export reuses an existing ABC; run a normal verify pass first." >&2
         exit 1
     fi
 elif [[ ! -f "$CLEAN_OMR" ]]; then
@@ -214,7 +228,7 @@ elif [[ ! -f "$CLEAN_OMR" ]]; then
 fi
 
 build_compare() {  # (re)build the side-by-side compare PNG from the current render
-    bash "${HERE}/render_abc.sh" "$CAND_ABC" "$RENDER" >/dev/null 2>&1 || return 1
+    bash "${HERE}/render_abc.sh" "$EDIT_ABC" "$RENDER" >/dev/null 2>&1 || return 1
     bash "${HERE}/make_compare.sh" "$SCAN" "$RENDER" "$COMPARE_PNG" >/dev/null 2>&1 || return 1
 }
 
@@ -222,7 +236,11 @@ build_compare() {  # (re)build the side-by-side compare PNG from the current ren
 # Skipped when --mvt N is given: the OMR was already corrected + saved on the
 # first pass, so re-picking a movement just re-exports — no need to redo the GUI.
 if [[ $NO_EXPORT -eq 1 ]]; then
-    echo "--no-export given — skipping Audiveris; reusing existing candidate ABC."
+    if [[ $EDITING_VERIFIED -eq 1 ]]; then
+        echo "--no-export given — editing the VERIFIED ABC in place (no candidate)."
+    else
+        echo "--no-export given — skipping Audiveris; reusing existing candidate ABC."
+    fi
 elif [[ -z "$MVT" ]]; then
     echo "Opening Audiveris on clean.omr (close the window when corrections are done)..."
     $AUDIVERIS "$CLEAN_OMR" >/dev/null 2>&1 &
@@ -243,8 +261,8 @@ fi
 
 # ── Step 2: Export ────────────────────────────────────────────────────────────
 if [[ $NO_EXPORT -eq 1 ]]; then
-    echo "Skipping export — using existing candidate ABC:"
-    echo "  $CAND_ABC"
+    echo "Skipping export — using existing ABC:"
+    echo "  $EDIT_ABC"
 else
     echo "Exporting → candidate ABC..."
     if ! bash "${HERE}/export_tune.sh" "$TUNE" ${MVT:+--mvt "$MVT"}; then
@@ -266,7 +284,7 @@ fi
 if [[ $EXPORT_ONLY -eq 1 ]]; then
     echo ""
     echo "--export-only done. Candidate ABC ready for AI cleanup:"
-    echo "  $CAND_ABC"
+    echo "  $EDIT_ABC"
     exit 0
 fi
 
@@ -274,7 +292,7 @@ fi
 # Force the canonical title. Pass $TUNE via the ENVIRONMENT — never interpolate
 # into the source (an apostrophe like "Devil's Dream" would break the literal).
 echo "Forcing canonical title T:${TUNE} ..."
-TUNE="$TUNE" ABC="$CAND_ABC" "${IMAGES_DIR}/.venv/bin/python3" - <<'PY'
+TUNE="$TUNE" ABC="$EDIT_ABC" "${IMAGES_DIR}/.venv/bin/python3" - <<'PY'
 import os, re
 t = os.environ['TUNE']
 f = os.environ['ABC']
@@ -288,33 +306,46 @@ PY
 
 # ── Step 4: Live compare + EasyABC ────────────────────────────────────────────
 echo "Starting live compare watcher..."
-"${HERE}/live_compare.sh" "$CAND_ABC" "$RENDER" "$SCAN" &
+"${HERE}/live_compare.sh" "$EDIT_ABC" "$RENDER" "$SCAN" &
 WATCHER=$!
 # Make sure the watcher dies with us no matter how we exit.
 trap 'kill "$WATCHER" 2>/dev/null' EXIT
 
 echo "Opening EasyABC — edit notes/chords; SAVE to refresh the compare; CLOSE when done."
-easyabc "$CAND_ABC"
+easyabc "$EDIT_ABC"
 
-# ── Step 5: EasyABC closed → stop watcher, final rebuild, promote gate ────────
+# ── Step 5: EasyABC closed → stop watcher, final rebuild, promote/commit gate ──
 kill "$WATCHER" 2>/dev/null
 trap - EXIT
 echo "EasyABC closed. Rebuilding final compare..."
 build_compare || true
 
 echo ""
-read -r -p "Promote & commit \"${TUNE}\"? [y/N] " ans
-if [[ "${ans,,}" == "y" || "${ans,,}" == "yes" ]]; then
-    git -C "$IMAGES_DIR" add "$CAND_ABC" \
-        && bash "${HERE}/promote_tune.sh" "$TUNE" \
-        && git -C "$IMAGES_DIR" add "${PIPELINE_DIR}/abc/${TUNE}-verified.abc" \
-        && git -C "$IMAGES_DIR" commit -m "feat: verify ${TUNE}" \
-        && echo "Promoted + committed: ${TUNE}"
+if [[ $EDITING_VERIFIED -eq 1 ]]; then
+    # Already verified, edited in place — nothing to promote; just commit.
+    read -r -p "Commit changes to verified \"${TUNE}\"? [y/N] " ans
+    if [[ "${ans,,}" == "y" || "${ans,,}" == "yes" ]]; then
+        git -C "$IMAGES_DIR" add "$VERIFIED_ABC" \
+            && git -C "$IMAGES_DIR" commit -m "fix: update verified ${TUNE}" \
+            && echo "Committed: ${TUNE}"
+    else
+        echo "Left uncommitted. Commit later with:"
+        echo "  git add \"$VERIFIED_ABC\" && git commit -m \"fix: update verified ${TUNE}\""
+    fi
 else
-    echo "Left as candidate. Promote later with:"
-    echo "  git add \"$CAND_ABC\" && bash ${HERE}/promote_tune.sh \"$TUNE\" \\"
-    echo "    && git add \"${PIPELINE_DIR}/abc/${TUNE}-verified.abc\" \\"
-    echo "    && git commit -m \"feat: verify ${TUNE}\""
+    read -r -p "Promote & commit \"${TUNE}\"? [y/N] " ans
+    if [[ "${ans,,}" == "y" || "${ans,,}" == "yes" ]]; then
+        git -C "$IMAGES_DIR" add "$CAND_ABC" \
+            && bash "${HERE}/promote_tune.sh" "$TUNE" \
+            && git -C "$IMAGES_DIR" add "$VERIFIED_ABC" \
+            && git -C "$IMAGES_DIR" commit -m "feat: verify ${TUNE}" \
+            && echo "Promoted + committed: ${TUNE}"
+    else
+        echo "Left as candidate. Promote later with:"
+        echo "  git add \"$CAND_ABC\" && bash ${HERE}/promote_tune.sh \"$TUNE\" \\"
+        echo "    && git add \"$VERIFIED_ABC\" \\"
+        echo "    && git commit -m \"feat: verify ${TUNE}\""
+    fi
 fi
 
 # ── Loop: advance to the next queue tune ──────────────────────────────────────
