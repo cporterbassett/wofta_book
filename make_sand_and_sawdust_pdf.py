@@ -77,5 +77,6 @@ ENTRIES = [
 
 if __name__ == "__main__":
     out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "Sand and Sawdust 2026.pdf")
-    mp.build_book(ENTRIES, output=out, sepia=False, toc_alphabetical=False)
+    mp.build_book(ENTRIES, output=out, sepia=False, toc_alphabetical=False,
+                  toc_title="2026 Sand & Sawdust")
     print("Done.")

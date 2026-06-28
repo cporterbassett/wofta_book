@@ -40,7 +40,8 @@ def main():
     n_eng = sum(1 for _, kind, _, _ in entries if kind == "abc")
     print(f"=== Book PDF: {len(entries)} tunes "
           f"({n_eng} engraved, {len(entries) - n_eng} scanned) ===")
-    mp.build_book(entries, output=main_out, sepia=True, toc_alphabetical=True)
+    mp.build_book(entries, output=main_out, sepia=True, toc_alphabetical=True,
+                  toc_title="WOFTA Chapter 5 2026 Book")
 
     print(f"\n=== Comparison PDF: {len(verified)} engraved tune(s), portrait packed ===")
     mp.make_comparison_pdf(verified, scans, comp_out, sepia=True)

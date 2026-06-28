@@ -418,7 +418,7 @@ RENDERERS = {
 }
 
 
-def render_book_page(out, fonts, page_items, usable_w, gap, sepia):
+def render_book_page(out, fonts, page_items, usable_w, gap, sepia, page_num=None):
     """Composite packed items onto one letter page. page_items entries are
     (display_name, scaled_h, pdf_bytes, is_engraved). A sepia wash is drawn
     behind an item only when sepia and the item is engraved."""
@@ -441,11 +441,15 @@ def render_book_page(out, fonts, page_items, usable_w, gap, sepia):
         content += (f"q {scale:.6f} 0 0 {scale:.6f} {tx:.2f} {ty:.2f} cm "
                     f"{xobj_name} Do Q\n").encode()
         y = ty - gap
+    if page_num is not None:
+        num_str = str(page_num)
+        nx = (PAGE_W - _approx_w(num_str, 10)) / 2
+        content += text_op(num_str, nx, MARGIN_BOTTOM / 2, "/F1", 10)
     page_obj.Contents = out.make_stream(content)
     return page_obj
 
 
-def build_book(entries, *, output, sepia=False, toc_alphabetical=False):
+def build_book(entries, *, output, sepia=False, toc_alphabetical=False, toc_title="Contents"):
     """Build a packed tune book from entries = (display_name, kind, path, options).
     sepia washes engraved items; toc_alphabetical sorts the TOC (else set-list
     order). Multi-page sources and duplicate names collapse to first occurrence
@@ -469,9 +473,10 @@ def build_book(entries, *, output, sepia=False, toc_alphabetical=False):
     pages = [[next(flat) for _ in page] for page in pages_h]
 
     n_unique_names = len({name for name, _, _, _ in items})
-    _, _, _, _, n_toc_pages = toc_geometry(n_unique_names)
+    n_cols = _toc_n_cols(n_unique_names)
+    _, _, _, _, n_toc_pages = toc_geometry(n_unique_names, n_cols)
     print(f"\nPacking {len(items)} item(s) onto {len(pages)} content pages "
-          f"(+{n_toc_pages} TOC page(s))...")
+          f"(+{n_toc_pages} TOC page(s), {n_cols} columns)...")
 
     out = Pdf.new()
     fonts = make_fonts(out)
@@ -482,8 +487,9 @@ def build_book(entries, *, output, sepia=False, toc_alphabetical=False):
         gap = (GAP_PREFERRED
                if content_h + (len(page_items) - 1) * GAP_PREFERRED <= usable_h
                else GAP_FALLBACK)
-        page_obj = render_book_page(out, fonts, page_items, usable_w, gap, sepia)
         printed = n_toc_pages + ci
+        page_obj = render_book_page(out, fonts, page_items, usable_w, gap, sepia,
+                                    page_num=printed)
         for name, _, _, _ in page_items:
             if name not in tune_dest:
                 tune_dest[name] = (printed, page_obj)
@@ -497,7 +503,8 @@ def build_book(entries, *, output, sepia=False, toc_alphabetical=False):
                 seen.add(name)
                 order.append(name)
     entries_toc = [(name, tune_dest[name][0], tune_dest[name][1]) for name in order]
-    build_toc_pages(out, fonts, entries_toc, n_toc_pages)
+    build_toc_pages(out, fonts, entries_toc, n_toc_pages, n_cols=n_cols,
+                    toc_title=toc_title)
 
     print(f"Writing {output}...")
     out.save(output)
@@ -528,28 +535,29 @@ TOC_FONT = 10
 TOC_COL_GAP = 24
 
 
-def toc_geometry(n_entries):
+def toc_geometry(n_entries, n_cols=2):
     usable_w = PAGE_W - 2 * MARGIN_X
-    col_w = (usable_w - TOC_COL_GAP) / 2
+    col_w = (usable_w - (n_cols - 1) * TOC_COL_GAP) / n_cols
     top_y = PAGE_H - MARGIN_TOP - TOC_TITLE_H
     lines_per_col = int((top_y - MARGIN_BOTTOM) / TOC_LINE_H)
-    entries_per_page = lines_per_col * 2
+    entries_per_page = lines_per_col * n_cols
     n_pages = max(1, math.ceil(n_entries / entries_per_page))
     return col_w, top_y, lines_per_col, entries_per_page, n_pages
 
 
-def build_toc_pages(out, fonts, entries, n_toc_pages):
+def build_toc_pages(out, fonts, entries, n_toc_pages, n_cols=2, toc_title="Contents"):
     """entries: list of (name, printed_pageno, dest_page_obj) in display order.
     Builds the TOC pages, inserts them at the front of the document."""
-    col_w, top_y, lines_per_col, entries_per_page, _ = toc_geometry(len(entries))
-    col_x = [MARGIN_X, MARGIN_X + col_w + TOC_COL_GAP]
+    col_w, top_y, lines_per_col, entries_per_page, _ = toc_geometry(len(entries), n_cols)
+    col_x = [MARGIN_X + i * (col_w + TOC_COL_GAP) for i in range(n_cols)]
     num_w = 34  # reserved right strip for the page number
     name_max_w = col_w - num_w - 6
 
     toc_page_objs = []
     for p in range(n_toc_pages):
         page_obj = new_page(out, PAGE_W, PAGE_H, fonts)
-        content = text_op("Contents", MARGIN_X, PAGE_H - MARGIN_TOP - 22, "/F2", 20)
+        title_text = toc_title if p == 0 else ""
+        content = text_op(title_text, MARGIN_X, PAGE_H - MARGIN_TOP - 22, "/F2", 20)
         annots = []
         chunk = entries[p * entries_per_page:(p + 1) * entries_per_page]
         for j, (name, pageno, dest) in enumerate(chunk):
@@ -584,6 +592,12 @@ def build_toc_pages(out, fonts, entries, n_toc_pages):
         out.pages.remove(pikepdf.Page(tp))
         out.pages.insert(idx, pikepdf.Page(tp))
     return toc_page_objs
+
+
+def _toc_n_cols(n_entries):
+    """Return 2 or 3 columns: 3 only when 2 columns would overflow to a second page."""
+    _, _, _, _, n_pages_2col = toc_geometry(n_entries, 2)
+    return 2 if n_pages_2col <= 1 else 3
 
 
 # Approximate Helvetica advance widths (per 1pt em) for the common ASCII range.
