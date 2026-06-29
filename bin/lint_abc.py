@@ -58,7 +58,7 @@ class TuneBlock:
 
 def clean_body_line(line):
     """Strip non-pitch notation, keep accidentals. Mirrors extract_body's cleanup."""
-    line = re.sub(r'"[^"]*"', '', line)          # chord symbols / annotations
+    line = re.sub(r'"(?:\\.|[^"\\])*"', '', line)  # chord symbols / annotations (handles \" escapes)
     line = re.sub(r'![^!]*!', '', line)          # decorations
     line = re.sub(r'\[[A-Za-z]:[^\]]*\]', '', line)  # inline headers [K:...]
     line = line.replace('$', '')                 # linebreak marker
@@ -71,6 +71,7 @@ def parse_tune_blocks(text):
     blocks = []
     cur = None
     voice = None
+    in_textblock = False
     for raw in text.splitlines():
         line = raw.strip()
         if line.startswith('X:'):
@@ -79,6 +80,14 @@ def parse_tune_blocks(text):
             voice = None
             continue
         if cur is None:
+            continue
+        if line.startswith('%%begintext'):
+            in_textblock = True
+            continue
+        if line.startswith('%%endtext'):
+            in_textblock = False
+            continue
+        if in_textblock:
             continue
         if not line or line.startswith('%'):
             continue

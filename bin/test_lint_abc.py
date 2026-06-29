@@ -256,3 +256,18 @@ def test_parse_dur_trailing_slash():
     # Regression for a ValueError crash in compare_abc._parse_dur.
     assert lint_abc._parse_dur("3/") == Fraction(3, 2)
     assert lint_abc._parse_dur("/") == Fraction(1, 2)
+
+
+def test_parse_skips_begintext_block():
+    abc = "X:1\nL:1/8\nM:4/4\nK:G\nG2 A2 B2 c2 |\n%%begintext right\nLast time end on G chord\n%%endtext\n"
+    blocks = lint_abc.parse_tune_blocks(abc)
+    body = blocks[0].voices['1']
+    assert 'Last' not in body and 'chord' not in body
+    assert 'G2 A2 B2 c2' in body
+
+
+def test_clean_body_line_strips_escaped_quote_annotation():
+    line = '"Shout" "\\"HEY\\""  B2 z2'
+    out = lint_abc.clean_body_line(line)
+    assert 'HEY' not in out and 'Shout' not in out
+    assert 'B2 z2' in out
