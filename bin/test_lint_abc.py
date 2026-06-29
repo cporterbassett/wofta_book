@@ -51,8 +51,9 @@ def test_parse_two_x_blocks():
 def test_clean_body_line_strips_decorations_keeps_accidentals():
     line = '"D" (F2[Fd]2) ^f2 !trill!e2 {ag}d2 $'
     out = lint_abc.clean_body_line(line)
-    assert '"' not in out and '!' not in out and '{' not in out and '$' not in out
+    assert '"' not in out and '!' not in out and '$' not in out
     assert '^f2' in out
+    assert '{ag}' in out   # grace notes kept (needed for accidental analysis)
 
 
 def test_meter_to_barlen():
@@ -118,6 +119,19 @@ def test_check_beats_too_long_pickup_flagged():
     assert any(i.measure == 1 for i in issues)
 
 
+def test_check_beats_internal_pickup_pair_not_flagged():
+    # Blueberry Jig 6/8: interior 5/8 + 1/8 pair sums to a full bar (section-boundary pickup)
+    body = "dAF DFA | dfb a2 f | dfe d2 | f/g/ | a2 d a2 d | a3 b2 a"
+    assert lint_abc.check_beats("", body, U8, Fraction(3, 4), True) == []
+
+
+def test_check_beats_lone_short_interior_still_flagged():
+    # a short interior measure with no compensating neighbor IS flagged
+    body = "a2 d a2 d | dfe d2 | a2 d a2 d"   # m2 = 5/8, neighbors full
+    issues = lint_abc.check_beats("", body, U8, Fraction(3, 4), True)
+    assert len(issues) == 1 and issues[0].measure == 2
+
+
 def test_measure_duration_skips_volta_bracket_residue():
     # clean_body_line leaves a stray '[' from volta annotations; must not zero the bar
     assert lint_abc.measure_duration("[ A3 B A2 dB", U8, False) == Fraction(1)
@@ -166,6 +180,17 @@ def test_accidental_resets_each_measure():
     assert lint_abc.check_accidentals("", "^c2 d2 | ^c2 d2", km) == []
 
 
+def test_measure_duration_skips_grace_notes():
+    # grace {ag} carries no metric duration; the measure is still one bar
+    assert lint_abc.measure_duration("{ag}d2 e2 f2 g2", U8, False) == Fraction(1)
+
+
+def test_accidental_grace_cancel_then_restore_ok():
+    # {=f} cancels the key sharp, then ^f restores it -> not redundant
+    km = lint_abc.key_accidentals("D")   # F# in key
+    assert lint_abc.check_accidentals("", "a {=f}^f3 d2", km) == []
+
+
 def test_repeats_balanced_ok():
     assert lint_abc.check_repeats("", "|: a b :| |: c d :|") == []
 
@@ -180,14 +205,18 @@ def test_repeats_unclosed_open_fails():
     assert len(issues) == 1 and "unclosed" in issues[0].message.lower()
 
 
-def test_repeats_extra_close_fails():
-    # implicit credit used by first :| ; second :| is unmatched
-    issues = lint_abc.check_repeats("", "a :| b :| c")
-    assert len(issues) == 1
+def test_repeats_two_section_repeats_ok():
+    # two :| closes with no |: opens -> valid section repeats (Arkansas Traveler)
+    assert lint_abc.check_repeats("", "AB :| CD :|") == []
 
 
 def test_repeats_double_colon_shorthand_ok():
     assert lint_abc.check_repeats("", "|: a b :: c d :|") == []
+
+
+def test_repeats_duplicated_open_still_flagged():
+    # Bill Cheatham: :| |: |: ... :|  leaves one |: unclosed
+    assert len(lint_abc.check_repeats("", "a :| b |: c |: d | e :| f")) == 1
 
 
 def _write(tmp_path, text):

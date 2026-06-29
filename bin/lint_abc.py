@@ -60,7 +60,6 @@ def clean_body_line(line):
     """Strip non-pitch notation, keep accidentals. Mirrors extract_body's cleanup."""
     line = re.sub(r'"[^"]*"', '', line)          # chord symbols / annotations
     line = re.sub(r'![^!]*!', '', line)          # decorations
-    line = re.sub(r'\{[^}]*\}', '', line)        # grace notes
     line = re.sub(r'\[[A-Za-z]:[^\]]*\]', '', line)  # inline headers [K:...]
     line = line.replace('$', '')                 # linebreak marker
     line = re.sub(r'%.*$', '', line)             # trailing comment
@@ -175,6 +174,10 @@ def measure_duration(measure, unit, compound):
     tuplet_ratio = Fraction(1)
     while i < n:
         c = measure[i]
+        if c == '{':                       # grace-note group: no metric duration
+            j = measure.find('}', i)
+            i = j + 1 if j != -1 else i + 1
+            continue
         if c == '(' and i + 1 < n and measure[i + 1].isdigit():
             tm = re.match(r'\((\d+)(?::(\d*))?(?::(\d*))?', measure[i:])
             p = int(tm.group(1))
@@ -217,19 +220,30 @@ def measure_duration(measure, unit, compound):
 
 
 def check_beats(voice, body, unit, barlen, compound):
-    """Interior measures must equal barlen; first/last may be short (pickup)."""
-    issues = []
+    """Interior measures must equal barlen; first/last may be short (pickup). A short
+    interior measure is also allowed when it pairs with an adjacent measure to total
+    exactly one bar (section-boundary pickup / measure split across a line break)."""
     measures = split_measures(body)
-    last = len(measures) - 1
+    durs = [measure_duration(m, unit, compound) for m in measures]
+    n = len(measures)
+    last = n - 1
+    issues = []
     for idx, m in enumerate(measures):
-        dur = measure_duration(m, unit, compound)
+        dur = durs[idx]
+        if dur == barlen:
+            continue
         if idx == 0 or idx == last:
             if dur > barlen:
                 issues.append(Issue('beats', voice, idx + 1,
                     f'measure {idx + 1} has {dur} (> bar {barlen}); too long for a pickup', m))
-        elif dur != barlen:
-            issues.append(Issue('beats', voice, idx + 1,
-                f'measure {idx + 1} has {dur}, expected {barlen}', m))
+            continue
+        if dur < barlen and (
+            (idx + 1 < n and dur + durs[idx + 1] == barlen) or
+            (idx - 1 >= 0 and dur + durs[idx - 1] == barlen)
+        ):
+            continue  # pickup / split-measure pair sums to a full bar
+        issues.append(Issue('beats', voice, idx + 1,
+            f'measure {idx + 1} has {dur}, expected {barlen}', m))
     return issues
 
 
@@ -316,23 +330,15 @@ _BARTOK = re.compile(r':*\|+:*|::')
 
 
 def check_repeats(voice, body):
-    """Match |: / :| pairs. Tune start is one implicit open ('|:') credit."""
+    """Flag explicit |: opens that are never closed. A :| at depth 0 is a valid
+    section/da-capo repeat (back to the last section start or the tune start)."""
     issues = []
     depth = 0
-    implicit = 1
     for mt in _BARTOK.finditer(body):
         tok = mt.group(0)
-        closes = tok.startswith(':')
-        opens = tok.endswith(':')
-        if closes:
-            if depth > 0:
-                depth -= 1
-            elif implicit > 0:
-                implicit -= 1
-            else:
-                issues.append(Issue('repeat', voice, None,
-                    "':|' with no matching '|:'"))
-        if opens:
+        if tok.startswith(':') and depth > 0:   # close consumes an open repeat
+            depth -= 1
+        if tok.endswith(':'):                    # open
             depth += 1
     if depth > 0:
         issues.append(Issue('repeat', voice, None,
