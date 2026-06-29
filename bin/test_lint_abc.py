@@ -271,3 +271,25 @@ def test_clean_body_line_strips_escaped_quote_annotation():
     out = lint_abc.clean_body_line(line)
     assert 'HEY' not in out and 'Shout' not in out
     assert 'B2 z2' in out
+
+
+MULTI_VOICE = """X:1
+T:Two Voices
+L:1/8
+M:4/4
+K:G
+V:1
+ G2 A2 B2 c2 | d4 d4 |
+V:2
+ G2 A2 B2 c2 | G2 A2 B2 | d4 d4 |
+"""
+
+
+def test_multi_voice_linted_independently_with_voice_prefix():
+    blocks = lint_abc.parse_tune_blocks(MULTI_VOICE)
+    assert blocks[0].voice_order == ['1', '2']
+    issues = lint_abc.lint_block(blocks[0], None)[0]
+    # voice 1 is clean; voice 2 has a short INTERIOR measure -> flagged, with voice id
+    assert any(i.check == 'beats' and i.voice == '2' for i in issues)
+    # a >1-voice block tags every issue with its voice
+    assert all(i.voice for i in issues)
