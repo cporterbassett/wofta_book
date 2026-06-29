@@ -308,3 +308,33 @@ def check_accidentals(voice, body, key_map):
                     f'in measure {idx + 1}', measure))
             seen[pitch] = sym
     return issues
+
+
+# ── Repeats ───────────────────────────────────────────────────────────────────
+
+_BARTOK = re.compile(r':*\|+:*|::')
+
+
+def check_repeats(voice, body):
+    """Match |: / :| pairs. Tune start is one implicit open ('|:') credit."""
+    issues = []
+    depth = 0
+    implicit = 1
+    for mt in _BARTOK.finditer(body):
+        tok = mt.group(0)
+        closes = tok.startswith(':')
+        opens = tok.endswith(':')
+        if closes:
+            if depth > 0:
+                depth -= 1
+            elif implicit > 0:
+                implicit -= 1
+            else:
+                issues.append(Issue('repeat', voice, None,
+                    "':|' with no matching '|:'"))
+        if opens:
+            depth += 1
+    if depth > 0:
+        issues.append(Issue('repeat', voice, None,
+            f"{depth} unclosed '|:' (no matching ':|')"))
+    return issues

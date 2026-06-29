@@ -164,3 +164,27 @@ def test_accidental_resets_each_measure():
     km = lint_abc.key_accidentals("C")
     # ^c in m1, ^c in m2 -> each is the first in its measure, neither repeated
     assert lint_abc.check_accidentals("", "^c2 d2 | ^c2 d2", km) == []
+
+
+def test_repeats_balanced_ok():
+    assert lint_abc.check_repeats("", "|: a b :| |: c d :|") == []
+
+
+def test_repeats_leading_close_ok():
+    # ":|" with no "|:" repeats from the start -> valid (implicit credit)
+    assert lint_abc.check_repeats("", "a b :| c d") == []
+
+
+def test_repeats_unclosed_open_fails():
+    issues = lint_abc.check_repeats("", "|: a b | c d")
+    assert len(issues) == 1 and "unclosed" in issues[0].message.lower()
+
+
+def test_repeats_extra_close_fails():
+    # implicit credit used by first :| ; second :| is unmatched
+    issues = lint_abc.check_repeats("", "a :| b :| c")
+    assert len(issues) == 1
+
+
+def test_repeats_double_colon_shorthand_ok():
+    assert lint_abc.check_repeats("", "|: a b :: c d :|") == []
