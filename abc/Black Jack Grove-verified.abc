@@ -1,0 +1,14 @@
+X:1
+T:Black Jack Grove
+C:Centralia Campout
+Z:BlackJack Grove
+L:1/8
+M:C|
+I:linebreak $
+K:A
+V:1 treble
+V:1
+ "A" e=gag e2 d2 | cdef"G" =g2 ef | =g2 ag e2 d2 | cde^g "A"a2 e2 |$
+ "A" aba=g e2 d2 | cdef"G" =g2 ef |  =g^ga=g e2 d2 | "E"ed B2 "A"A4 :|$
+|:"A"  cBAc B2 A2 |"E" GGBG E2 AB | "A"cBAc B2 A2 | "E"GGBG "A"A2 AB |$
+"A"   cBAc B2 A2 | "E"GGBG E2 e2 | "G"=g^ga=g e2 d2 | "E"ed B2 "A" A4 :|
