@@ -213,3 +213,10 @@ def test_lint_file_catches_bad_beats(tmp_path):
     path = _write(tmp_path, bad)
     issues = lint_abc.lint_file(path)
     assert any(i.check == 'beats' for i in issues)
+
+
+def test_smoke_all_verified_runs_without_crashing():
+    paths = lint_abc.discover_all()
+    assert paths, "expected verified ABC files in abc/"
+    for p in paths:
+        lint_abc.lint_file(p)   # must not raise
