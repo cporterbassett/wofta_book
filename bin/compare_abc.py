@@ -41,7 +41,10 @@ def _parse_dur(s):
         return Fraction(1, int(rest)) if rest else Fraction(1, 2)
     if '/' in s:
         n, d = s.split('/', 1)
-        return Fraction(int(n), int(d))
+        # Handle trailing / without denominator (e.g., "3/") by defaulting to 2
+        n_int = int(n) if n else 1
+        d_int = int(d) if d else 2
+        return Fraction(n_int, d_int)
     return Fraction(int(s))
 
 

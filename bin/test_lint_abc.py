@@ -220,3 +220,10 @@ def test_smoke_all_verified_runs_without_crashing():
     assert paths, "expected verified ABC files in abc/"
     for p in paths:
         lint_abc.lint_file(p)   # must not raise
+
+
+def test_parse_dur_trailing_slash():
+    # ABC '3/' means 3/2 (trailing slash halves); real data: New Five Cent Piece.
+    # Regression for a ValueError crash in compare_abc._parse_dur.
+    assert lint_abc._parse_dur("3/") == Fraction(3, 2)
+    assert lint_abc._parse_dur("/") == Fraction(1, 2)
