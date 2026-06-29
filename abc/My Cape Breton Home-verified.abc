@@ -1,0 +1,17 @@
+X:1
+T:My Cape Breton Home
+C: Jerry Holland
+L:1/8
+M:3/4
+I:linebreak $
+K:G
+V:1 treble
+V:1
+ g ||"G" g3 g fg |"D" a2 f2 d2 |"C" c3 c Bc |"G" d2 B2 G2 |$
+"G" g3 g fg |"D" a2f2 d2 |"Am7" c3 c Bc | "D7" d3 f2 [Bg] |$
+"G" [Bg]3 g fg |"D" a2 f2 d2 | "C"c3 c Bc |"G" d2 B2 G2 |$
+ "Am7"E c3 cB |"D" A3 G F2 | "G" G6 | (G4 G) :|$
+"G" D3 G B2 |"C" c3 c Bc |"G" d3 B G2 |"Am" A2 G2 "D7"E2 |$
+"G" D3 G B2 | "C" c3 c Bc |"G" d g3 gf | "D7"d2 c2 A2 |$
+ "G"D3 G B2 | "C"c3 Bc | "G"d3 B G2 | "Am"A2 G2 "D7"E2 |$
+"G" D g3 fg |  "Am7"d2 c2 "D7"A2 |"G" G6 | G4 G ||

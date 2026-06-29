@@ -524,7 +524,7 @@ def test_key_accidentals():
     assert lint_abc.key_accidentals("D") == {"F": "#", "C": "#"}
     assert lint_abc.key_accidentals("F") == {"B": "b"}
     assert lint_abc.key_accidentals("Em") == {"F": "#"}        # E minor == 1 sharp
-    assert lint_abc.key_accidentals("Ador") == {"F": "#", "G": "#"}  # A dorian == 2 sharps
+    assert lint_abc.key_accidentals("Ador") == {"F": "#"}  # A dorian == G major == 1 sharp
     assert lint_abc.key_accidentals("C") == {}
 
 
