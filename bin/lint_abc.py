@@ -338,3 +338,108 @@ def check_repeats(voice, body):
         issues.append(Issue('repeat', voice, None,
             f"{depth} unclosed '|:' (no matching ':|')"))
     return issues
+
+
+# ── Orchestration ─────────────────────────────────────────────────────────────
+
+def lint_block(block, inherited):
+    """Lint one tune block. Returns (issues, new_inherited)."""
+    issues = []
+    real_barlen = meter_to_barlen(block.meter)
+    if real_barlen is not None:
+        barlen, compound = real_barlen, is_compound(block.meter)
+        new_inherited = (barlen, compound)
+    elif inherited is not None:
+        barlen, compound = inherited           # alt/fragment inherits; exempt from meter check
+        new_inherited = inherited
+    else:
+        issues += check_time_signature(block, None)
+        barlen, compound, new_inherited = None, False, inherited
+
+    key_map = key_accidentals(block.key)
+    multi = len(block.voice_order) > 1
+    for vid in block.voice_order:
+        body = block.voices[vid]
+        vlabel = vid if multi else ''
+        if barlen is not None:
+            issues += check_beats(vlabel, body, block.unit, barlen, compound)
+        issues += check_accidentals(vlabel, body, key_map)
+        issues += check_repeats(vlabel, body)
+    return issues, new_inherited
+
+
+def lint_file(path):
+    text = open(path).read()
+    inherited = None
+    issues = []
+    for block in parse_tune_blocks(text):
+        block_issues, inherited = lint_block(block, inherited)
+        issues += block_issues
+    return issues
+
+
+# ── Path resolution ───────────────────────────────────────────────────────────
+
+def resolve_path(name):
+    if os.path.isfile(name):
+        return name
+    return os.path.join(ABC_DIR, f'{name}-verified.abc')
+
+
+def discover_all():
+    return sorted(glob.glob(os.path.join(ABC_DIR, '*-verified.abc')))
+
+
+# ── Reporting / CLI ───────────────────────────────────────────────────────────
+
+COLORS = {'PASS': '\033[32m', 'FAIL': '\033[31m', 'RESET': '\033[0m'}
+
+
+def _c(level, text, use_color):
+    return f"{COLORS.get(level, '')}{text}{COLORS['RESET']}" if use_color else text
+
+
+def _tune_name(path):
+    base = os.path.basename(path)
+    return re.sub(r'-verified\.abc$', '', base)
+
+
+def main(argv):
+    use_color = sys.stdout.isatty()
+    args = [a for a in argv if not a.startswith('--')]
+    if '--all' in argv:
+        paths = discover_all()
+    elif args:
+        paths = [resolve_path(a) for a in args]
+    else:
+        print('Usage: lint_abc.py "Tune Name" [...]  OR  lint_abc.py --all')
+        return 1
+
+    failing = []
+    for path in paths:
+        name = _tune_name(path)
+        if not os.path.isfile(path):
+            print(_c('FAIL', f'  FAIL  {name}', use_color))
+            print(f'    [ERROR] file not found: {path}')
+            failing.append(name)
+            continue
+        issues = lint_file(path)
+        if not issues:
+            print(_c('PASS', f'  PASS  {name}', use_color))
+            continue
+        failing.append(name)
+        print(_c('FAIL', f'  FAIL  {name}', use_color))
+        for i in issues:
+            vp = f'(V:{i.voice}) ' if i.voice else ''
+            tail = f' — "{i.measure_text}"' if i.measure_text else ''
+            print(f'    {_c("FAIL", "[" + i.level + "]", use_color)} '
+                  f'{i.check}: {vp}{i.message}{tail}')
+
+    print()
+    print(f'  {len(paths) - len(failing)} clean, {len(failing)} with issues '
+          f'(of {len(paths)} checked)')
+    return 1 if failing else 0
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))

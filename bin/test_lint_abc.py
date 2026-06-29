@@ -188,3 +188,28 @@ def test_repeats_extra_close_fails():
 
 def test_repeats_double_colon_shorthand_ok():
     assert lint_abc.check_repeats("", "|: a b :: c d :|") == []
+
+
+def _write(tmp_path, text):
+    p = tmp_path / "T.abc"
+    p.write_text(text)
+    return str(p)
+
+
+def test_lint_file_clean(tmp_path):
+    path = _write(tmp_path, SINGLE)
+    assert lint_abc.lint_file(path) == []
+
+
+def test_lint_file_alt_block_inherits_meter(tmp_path):
+    # 2nd block has M:none but inherits 4/4; its full bar passes, no missing-meter error
+    path = _write(tmp_path, MULTI_X)
+    issues = lint_abc.lint_file(path)
+    assert [i for i in issues if i.check == 'meter'] == []
+
+
+def test_lint_file_catches_bad_beats(tmp_path):
+    bad = "X:1\nL:1/8\nM:4/4\nK:G\nG2 A2 B2 | d4 d3 | d4 d4 |\n"  # interior m2 short
+    path = _write(tmp_path, bad)
+    issues = lint_abc.lint_file(path)
+    assert any(i.check == 'beats' for i in issues)
