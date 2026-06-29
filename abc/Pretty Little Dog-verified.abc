@@ -1,0 +1,15 @@
+X:1
+T:Pretty Little Dog
+L:1/8
+M:4/4
+I:linebreak $
+K:Am
+V:1 treble
+V:1
+ "Am"A2 E2 G2 (AG | ED C2) A,2 (G,2 | A,G,)A,B, C2 D2 | "G"(D E2) (G ED C2) |$
+ "Am"A3 A E2 (D2 | ED) C2 A,2 (G,2 |  A,2) A,A,"G" C2 C2 | "Am"A,3 A, A,2 (A,B, || "Am"C2) (A,B, C2) D2 |$
+"C" (ED) (3(CB,A, G,2)"G" (G,2 |  "Am"A,)(G,A,G, C2) D2 |"E" (D E2) (G ED C2) | "Am"A3 A E2 (D2 | "C"ED)CG, "G"A,2 (G,2 |$
+ "Am"A,)G,A,G,"G" C2 C2 |  "Am"A,3 (G, A,2) ((3efg || "Am"a2) g2 e(dcd) | ege(d "G"cA G2) |$
+ "Am"AG(AB c2) d2 | "E"e3 (g e2) (e2 | a2) g2 e(dcd) |  ege(d "G"cA G2) |$
+"Am" AG(AB"E" c2) c2 | "Am"A3 (B A4) || "Am"(cBAB c2) d2 |"C" edc(A "G"G2) (A2 | "Am"A)GA(B c2) d2 |$
+ "E"e2 (eg e2) (a2 |  "Am"a2) g2 e(dcd) | ege(d "G"cA G2) | "Am"AG(AB "E"c2) c2 | "Am"A4 A4 |]
