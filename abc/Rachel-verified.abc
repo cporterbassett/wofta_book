@@ -1,0 +1,12 @@
+X:1
+T:Rachel
+L:1/8
+M:4/4
+%%measurefirst 0
+I:linebreak $
+K:D
+V:1 treble
+V:1
+ D2- |: "D"DF Ac dB AF | "G"GA Bd g2 A2- | "A"Ac ef gf ec | "D"de dB AG FE | "D"DF Ac dB AF |$
+ "G"GA Bd g2 A2- | "A"Ac ef gf ec | "D"d2 [fd]2 d2 ag :: "D"f2 ff "G"g2 gg | "D"aa fg a2 af |  "A"e2 ef gf ec |$
+ "D"de fg a2 ag | "D"f2 ff "G"g2 gg | "D"ba fg a2 af | "A"e2 ef gf ec | "D"d2 f2 d2 D2-  :|
