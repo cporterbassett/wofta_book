@@ -1,0 +1,16 @@
+X:1
+T:Sullivan's Hollow
+C:Freeny's Barn Dance Band,
+C:also Rayna Gellert [She Waits for Night]
+L:1/8
+M:C|
+%%contbarnb 1
+I:linebreak $
+K:D
+V:1 treble
+V:1
+|: "D"[fd]3 g fede | f a2 f e(d [df]2) | f3 g fedf |1 "A"edBA "D"Bd- [dD]2  :|2 "A"edBA "D"BdAB ||$
+ "D"dfed BdAB | dfed BdAG | [FA]6 AB | dfed BdAB | dfed BdAG |$
+ "D"[A,F]6 ef | "A"a2 fe- egfe | "D"d2 [fd]2- [fd]2 AB | dfed BdAB | dfed BdAB |$
+ [AF]6 AB | dfed BdAB | dfed BdAG | [FA,]3 (F F)E D2 | E F3- FEDE |$
+ F3 F E2 DE | F4- FEDE | F3 F E2 F2 | A4- A2 ef | "A"a2 fe- egfe | "D"[df]8 |]
