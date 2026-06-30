@@ -43,3 +43,14 @@ rm -f "${PIPELINE_DIR}/scratch/renders/${TUNE}-candidate.render.png" \
 
 "$VENV" "${HERE}/validate_abc.py" "$TUNE" || true
 echo "Run build_tracking_sheet.py and build_report.sh to refresh the ledger/report."
+
+# Progress summary (against the authoritative book roster)
+WOFTA_LIST="${PIPELINE_DIR}/book/wofta_tunes.txt"
+TOTAL=$(grep -v '^\s*#' "$WOFTA_LIST" | grep -c '\S' || true)
+DONE=$(grep -v '^\s*#' "$WOFTA_LIST" | grep '\S' | while IFS= read -r name; do
+    if [[ -f "${PIPELINE_DIR}/abc/${name}-verified.abc" ]]; then echo y; fi
+done | wc -l)
+LEFT=$((TOTAL - DONE))
+PCT=$(awk -v done="$DONE" -v total="$TOTAL" 'BEGIN { printf "%.1f", done/total*100 }')
+echo ""
+echo "── WOFTA progress: ${DONE}/${TOTAL} verified (${PCT}%) — ${LEFT} left ──"
