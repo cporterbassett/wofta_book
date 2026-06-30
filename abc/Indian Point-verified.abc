@@ -1,0 +1,14 @@
+X:1
+T:Indian Point
+C:Rick Mohr
+Z:Indian Point
+L:1/8
+M:6/8
+I:linebreak $
+K:G
+V:1 treble
+V:1
+ "Em"  B,EF G2 A | BAG FED | "C"CEF G2 A | BAG BAG | "D"FED A,2 D |$
+ "D"FEF AGF |1 "Em" EFG BAG | "B"F3 FED :|2 "Em" GFE "D"FED |  "Em" E3 E2 B ||$
+|:"Em" Bef gfe |"C" cef gfe |"D" dfg agf |"Em" gfe"D" fed |$
+"Em" Bef gfe |"C" ceg a2 a |  "B"bag fgf |1 "Em" e3 e2 B :|2 "Em" e3 e2 B, |]
