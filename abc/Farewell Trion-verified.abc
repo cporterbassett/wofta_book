@@ -1,0 +1,13 @@
+X:1
+T:Farewell Trion
+L:1/8
+M:C|
+I:linebreak $
+K:none
+V:1 treble
+V:1
+ "C"e g2 a g2 e2 | d2 c2 G4 | A c2 d cAGA | cAcd e4 |$
+ "C"e g2 a g2 e2 | d2 c2 G4 | A c2 d cAGA |  "G"AGEC "C"D C3 :|$
+|: "C"G,A,CD EGAB | cB A2 "F"c4- | c4- c2 cd | cAGc "G"AGEC |1[M:2/4] D C2 C :|2[M:2/4] DC EF ||[M:C|]$ 
+[M:C|] "C"G2 EF G2 EF | GAGE DCEF | G2 EF G2 AB | cAGE DCEF | $
+"C"G2 EF G2 EF | GAGE DCA,C |  G,A,CD EGAB |"G" cAGE "C"D C3 |]
