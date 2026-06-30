@@ -1,0 +1,14 @@
+X:1
+T:Romeo's Last Chance
+T: Romeo's 1st Change
+C:Joe Broncheau, Lewiston ID
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble
+V:1
+ (f/g/ ||"D" a2) ^g a2 b | afd Adf | "A7"g2 f g2 a | gec Ace |$
+ "D"a2 ^g a2 b | afd Adf | "A7"gec ABc |  [dD]3 [dD]2 :| $
+[DA]- |:"D" DFA dcB | ABA F2 A,- | "A7"A,CE GFE |"D" DFB A2 D-  | $
+"D"DFA dcB | ABA F3 | "A7"GFE A,B,C | "D" [DA][DA][DA] [DA]2 |
