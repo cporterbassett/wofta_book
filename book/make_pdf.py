@@ -672,7 +672,10 @@ def render_comparison_page(out, fonts, page_blocks, panel_w, left_x, right_x, se
 
 
 def make_comparison_pdf(verified, scans, output, sepia=True):
-    tunes = sorted(verified, key=lambda s: s.lower().replace("-", " "))
+    # Body order = creation date (oldest at top, newest at bottom). Each
+    # verified ABC file's mtime is set to its creation timestamp (see
+    # docs/verified_creation_order.md), so mtime order == creation order.
+    tunes = sorted(verified, key=lambda s: os.path.getmtime(verified[s]))
     usable_w = PAGE_W - 2 * MARGIN_X
     usable_h = PAGE_H - MARGIN_TOP - MARGIN_BOTTOM
     panel_w = (usable_w - COMP_PANEL_GAP) / 2
