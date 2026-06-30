@@ -51,9 +51,9 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIPELINE_DIR="$(cd "${HERE}/.." && pwd)"          # repo root (tune_images/)
 IMAGES_DIR="${PIPELINE_DIR}"                      # tune_images/ — same as PIPELINE_DIR after reorg
 AUDIVERIS="flatpak run org.audiveris.audiveris"
-HEALTH_TSV="${PIPELINE_DIR}/health_scores.tsv"
-SKIP_FILE="${PIPELINE_DIR}/verify_skip.txt"
-DEFAULT_QUEUE="${PIPELINE_DIR}/verify_queue.txt"
+HEALTH_TSV="${PIPELINE_DIR}/transcribe/health_scores.tsv"
+SKIP_FILE="${PIPELINE_DIR}/transcribe/verify_skip.txt"
+DEFAULT_QUEUE="${PIPELINE_DIR}/transcribe/verify_queue.txt"
 QUEUE=""                               # set by --queue / --queue-file
 SEEN_FILE="${VERIFY_SEEN_FILE:-}"      # session seen-list (loop mode), via env
 
