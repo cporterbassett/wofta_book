@@ -1,0 +1,15 @@
+X:1
+T:Elzic's Farewell
+L:1/8
+M:4/4
+I:linebreak $
+K:none
+V:1 treble
+V:1
+|:"Am" ([de]e) ee e2 d2| c2 cd cBAG | A2 a2 a2 e^f |"G" g^fga gfed |$
+ ("Am"[ed]e)ee e2 d2| c2 cd cBAG | EGAB AGED | "G" EGAB"Am" A4 :|$
+|:"Am" ABAG EGAB | cBcd edcB | ABAG DGAB | "G"cAAG"Am" A4 :|$
+|: ("Am"[AG]A) A2 AB c2 | "D" d2 de dcAc | dcde dcAG |$
+ ("Am"[AG]A) A2 AB c2 | "D" d2 de dcAc |dcde dcAc|"G" edcB "Am"A4 :|$
+
+
