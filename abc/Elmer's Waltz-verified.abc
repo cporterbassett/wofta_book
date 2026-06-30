@@ -1,0 +1,17 @@
+X:1
+T:Elmer's Waltz
+T:I
+L:1/8
+M:3/4
+I:linebreak $
+K:F
+V:1 treble
+V:1
+ A,2- ||"Dm" A,2 D2 F2 | A4 A2 | B2 A2 G2 | F3 E D2 |$
+ "A7"A,2 ^C2 E2 | G4 G2 | G2 F2 E2 | "Dm"F3 E D2 |$
+  "Dm"A,2 D2 F2 | A4 A2 | B2 A2 G2 | F3 E D2 | $
+"A7"A,2 ^C2 E2 | ""A4 A2 | =BA GA B^c |"Dm" d4 :|[K:D]$
+ A2 ||: "D" (Ad) (f a2) fd | Ad fa fd | Ad fa gf | "A7"g3 f e2 |$
+ "A7"Ac eg ec | Ac eg ec | Ac eg fe |1  "D"f3 e d2 |]2 "D"d4 ||[K:F]$
+ (a2 || "Dm"ab) (ag) (fe) | dA FD FA | "A7"e^c Ac ea |"E7" a^g g=b bg |"A" a4 a2 | $
+ "Dm"ab ag fe | dA FD FA | "A7"e^c A2 Ac |"Dm" (^c d3) :|
