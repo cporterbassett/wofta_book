@@ -1,5 +1,5 @@
 X:1
-T:Star of the County Down 
+T:Star of the County Down (in 4-4)
 L:1/8
 M:4/4
 I:linebreak $
@@ -8,4 +8,4 @@ V:1 treble
  EG||"Am" A2 A2"F" A2 GA | "C"c2 c2 "G"d2 cd |"Am" e2 dc "F"A2GE |"Em" G6 EG |$
 "Am" A2 A2 "F"A2 GA | "C"c2 c2"G" d2 cd | "Am" e2 dc "F"A2 G2 |"A"A6 e2 |$
  |:"C"g2 e2 e2 dc |"G" d2 d2 d2 cd |"Am" e2 dc "F"A2 GE |"Em" G6 EG |$
- "Am" A2 A2 "F" A2 GA |"C" c2 c2 "G"d2 cd |"Am" e2 dc "F"A2G2 |1"Am" A6 e2 :|2 A6]
+ "Am" A2 A2 "F" A2 GA |"C" c2 c2 "G"d2 cd |"Am" e2 dc "F"A2G2 |1"Am" A6 e2 :|2 "Am"A6]
