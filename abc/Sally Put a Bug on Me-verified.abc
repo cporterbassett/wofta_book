@@ -1,6 +1,6 @@
 X:1
 T:Sally Put a Bug on Me
-C:Glen Barry/Swtuart Williams
+C:Glen Barry/Stuart Williams
 L:1/8
 M:4/4
 I:linebreak $
@@ -10,4 +10,4 @@ V:1
  FG |"D" A2 (e f2) (g f)e | dAFG A2 dA |"A7" cAEF GABd |"D"  BADE F2 FG |$
  "D" A2 (e f2) (g f)e | dAFG A2 dA |"A7"  c2 cA BAcA |"D" d4 d2 :: [K:A]$
  cd |"A" e2 ef edcd | e2 a2 c3 e |"E7" g2 b2 e3 e |"A"  a2 c'2 e2 cd |$
- "A"  e2 (ef) edcd| e2 a2 a3 a |"E7" ~g2 ge fe g2 |1"A"  a4 :|2"A"  a6 |]
+ "A"  e2 (ef) edcd| e2 a2 a3 a |"E7" ~g2 ge fe g2 |1"A"  a4 :|["final" "A"  a6 |]
