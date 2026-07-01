@@ -7,13 +7,13 @@ I:linebreak $
 K:G
 V:1 treble
 V:1
-"G" degd egde | gd e g2 e dB |"Em(A7)" GABG ABGA | BG A B2 A GE | "D7"DEFD EFDE | FD E F2 E D2 |$
- "G" GFGA BAGB |"A7" A2 A2"D7" d2 d2 |"G" degd egde | gd e g2 e dB |"Em(A7)" GABG ABGA | BG A B2A GE |  "D7"DEFD EFDE |$
+"G" de gd eg de | gd e g2 e dB |"Em(A7)" GA BG AB GA | BG A B2 A GE | "D7"DE FD EF DE | FD E F2 E D2 |$
+ "G" GF GA BA GB |"A7" A2 A2"D7" d2 d2 |"G" de gd eg de | gd e g2 e dB |"Em(A7)" GA BG AB GA | BG A B2A GE |  "D7"DE FD EF DE |$
  FD E F2 E D2 |"G" GA B "D7"d2 B A |"G" G3 G F2 E2 ||"D7" D2 _E2 =E2 F2 | "G" G2 e d2 e d2 |"D7" F2 e d2 e d2 |"G" G2 e d2 e d2 |$
- "D7"D3 _E =E2 F2 |"G" G2 e d2 e d2 |"A7" fefg abag | "D7" fdef d2 d2 |"D7" D2 _E2 =E2 F2 |"G" G2 e d2 e d2 |"D7" F2 e d2 e d2 |$
-"G" G2 e d2 e d2 |"D7"  D3 _E =E2 F2 |"G" G2 e d2 e d2 |"A7" ed e"D7" f2 e d2 |"G" g6 g2 ||"C" c'b c' a2 c' a2 |  g^f g a2 g ec |$
+ "D7"D3 _E =E2 F2 |"G" G2 e d2 e d2 |"A7" fe fg ab ag | "D7" fd ef d2 d2 | D2 _E2 =E2 F2 |"G" G2 e d2 e d2 |"D7" F2 e d2 e d2 |$
+"G" G2 e d2 e d2 |"D7"  D3 _E =E2 F2 |"G" G2 e d2 e d2 |"A7" ed e"D7" f2 e d2 |"G" g6 g2 ||[K:C]"C" c'b c' a2 c' a2 |  g^f g a2 g ec |$
  "G7"ec d e2 c d2 |"C" c6 g2 | c'b c' a2 c' a2 | g^f g a2 g a2 |"D7" ba b d'2 b a2 |"G7" g6 g2 |"C"  c'b c' a2 c' a2 |$
- g^f g a2 g ec |"G7" ec d e2 c d2 |"C" c3 e d2 c2 |"F" A^GAB cBcd | "C" e^d e "A7"g3 e2 |"D7" edcB"G7" dcBd |"C" c2 B2 c2 ^c2 ||
+ g^f g a2 g ec |"G7" ec d e2 c d2 |"C" c3 e d2 c2 |"F" A^G AB cB cd | "C" e^d e "A7"g3 e2 |"D7" ed cB"G7" dc Bd |"C" c2 B2 c2 ^c2 ||
 %%begintext fill
 Most backup guitarists play an A (or A7) in measures 3 and 4 (and 10 and 11), but in the original sheet music, Johnson used E minor. One usually ends on either the A or B parts, so I wrote in the appropriate pickup notes in the last measure.
 %%endtext
