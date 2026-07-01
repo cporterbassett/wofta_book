@@ -9,9 +9,12 @@ I:linebreak $
 K:G
 V:1 treble
 V:1
+%%textfont Helvetica-Oblique 10
+%%text Played A A B 
+%%text End with single A part
  D/E/F |:"G" G3 A Bd |"D" A2 F2 ED |"C" E2 G3 A |"G" G2 B2 d2 |"Em" e3 d ef |$
 "C" e2 d2 d/B/A | "G" B2 d3 e | d2 g2 f2 |"Em" e3 d ef |"C" e2 d2 d/B/A |"G" B2 d2 B/A/G |$
 "Em" E4 ED |"C" C3 D EG | "D" D2 F2 F2 |"C" E2 G3 A |1"G" G4 D/E/F :|2"G"  G4 Bd |$
 ] "Em"e2 B3 A | B4 Be |"Bm" d2 B3 A | B4 B_B |"Am" A3 G AB |$
-  "C"A2 G2 G/E/D |"Em" E2 G2 A2 | G4 Bd | e2 B3 A |$
- "Bm"B4 fe | d2 B3 A |"Am" B4 B_B |"C" A3 G AB |"Em" A2 G2 ED |"D"  E2 G2 G2 | D6 |]
+  "C"A2 G2 G/E/D |"Em" E2 G2 A2 | G4 Bd | "Em"e2 B3 A | B4 fe |$
+ "Bm"d2 B3 A |B4 B_B |"Am" A3 G AB |"C" A2 G2 ED |"Em"  E2 G2 G2 |"D" D6 |]
