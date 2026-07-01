@@ -1,6 +1,5 @@
 X:1
 T:Needle Case
-C:Arr. Scott Marckx/Jeannie Murphy
 L:1/8
 M:4/4
 I:linebreak $
@@ -8,5 +7,5 @@ K:D
 V:1 treble
 V:1
 |: "D"a2 g2 fe d2 |"G" B2 g2 B2 g2 | "D"a2 g2 fe d2 | "A"cA Bc A2 A2 | "D"g2 g2 fe d2 | "G"B2 g2 B2 g2 |$ %6
- "A"AB cd ef ed | cA Bc "D"d2 d2 :| "D"D2 F2 A2 A2 | "G"BA Bc d2 dB | "D"A2 AB A2 F2 |$ "A"E3 F E2 E2 | "D"D2 F2 A2 A2 | %13
+ "A"AB cd ef ed | cA Bc "D"d2 d2 :|: "D"D2 F2 A2 A2 | "G"BA Bc d2 dB | "D"A2 AB A2 F2 |$ "A"E3 F E2 E2 | "D"D2 F2 A2 A2 | %13
  "G"BA Bc d2 dB | "A"AB cd ef ed | cA Bc "D"d2 d2 :| %16
