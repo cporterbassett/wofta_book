@@ -1,0 +1,21 @@
+# tune (source_images stem) | new PDF basename (no .pdf)
+Acorn Hill Breakdown|Acorn Hill Breakdown
+Clearwater Stomp|Clearwater Stomp fixed 
+Cricket On a Hearth|Cricket on a Hearth FEngstrom [TT]
+Far From Home|Far From Home PC
+Fisher's Hornpipe|Fisher's Hornpipe SW
+Gypsy Waltz|Gypsy Waltz
+Laura Susan|Laura Susan [IN]
+Lost Indian|Lost Indian fixed
+MacArthur Road|MacArthur Road
+Miss McCloud's Reel|Miss McCloud's Reel redone - Score
+Monkey in the Dogcart|Monkey in the Dogcart 2 - Score
+Moonlight|MOONLIGHT fixed
+Morrison's Jig|Morrison's Jig fixed
+None of Your Business|None of Your Business
+Red Apple Rag|Red Apple Rag * - Score
+Red River Cart Polka|Red River Cart Polka copy
+Salmon Tails Up the Water|Salmon tails Up the Water fixed
+Stone's Rag|Stone’s Rag fixed
+Waverly Two-Step|Waverly Two-Step fixed
+Woodchopper's Reel|Woodchoppers Reel fixed
