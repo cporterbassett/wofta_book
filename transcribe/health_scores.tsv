@@ -72,7 +72,7 @@ Nail That Catfish to the Tree	107.69	present	True	True	False	0.8843	19	/home/por
 Southwind	107.69	present	True	True	False	0.8843	32	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Southwind/clean.omr
 Kitty McGee	107.72	present	True	True	False	0.8859	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Kitty McGee/clean.omr
 Cluck Old Hen	107.74	present	True	True	False	0.8868	8	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cluck Old Hen/clean.omr
-Old Yeller Dog Come Trottin' Through the Meetinghouse (new)	107.74	present	True	True	False	0.887	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Old Yeller Dog Come Trottin' Through the Meetinghouse (new)/clean.omr
+Old Yeller Dog Come Trottin' Through the Meetinghouse	107.74	present	True	True	False	0.887	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Old Yeller Dog Come Trottin' Through the Meetinghouse/clean.omr
 March of St. Timothy	107.75	present	True	True	False	0.8876	26	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/March of St. Timothy/clean.omr
 Angeline the Baker	107.77	present	True	True	False	0.8883	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Angeline the Baker/clean.omr
 Josefin's Dopvals	107.79	present	True	True	False	0.8896	44	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Josefin's Dopvals/clean.omr
@@ -91,7 +91,7 @@ Shoes and Stockings	107.92	present	True	True	False	0.8958	14	/home/porter/Docume
 Maggots in the Sheephide	107.94	present	True	True	False	0.8972	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Maggots in the Sheephide/clean.omr
 Quarry Cross, The	107.94	present	True	True	False	0.8969	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Quarry Cross, The/clean.omr
 Peacock Rag	107.95	present	True	True	False	0.8974	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Peacock Rag/clean.omr
-Kittens on Catnip (new)	107.96	present	True	True	False	0.8978	23	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Kittens on Catnip (new)/clean.omr
+Kittens on Catnip	107.96	present	True	True	False	0.8978	23	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Kittens on Catnip/clean.omr
 Ookpik Waltz	107.96	present	True	True	False	0.8978	32	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Ookpik Waltz/clean.omr
 Swing Your Partner	107.96	present	True	True	False	0.8978	23	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Swing Your Partner/clean.omr
 A & E Waltz	108.0	present	True	True	False	0.9002	29	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/A & E Waltz/clean.omr
@@ -113,7 +113,7 @@ Coleman's March	108.08	present	True	True	False	0.9041	19	/home/porter/Documents/
 Midnight on the Water	108.08	present	True	True	False	0.9039	27	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Midnight on the Water/clean.omr
 Campbell's Farewell to Red Gap	108.09	present	True	True	False	0.9047	35	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Campbell's Farewell to Red Gap/clean.omr
 Dill Pickles Rag	108.09	present	True	True	False	0.9047	47	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Dill Pickles Rag/clean.omr
-Old John Tate - Land of Lincoln	108.1	present	True	True	False	0.9052	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Old John Tate - Land of Lincoln/clean.omr
+Old John Tate	108.1	present	True	True	False	0.9052	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Old John Tate/clean.omr
 Texas	108.1	present	True	True	False	0.9049	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Texas/clean.omr
 Riding on a Load of Hay	108.11	present	True	True	False	0.9056	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Riding on a Load of Hay/clean.omr
 Liza Jane	108.12	present	True	True	False	0.9061	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Liza Jane/clean.omr
@@ -238,7 +238,7 @@ Moonlight	108.74	present	True	True	False	0.9368	12	/home/porter/Documents/banjo/
 Swallowtail Jig	108.74	present	True	True	False	0.9368	16	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Swallowtail Jig/clean.omr
 Flowers of Edinburgh	108.75	present	True	True	False	0.9373	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Flowers of Edinburgh/clean.omr
 Galopede	108.75	present	True	True	False	0.9375	24	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Galopede/clean.omr
-Merry Blacksmith - Paddy On the Railroad, The	108.75	present	True	True	False	0.9376	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Merry Blacksmith - Paddy On the Railroad, The/clean.omr
+Merry Blacksmith, The - Paddy on the Railroad	108.75	present	True	True	False	0.9376	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Merry Blacksmith, The - Paddy on the Railroad/clean.omr
 Red River Cart Polka	108.75	present	True	True	False	0.9375	35	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Red River Cart Polka/clean.omr
 Staten Island Hornpipe	108.77	present	True	True	False	0.9383	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Staten Island Hornpipe/clean.omr
 Top of Cork Road	108.77	present	True	True	False	0.9387	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Top of Cork Road/clean.omr

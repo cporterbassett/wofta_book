@@ -133,7 +133,7 @@ _Each file's mtime has been set to its creation timestamp, so directory mtime or
 128. 2026-06-28T10:12:38-07:00  —  Chicken Under the Washtub-verified
 129. 2026-06-28T10:35:06-07:00  —  Sarah Armstrong-verified
 130. 2026-06-28T15:50:18-07:00  —  Skippin' Cat-verified
-131. 2026-06-28T20:59:54-07:00  —  Merry Blacksmith - Paddy On the Railroad, The-verified
+131. 2026-06-28T20:59:54-07:00  —  Merry Blacksmith, The - Paddy on the Railroad-verified
 132. 2026-06-28T21:16:50-07:00  —  My Cape Breton Home-verified
 133. 2026-06-28T21:27:10-07:00  —  Southwind-verified
 134. 2026-06-28T21:37:10-07:00  —  Star of the County Down (in 4-4)-verified
@@ -147,7 +147,7 @@ _Each file's mtime has been set to its creation timestamp, so directory mtime or
 142. 2026-06-29T08:05:53-07:00  —  Harvest Home-verified
 143. 2026-06-29T08:21:26-07:00  —  My Darling Asleep-verified
 144. 2026-06-29T09:27:08-07:00  —  Off to California-verified
-145. 2026-06-29T09:40:12-07:00  —  Old Yeller Dog Come Trottin' Through the Meetinghouse (new)-verified
+145. 2026-06-29T09:40:12-07:00  —  Old Yeller Dog Come Trottin' Through the Meetinghouse-verified
 146. 2026-06-29T09:57:31-07:00  —  Pretty Little Dog-verified
 147. 2026-06-29T10:06:38-07:00  —  Quarry Cross, The-verified
 148. 2026-06-29T10:20:46-07:00  —  Riding on a Load of Hay-verified
@@ -183,7 +183,7 @@ _Each file's mtime has been set to its creation timestamp, so directory mtime or
 178. 2026-06-30T05:15:45-07:00  —  Indian Point-verified
 179. 2026-06-30T05:25:43-07:00  —  J. B. Milne-verified
 180. 2026-06-30T05:49:21-07:00  —  John Riley, the Shepherd-verified
-181. 2026-06-30T06:31:47-07:00  —  Kittens on Catnip (new)-verified
+181. 2026-06-30T06:31:47-07:00  —  Kittens on Catnip-verified
 182. 2026-06-30T07:10:39-07:00  —  Lamplighter's Hornpipe-verified
 183. 2026-06-30T07:16:55-07:00  —  La Belle Gaspésie-verified
 184. 2026-06-30T07:22:29-07:00  —  Laura Susan-verified
