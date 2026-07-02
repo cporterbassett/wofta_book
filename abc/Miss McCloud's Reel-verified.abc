@@ -6,6 +6,9 @@ I:linebreak $
 K:G
 V:1 treble
 V:1
+%%setfont-1 Helvetica 10
+%%center $1 Also known as Uncle Joe or Hop Height Ladies when starting with the second part
+%%center $1when resolving to a G chord at the end.
  BA |"G" G2 g2 edeg | B2{/c} BA BcBA | G2 g2 edeg |"D7" A2{/B} AG AcBA |$
 "G" G2 g2 edeg |  B2 {c}BA Bc d2 |"C" e3 f edef |"D7" gedB A2 BA ::$
 "G" GABc dBGA | {}c2 {c}BA BcBA | GABc dBGB | "D7" A2{/B} AG AcBA |$
