@@ -1,0 +1,19 @@
+X:1
+T:Waverly Two-Step
+C:from Glenn Berry
+L:1/8
+M:4/4
+I:linebreak $
+K:D
+V:1 treble
+V:1
+ DD F2 G2 | "D" A4 (ABAF | D2) DD F2 G2 | A4 (ABAF | D2) (A2 d2) e2 | f4 f3 (g  |$
+ f2) d2 e2 d2 | "A" c4 (c3 d | c2) EE E2 F2 | G4 (GAGF | E2) EE E2 F2 | G4 (GAGF | $
+E3) (E A2) B2 | c3 (d c2 B2) | A3 B A2 G2 | "D"F4 (F3 G | F2) DD F2 G2 | A4 (ABAF |$
+ D2) DD F2 G2 | A4 (ABAF | D2) (A2 d2) e2 | f4 f3 (f | a2) f2 e2 d2 | "G" [G,DBg]4 g3 (a |$
+ g2) (3(DEF GA)Bd |[gB]4 g3 (a |  g2) d2 e2 d2 |"D" [Af]3 (a f2 e2) | d2 A2 B2 A2 | "A"e3 (f e2 d2) |$
+ ""(c2 A2) (B2 c2) | "D" d4 (d3 e | d2) ((3ded c2) d2 | "A"e3 (f e2 d2) | (c2 A2) g3 (e | $
+"D"fa)fe (dB)AG |  F3 (F B2 A2) | "E"[^GB]3 G B2 c2 | d3 (d c2 B2) | "A" A4 (A3 B | $
+A2) DD F2 G2 | "D" A4 (ABAF | D2) DD F2 G2 | "D" A4 (ABAF | D2) (A2 d2) e2 |$
+ f4 f3 (f | a2) f2 e2 d2 | "G" [G,DBg]4 g3 (a | g2) (3(DEF GA)Bd |  [Bg]4 g3 (a | g2) d2 e2 d2 |$
+ "D" [Af]3 (a f2 e2) | d2 A2 B2 A2 |"A" e3 (f e2 d2) | (c2 A2) (B2 c2) | "D" dedB AGFE | D4 [Fd]4 |]
