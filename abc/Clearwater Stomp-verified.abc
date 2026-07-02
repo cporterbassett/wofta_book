@@ -1,0 +1,16 @@
+X:1
+T:Clearwater Stomp
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble
+V:1
+ z2 DD E2 F(F || "G" G2) G2 F G3 | D2 z4 GG | A2 AA ^G A3 | E4 A G3 |$
+ "D7" E F2 E F3 E | D2 F2 E _E3 | "G" D2 D3 E DB, | DD DD EE F2 |$
+"G" G2 GG ^F G3 | D2 z4 GG | "A7"A2 A2 A A3 | E4 A G3 |$
+  "D7"E F2 E F2 E2 | D2 c2 B F2 !slide![GG,] | |1[GG,]2 [GG,]6 :|2 G2 GG A ^A2 ||$
+ ||"B7"B B4 A BA | B B2 A B A3 |  "E7"^G3 A BAGF | E4- E E FE |$
+ "A7"A A2 A4 (^G | A) A4 F GE | "D7"F2 F2 G ^G2 A- | A2 c2 B2 A2 | $
+ "G"G2 G2 F G2 D- | D2 z4 GG | "A7"A2 A2 ^G A2 E- | E4 A G3 |$
+"D7" F3 G F2 E2 | D2 cc B F2 [GG,]- |  "G"[GG,]4 G3 A | G2 |]
