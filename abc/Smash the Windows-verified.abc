@@ -1,0 +1,14 @@
+X:1
+T:Smash the Windows
+L:1/8
+M:6/8
+I:linebreak $
+K:D
+V:1 treble
+V:1
+"D" DED F2 A | d2 f "A"ecA | "G"G2 B "D"F2 A | "Em"E2 F "A"GFE |$
+ "D"DED F2 A | d2 f "A"ecA | "G"Bgf "A"edc | "D"ded d3 :|$
+  "D"a2 f d2 e | f2 g agf | "A"g2 e c2 d | e2 f gfe |$
+ "D"a2 f d2 e | f2 g agf | "A"g2 e cde | "D"d3 dfg |$
+  "D"a2 f d2 e | f2 g agf | "A"g2 e c2 d | e2 f gfe |$
+ "D"fed "Em"gfe | "D"agf "G"bag | "D"fed "A"cde | "D"ded d2 A |]
