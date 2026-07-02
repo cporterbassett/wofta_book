@@ -1,0 +1,12 @@
+X:1
+T:Staten Island Hornpipe
+L:1/8
+M:C|
+I:linebreak $
+K:D
+V:1 treble
+V:1
+ A2 |"D" FDFG A2 A2 | dfed dcBA |"G" B2 GB"D" A2 FA |"Em" G2 E2"A" E2 AG |$
+"D" FDFG A2 A2 |  dfed dcBA | d2 d2"A" efge |"D" f2 d2 d2 ::$
+ fg |"D" a2"A" fa g2 eg |"D" f2"A" df ecAB |"C" =c2"RHYTHM REST" c2 efge |"C" =c2"RHYTHM REST" c2 efge |$
+"D" a2"A" fa g2 eg |"D" f2"A" df ecBA |"D" d2"A" d2 efge |"D" f2 d2 d2 :|

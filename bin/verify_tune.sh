@@ -243,12 +243,22 @@ if [[ $NO_EXPORT -eq 1 ]]; then
     fi
 elif [[ -z "$MVT" ]]; then
     echo "Opening Audiveris on clean.omr (close the window when corrections are done)..."
+    # Snapshot existing Audiveris window IDs BEFORE launch so the maximize step
+    # below can target only the NEW one — matching by title alone (wmctrl -r
+    # Audiveris) grabs whichever Audiveris window comes first, which races with
+    # any other verify_tune.sh session that also has Audiveris open.
+    BEFORE_WINS="$(wmctrl -l 2>/dev/null | grep -i audiveris | awk '{print $1}')"
     $AUDIVERIS "$CLEAN_OMR" >/dev/null 2>&1 &
     APID=$!
-    # Maximize the Audiveris window once it appears.
+    # Maximize the Audiveris window once it appears — only a window ID that
+    # wasn't already in BEFORE_WINS, so a concurrent session's window is untouched.
     ( for _ in $(seq 1 30); do
-          wmctrl -l 2>/dev/null | grep -qi audiveris && {
-              wmctrl -r Audiveris -b add,maximized_vert,maximized_horz; break; }
+          NEWWIN="$(comm -13 <(printf '%s\n' "$BEFORE_WINS" | sort) \
+                             <(wmctrl -l 2>/dev/null | grep -i audiveris | awk '{print $1}' | sort))"
+          if [[ -n "$NEWWIN" ]]; then
+              wmctrl -i -r "$(printf '%s\n' "$NEWWIN" | head -1)" -b add,maximized_vert,maximized_horz
+              break
+          fi
           sleep 1
       done ) >/dev/null 2>&1 &
     # Open the raw scan for reference during review.
