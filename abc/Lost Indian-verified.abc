@@ -8,12 +8,12 @@ I:linebreak $
 K:D
 V:1 treble
 V:1
-P:A
- ||"A"A,2 A,B, D2 DB, | A,B,DE F2 FE | D2 DE FG A2 |"Bm" B6 ((3ABc |$
- "D"d2) d2 d2 B2 | "G"ABAG FEDF |  "Am"A2 AB AFEF |1 AFEF "D"D2 DB, :|2 AFEF "D"D4 ||$
-P:B1
+P:a)
+ ||"D"A,2 A,B, D2 DB, | A,B,DE F2 FE | D2 DE FG A2 |"Bm" B6 ((3ABc |$
+ "D"d2) d2 d2 B2 | "G"ABAG FEDF |  "A7"A2 AB AFEF |1 AFEF "D"D2 DB, :|2 AFEF "D"D4 ||$
+P:b1)
 ||"D"f a3 a2 b2 | a4 f4 | !slide!.b2 a2 fe d2 | "Bm"(=f^f f6) |$
   "D"b2 a2 fe d2 | "G"!slide!.f2 f2 edBA | "A7".d2 cB AFEF | AFEF"D" D4 ||$
-P:B2
+P:b2)
 ||"D" f2 a2 a2 b2 | !slide!d'8 | b2 a2 fe d2 | "Bm"!slide!f8 |$
   "D"b2 a2 fe d2 | "G"!slide!f2 !slide!f2 edBA | "A7"d2 dB AFEF | AFEF"D" D4 ||
