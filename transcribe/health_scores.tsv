@@ -22,7 +22,6 @@ Walking in My Sleep	78.12	present	True	True	True	0.9058	19	/home/porter/Document
 Pig Ankle Rag	78.21	present	True	True	True	0.9105	26	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Pig Ankle Rag/clean.omr
 Maple Sugar	78.44	present	True	True	True	0.922	36	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Maple Sugar/clean.omr
 Cherokee Shuffle	78.48	present	True	True	True	0.9242	19	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Cherokee Shuffle/clean.omr
-Westphalia Waltz (new)	86.2	absent	False	False	False	0.8098	53	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Westphalia Waltz (new)/clean.omr
 Miss McCloud's Reel	87.16	absent	False	False	False	0.8582	15	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Miss McCloud's Reel/clean.omr
 My Cape Breton Home	87.24	present	True	False	False	0.8619	33	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/My Cape Breton Home/clean.omr
 Morrison's Jig	87.29	absent	False	False	False	0.8644	8	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Morrison's Jig/clean.omr
@@ -84,7 +83,6 @@ Elmer's Waltz	107.84	present	True	True	False	0.892	36	/home/porter/Documents/ban
 Granny Will Your Dog Bite	107.85	present	True	True	False	0.8925	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Granny Will Your Dog Bite/clean.omr
 Peekaboo Waltz	107.85	present	True	True	False	0.8925	31	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Peekaboo Waltz/clean.omr
 Shove That Pig's Foot a Little Further in the Fire	107.86	present	True	True	False	0.8931	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Shove That Pig's Foot a Little Further in the Fire/clean.omr
-Westphalia Waltz (old)	107.87	present	True	True	False	0.8937	34	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Westphalia Waltz (old)/clean.omr
 Swedish Twostep	107.88	present	True	True	False	0.8941	17	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Swedish Twostep/clean.omr
 Seneca Square Dance	107.89	present	True	True	False	0.8945	18	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Seneca Square Dance/clean.omr
 Shoes and Stockings	107.92	present	True	True	False	0.8958	14	/home/porter/Documents/banjo/WOFTA/tune_images/notation_pipeline/batch_output/Shoes and Stockings/clean.omr
