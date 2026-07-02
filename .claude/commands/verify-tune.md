@@ -115,9 +115,11 @@ If it errors, fix the ABC until it renders.
 Build a one-time highlighted snapshot so Porter sees the flagged bars up front,
 WITHOUT polluting `CAND`:
 1. Copy `CAND` to `scratch/<Tune>.review.abc`.
-2. At each flagged bar, insert the annotation token `"^⚑"` (placed above the bar)
+2. At each flagged bar, insert the annotation token `"^!!"` (placed above the bar)
    just before that measure's first note. (You know each suspect bar's location in
    the ABC text from Stage 2 — place it directly; no counting needed.)
+   Note: use plain ASCII like `"^!!"` — Unicode characters such as ⚑ cause a
+   buffer overflow crash in abcm2ps.
 3. Render the snapshot and build a compare image:
    ```
    RENDER_MEASURENB=1 bash bin/render_abc.sh "scratch/<Tune>.review.abc" "scratch/<Tune>.review.png"
