@@ -1,0 +1,14 @@
+X:1
+T:Wild Horses at Stony Point
+C:from Chester Carlton; Pendleton, OR
+Z:Hoedown
+L:1/8
+M:4/4
+I:linebreak $
+K:G
+V:1 treble
+V:1
+ (3DEF ||"G" G2 ge dded | B2 ge dBAF | G2 ge dedc |"D7" BGAF"G" G2 ::$
+ z A ||"G" BABc d3 A |  BABc dB G2 | BABc dedc |"D7" BGAF"G" G2 ::$
+ z A ||"Em" Bded e3 g |"D" fgaf gfed |"Em" Bded e3 g | "D" fgaf"G" g2 ::$
+ z e ||"G" gfga bgeg |"D" fefg afdf |"G" gfga bgeg |"D7" fgaf"G" g2 :|
